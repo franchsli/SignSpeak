@@ -2,10 +2,18 @@
 
 A sign language translator.
 
-[Tuning the model](https://ai.google.dev/gemini-api/docs/model-tuning)
+## TODO
 
-[AI Studio](https://aistudio.google.com/prompts/new_chat)
+1. Set the virtualenv.
 
-[Documentation](https://ai.google.dev/gemini-api/docs/vision?hl=es-419&lang=python)
+## Resources
+
+[Hand recognition](https://pypi.org/project/mediapipe/)
+
+[More mediapipe docs](https://mediapipe.readthedocs.io/en/latest/solutions/hands.html)
 
 [Datasets](https://www.kaggle.com/datasets?search=colombian+sign+language)
+
+[More Data](https://www.youtube.com/watch?v=JMraBJsA9oI&list=PLI7rDimYXOdhyty-lEXsxQgiLfYKnnqmY&index=4)
+
+[More models](https://huggingface.co/models?sort=trending)
