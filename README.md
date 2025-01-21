@@ -2,10 +2,6 @@
 
 A sign language translator.
 
-## TODO
-
-1. Set the virtualenv.
-
 ## Resources
 
 [Hand recognition](https://pypi.org/project/mediapipe/)
@@ -17,3 +13,5 @@ A sign language translator.
 [More Data](https://www.youtube.com/watch?v=JMraBJsA9oI&list=PLI7rDimYXOdhyty-lEXsxQgiLfYKnnqmY&index=4)
 
 [More models](https://huggingface.co/models?sort=trending)
+
+[If problem with mediapipe](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170#latest-microsoft-visual-c-redistributable-version)
