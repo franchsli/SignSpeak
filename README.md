@@ -8,6 +8,8 @@ A sign language translator.
 
 [More mediapipe docs](https://mediapipe.readthedocs.io/en/latest/solutions/hands.html)
 
+[Custom gesture recognition](https://ai.google.dev/edge/mediapipe/solutions/customization/gesture_recognizer)
+
 [Datasets](https://www.kaggle.com/datasets?search=colombian+sign+language)
 
 [More Data](https://www.youtube.com/watch?v=JMraBJsA9oI&list=PLI7rDimYXOdhyty-lEXsxQgiLfYKnnqmY&index=4)
