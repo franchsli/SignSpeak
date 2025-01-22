@@ -31,14 +31,14 @@ with GestureRecognizer.create_from_options(
       video_path = os.path.join(video_folder, video_file)
       
       if not video_file.endswith((".mp4", ".avi", ".mov")):
-          continue
+        continue
       
       print(f"Processing video: {video_file}")
       cap = cv.VideoCapture(video_path)
       
       if not cap.isOpened():
-          print(f"Failed to open video: {video_file}")
-          continue
+        print(f"Failed to open video: {video_file}")
+        continue
       
       frame_index = 0
       fps = cap.get(cv.CAP_PROP_FPS) or 30  # Default to 30 FPS if unknown
@@ -46,7 +46,7 @@ with GestureRecognizer.create_from_options(
       while True:
         ret, frame = cap.read()
         if not ret:
-            break
+          break
         
         rgb_frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
         mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_frame)
@@ -66,15 +66,19 @@ with GestureRecognizer.create_from_options(
                     mp.solutions.drawing_styles.get_default_hand_landmarks_style(),
                     mp.solutions.drawing_styles.get_default_hand_connections_style(),
                 )
+
         if result and result.gestures:
-            print(f"Video: {video_file}, Frame {frame_index}: {result.gestures[0]}")
+          if result.gestures[0][0].category_name != 'None':
+            print(f"Video: {video_file}, Frame {frame_index}: {result.gestures[0][0].category_name}")
+          else:
+            print(f"Video: {video_file}, Frame {frame_index}: Gesture does not belongs to a category.")
         else:
-            print(f"Video: {video_file}, Frame {frame_index}: No gestures detected")
+          print(f"Video: {video_file}, Frame {frame_index}: No gestures detected")
       
         cv.imshow("Video", frame)
       
         if cv.waitKey(1) & 0xFF == ord("q"):
-            break
+          break
       
         frame_index += 1
       
