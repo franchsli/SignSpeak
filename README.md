@@ -2,6 +2,11 @@
 
 A sign language translator.
 
+## TODO
+
+- Increase VideoHandler and WebCamHandler fps.
+- Train the model to recognize sign language.
+
 ## Resources
 
 [Hand recognition](https://pypi.org/project/mediapipe/)
