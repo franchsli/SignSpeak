@@ -117,10 +117,13 @@ class VideoHandler(GestureHandler):
 class WebCamHandler(GestureHandler):
     
     def handle_gesture(self, result, output_image: mp.Image, timestamp_ms: int) -> None:
-        if result.gestures[0][0].category_name != 'None':
-            print(f"Webcam, Frame {timestamp_ms}: {result.gestures[0][0].category_name}")
+        if len(result.gestures) >= 1:
+            if result.gestures[0][0].category_name != "None":
+                print(f"Webcam, Frame {timestamp_ms}: {result.gestures[0][0].category_name}")
+            else:
+                print(f"Webcam, Frame {timestamp_ms}: Gesture does not belongs to a category.")
         else:
-            print(f"Webcam, Frame {timestamp_ms}: Gesture does not belongs to a category.")
+            print("No gesture detected")
 
 
     def run(self) -> None:
@@ -153,8 +156,6 @@ class WebCamHandler(GestureHandler):
   
                     # Ensure global timestamp is used
                     timestamp_ms = int(frame_index * 1000 / fps)
-
-                    recognizer.recognize_async(mp_image, timestamp_ms)
                     
                     # Hand landmarks detection
                     landmarks_result = hands.process(rgb_frame)
@@ -168,6 +169,8 @@ class WebCamHandler(GestureHandler):
                                 mp.solutions.drawing_styles.get_default_hand_landmarks_style(),
                                 mp.solutions.drawing_styles.get_default_hand_connections_style(),
                             )
+                            
+                    recognizer.recognize_async(mp_image, timestamp_ms)
 
                     cv.imshow("WebCam", frame)
                 
