@@ -146,7 +146,7 @@ class WebCamHandler(GestureHandler):
                 while True:
                     success, frame = cap.read()
                     if not success:
-                        break
+                        continue
                 
                     rgb_frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
                     mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_frame)
