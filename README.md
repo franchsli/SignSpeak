@@ -30,3 +30,11 @@ A sign language translator.
 [Problem with mediapipe model maker](https://github.com/google-ai-edge/mediapipe/issues/4975)
 
 [Problem with mediapipe model maker](https://github.com/google-ai-edge/mediapipe/issues/5214)
+
+[Problem with tensorflow text](https://github.com/tensorflow/text?tab=readme-ov-file#install-using-pip)
+
+## How to fix
+
+If encountering problems with mediapipe model maker because tensorflow-text is not installed (Windows)
+delete the text folder in mediapipe model maker package manually and delete the import statement in the init.py file
+that imports the text folder.
