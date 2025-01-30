@@ -1,41 +1,32 @@
-import cv2
-import mediapipe as mp
+import sign_language_translator as slt
 
-mp_drawing = mp.solutions.drawing_utils
-mp_drawing_styles = mp.solutions.drawing_styles
-mp_hands = mp.solutions.hands
+# download dataset or models (if you need them for personal use)
+# (by default, resources are auto-downloaded within the install directory)
+# slt.Assets.set_root_dir("path/to/folder")  # Helps preventing duplication across environments or using cloud synced data
+# slt.Assets.download(r".*.json")  # downloads into asset_dir
+# print(slt.Assets.FILE_TO_URL.keys())  # All downloadable resources
 
-cap = cv2.VideoCapture(0)
-with mp_hands.Hands(
-    model_complexity=0, min_detection_confidence=0.5, min_tracking_confidence=0.5
-) as hands:
-    while cap.isOpened():
-        success, image = cap.read()
-        if not success:
-            print("Ignoring empty camera frame.")
-            # If loading a video, use 'break' instead of 'continue'.
-            break
+print("All available models:")
+print(list(slt.ModelCodes))  # slt.ModelCodeGroups
+# print(list(slt.TextLanguageCodes))
+print(list(slt.SignLanguageCodes))
+# print(list(slt.SignFormatCodes))
 
-        # To improve performance, optionally mark the image as not writeable to
-        # pass by reference.
-        image.flags.writeable = False
-        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        results = hands.process(image)
+# -------------------------- TRANSLATE: sign to text --------------------------
+# -------------------------- THIS DOES NOT WORK --------------------------
 
-        # Draw the hand annotations on the image.
-        image.flags.writeable = True
-        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-        if results.multi_hand_landmarks:
-            for hand_landmarks in results.multi_hand_landmarks:
-                mp_drawing.draw_landmarks(
-                    image,
-                    hand_landmarks,
-                    mp_hands.HAND_CONNECTIONS,
-                    mp_drawing_styles.get_default_hand_landmarks_style(),
-                    mp_drawing_styles.get_default_hand_connections_style(),
-                )
-        # Flip the image horizontally for a selfie-view display.
-        cv2.imshow("MediaPipe Hands", cv2.flip(image, 1))
-        if cv2.waitKey(5) & 0xFF == 27:
-            break
-cap.release()
+# sign = slt.Video("path/to/video.mp4")
+sign = slt.Video.load("datasets/10-words-slc-and-3-people/001_SLC.mp4")
+sign.show_frames_grid()
+
+# Extract Pose Vector for feature reduction
+embedding_model = slt.models.MediaPipeLandmarksModel()      # pip install "sign_language_translator[mediapipe]"  # (or [all])
+embedding = embedding_model.embed(sign.iter_frames())
+
+slt.Landmarks(embedding.reshape((-1, 75, 5)),
+            connections="mediapipe-world").show()
+
+# # Load sign-to-text model (pytorch) (COMING SOON!)
+# translation_model = slt.get_model(slt.ModelCodes.Gesture)
+# text = translation_model.translate(embedding)
+# print(text)

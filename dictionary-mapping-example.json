@@ -1,0 +1,26 @@
+[
+    {
+      "country": "pk",
+      "description": "pakistan sign language videos taught in hamza foundation academy for the deaf,lahore, pakistan.",
+      "mapping": [
+        {
+          "label": "pk-hfad-1_1",
+          "token": {
+            "en": ["1", "one", "a(article)", "an"],
+            "hi": ["1", "एक"],
+            "ur": ["1", "۱", "ایک", "اک", "اِک", "یکم"]
+          }
+        },
+        {
+          "label": "pk-hfad-1_10",
+          "token": {
+            "en": ["10", "ten"],
+            "hi": ["10", "दस"],
+            "ur": ["10", "۱۰", "دس"]
+          }
+        }
+        ],
+        "organization": "hfad",
+        "url": "https://www.youtube.com/@pslhamzafoundationacademyf7624/videos"
+    }
+]
