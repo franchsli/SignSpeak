@@ -6,10 +6,10 @@ import sign_language_translator as slt
 # slt.Assets.download(r".*.json")  # downloads into asset_dir
 # print(slt.Assets.FILE_TO_URL.keys())  # All downloadable resources
 
-print("All available models:")
-print(list(slt.ModelCodes))  # slt.ModelCodeGroups
+# print("All available models:")
+# print(list(slt.ModelCodes))  # slt.ModelCodeGroups
 # print(list(slt.TextLanguageCodes))
-print(list(slt.SignLanguageCodes))
+# print(list(slt.SignLanguageCodes))
 # print(list(slt.SignFormatCodes))
 
 # -------------------------- TRANSLATE: sign to text --------------------------
@@ -26,7 +26,7 @@ embedding = embedding_model.embed(sign.iter_frames())
 slt.Landmarks(embedding.reshape((-1, 75, 5)),
             connections="mediapipe-world").show()
 
-# # Load sign-to-text model (pytorch) (COMING SOON!)
-# translation_model = slt.get_model(slt.ModelCodes.Gesture)
-# text = translation_model.translate(embedding)
-# print(text)
+# Load sign-to-text model (pytorch) (COMING SOON!)
+translation_model = slt.get_model(slt.ModelCodes.Gesture)
+text = translation_model.translate(embedding)
+print(text)
