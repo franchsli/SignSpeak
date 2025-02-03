@@ -6,4 +6,5 @@ env
 config.py
 models
 datasets
+data
 created_models

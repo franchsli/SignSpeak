@@ -4,8 +4,6 @@ A sign language translator.
 
 ## TODO
 
-[Fix jax error](https://github.com/jax-ml/jax/blob/main/CHANGELOG.md#jaxlib-0162-march-9-2021)
-
 ***IMPORTANT***
 
 [use this repo](https://github.com/dgovor/Sign-Language-Translator)
