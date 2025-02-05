@@ -10,6 +10,7 @@ from itertools import product
 @dataclass
 class GestureHandler:
     model_path: str = None
+
     def draw_landmarks(self, image, results):
         """
         Draw the landmarks on the image.
@@ -22,9 +23,13 @@ class GestureHandler:
             None
         """
         # Draw landmarks for left hand
-        mp.solutions.drawing_utils.draw_landmarks(image, results.left_hand_landmarks, mp.solutions.holistic.HAND_CONNECTIONS)
+        mp.solutions.drawing_utils.draw_landmarks(
+            image, results.left_hand_landmarks, mp.solutions.holistic.HAND_CONNECTIONS
+        )
         # Draw landmarks for right hand
-        mp.solutions.drawing_utils.draw_landmarks(image, results.right_hand_landmarks, mp.solutions.holistic.HAND_CONNECTIONS)
+        mp.solutions.drawing_utils.draw_landmarks(
+            image, results.right_hand_landmarks, mp.solutions.holistic.HAND_CONNECTIONS
+        )
 
     def image_process(self, image, model):
         """
@@ -60,9 +65,21 @@ class GestureHandler:
             keypoints (numpy.ndarray): The extracted keypoints.
         """
         # Extract the keypoints for the left hand if present, otherwise set to zeros
-        lh = np.array([[res.x, res.y, res.z] for res in results.left_hand_landmarks.landmark]).flatten() if results.left_hand_landmarks else np.zeros(63)
+        lh = (
+            np.array(
+                [[res.x, res.y, res.z] for res in results.left_hand_landmarks.landmark]
+            ).flatten()
+            if results.left_hand_landmarks
+            else np.zeros(63)
+        )
         # Extract the keypoints for the right hand if present, otherwise set to zeros
-        rh = np.array([[res.x, res.y, res.z] for res in results.right_hand_landmarks.landmark]).flatten() if results.right_hand_landmarks else np.zeros(63)
+        rh = (
+            np.array(
+                [[res.x, res.y, res.z] for res in results.right_hand_landmarks.landmark]
+            ).flatten()
+            if results.right_hand_landmarks
+            else np.zeros(63)
+        )
         # Concatenate the keypoints for both hands
         keypoints = np.concatenate([lh, rh])
         return keypoints
@@ -73,7 +90,7 @@ class VideoHandler(GestureHandler):
     video_folder: str = None
     global_timestamp: int = 0
 
-    def create_dataset(self, signs:list[str], path:str) -> None:
+    def create_dataset(self, signs: list[str], path: str) -> None:
         # Define the number of sequences and frames to be recorded for each action
         sequences = 30
         frames = 10
@@ -81,12 +98,12 @@ class VideoHandler(GestureHandler):
         # Set the path where the dataset will be stored
         PATH = os.path.join(path)
 
-        # Create directories for each action, sequence, and frame in the dataset
+        """# Create directories for each action, sequence, and frame in the dataset
         for action, sequence in product(signs, range(sequences)):
             try:
                 os.makedirs(os.path.join(PATH, action, str(sequence)))
             except:
-                pass
+                pass"""
 
         for video_file in os.listdir(self.video_folder):
             video_path: str = os.path.join(self.video_folder, video_file)
@@ -100,26 +117,32 @@ class VideoHandler(GestureHandler):
             frame_index: int = 0
             fps = cap.get(cv.CAP_PROP_FPS) or 30  # Default to 30 FPS if unknown
             # Create a MediaPipe Holistic object for hand tracking and landmark extraction
-            with mp.solutions.holistic.Holistic(min_detection_confidence=0.75, min_tracking_confidence=0.75) as holistic:
+            with mp.solutions.holistic.Holistic(
+                min_detection_confidence=0.75, min_tracking_confidence=0.75
+            ) as holistic:
                 # Loop through each action, sequence, and frame to record data
-                for action, sequence, frame in product(signs, range(sequences), range(frames)):
+                for action, sequence, frame in product(
+                    signs, range(sequences), range(frames)
+                ):
                     # If it is the first frame of a sequence, wait for the spacebar key press to start recording
-                    if frame == 0: 
+                    if frame == 0:
                         while True:
-                            if keyboard.is_pressed(' '):
+                            if keyboard.is_pressed(" "):
                                 break
                             _, image = cap.read()
+                            rgb_frame = cv.cvtColor(image, cv.COLOR_BGR2RGB)
+                            mp_image = mp.Image(
+                                image_format=mp.ImageFormat.SRGB, data=rgb_frame
+                            )
                             results = self.image_process(image, holistic)
+                            # USE mp_image or rgb_frame down here
                             self.draw_landmarks(image, results)
-                            #cv.putText(image, 'Recording data for the "{}". Sequence number {}.'.format(action, sequence),
-                            #            (20,20), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,255), 1, cv.LINE_AA)
-                            #cv.putText(image, 'Pause.', (20,400), cv.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2, cv.LINE_AA)
-                            #cv.putText(image, 'Press "Space" when you are ready.', (20,450), cv.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2, cv.LINE_AA)
-                            cv.imshow('Camera', image)
+
+                            cv.imshow("Camera", image)
                             cv.waitKey(1)
-                            
+
                             # Check if the 'Camera' window was closed and break the loop
-                            if cv.getWindowProperty('Camera',cv.WND_PROP_VISIBLE) < 1:
+                            if cv.getWindowProperty("Camera", cv.WND_PROP_VISIBLE) < 1:
                                 break
 
                     else:
@@ -129,13 +152,11 @@ class VideoHandler(GestureHandler):
                         results = self.image_process(image, holistic)
                         # Draw the hand landmarks on the image
                         self.draw_landmarks(image, results)
-                        # Display text on the image indicating the action and sequence number being recorded
-                        #cv.putText(image, 'Recroding data for the "{}". Sequence number {}.'.format(action, sequence),
-                        #            (20,20), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,255), 1, cv.LINE_AA)
-                        cv.imshow('Camera', image)
+
+                        cv.imshow("Camera", image)
                         cv.waitKey(1)
                     # Check if the 'Camera' window was closed and break the loop
-                    if cv.getWindowProperty('Camera',cv.WND_PROP_VISIBLE) < 1:
+                    if cv.getWindowProperty("Camera", cv.WND_PROP_VISIBLE) < 1:
                         break
                     # Extract the landmarks from both hands and save them in arrays
                     keypoints = self.keypoint_extraction(results)
@@ -143,15 +164,14 @@ class VideoHandler(GestureHandler):
                     np.save(frame_path, keypoints)
                     frame_index += 1
                     # Update the global timestamp for the next video
-                    self.global_timestamp += int(cap.get(cv.CAP_PROP_FRAME_COUNT) * 1000 / fps)
+                    self.global_timestamp += int(
+                        cap.get(cv.CAP_PROP_FRAME_COUNT) * 1000 / fps
+                    )
                     cap.release()
                     cv.destroyAllWindows()
 
-
-
     def train(self) -> None:
         pass
-
 
     def run(self) -> None:
 
