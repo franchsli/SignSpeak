@@ -2,10 +2,8 @@ import os
 import cv2 as cv
 import mediapipe as mp
 import numpy as np
-import keyboard
 from dataclasses import dataclass
 from itertools import product
-from functools import wraps
 
 
 @dataclass
@@ -29,17 +27,20 @@ class GestureHandler:
         # Draw landmarks for left hand if present
         if results.left_hand_landmarks:
             mp.solutions.drawing_utils.draw_landmarks(
-                image, results.left_hand_landmarks, mp.solutions.holistic.HAND_CONNECTIONS
+                image,
+                results.left_hand_landmarks,
+                mp.solutions.holistic.HAND_CONNECTIONS,
             )
 
         # Draw landmarks for right hand if present
         if results.right_hand_landmarks:
             mp.solutions.drawing_utils.draw_landmarks(
-                image, results.right_hand_landmarks, mp.solutions.holistic.HAND_CONNECTIONS
+                image,
+                results.right_hand_landmarks,
+                mp.solutions.holistic.HAND_CONNECTIONS,
             )
 
         return image
-
 
     def image_process(self, image, model):
         """
@@ -69,7 +70,6 @@ class GestureHandler:
         processed_image = cv.cvtColor(image_rgb, cv.COLOR_RGB2BGR)
 
         return results, processed_image
-
 
     def keypoint_extraction(self, results):
         """
@@ -106,7 +106,7 @@ class VideoHandler(GestureHandler):
     video_folder: str = None
     global_timestamp: int = 0
 
-    def create_directories(self, path:str, signs:list[str], sequences) -> None:
+    def create_directories(self, path: str, signs: list[str], sequences) -> None:
         # Create directories for each action, sequence, and frame in the dataset
         for action, sequence in product(signs, range(sequences)):
             try:
@@ -115,59 +115,55 @@ class VideoHandler(GestureHandler):
                 pass
 
     def create_dataset(self):
-        with mp.solutions.holistic.Holistic(min_detection_confidence=0.75, min_tracking_confidence=0.75) as holistic:
+        with mp.solutions.holistic.Holistic(
+            min_detection_confidence=0.75, min_tracking_confidence=0.75
+        ) as holistic:
             for video_file in os.listdir(self.video_folder):
                 video_path: str = os.path.join(self.video_folder, video_file)
-            
+
                 if not video_file.endswith((".mp4", ".avi", ".mov")):
                     continue
-            
+
                 print(f"Processing video: {video_file}")
                 cap = cv.VideoCapture(video_path)
-            
+
                 if not cap.isOpened():
                     print(f"Failed to open video: {video_file}")
                     continue
-            
+
                 frame_index: int = 0
                 fps = cap.get(cv.CAP_PROP_FPS) or 30  # Default to 30 FPS if unknown
-            
+
                 while True:
                     success, frame = cap.read()
                     if not success:
                         break
 
                     print("PROCESSING FRAME")
-                
-                    #rgb_frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
-                    #mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_frame)
+
+                    # rgb_frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
+                    # mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_frame)
                     # Ensure global timestamp is used
-                    #timestamp_ms = int(self.global_timestamp + (frame_index * 1000 / fps))
+                    # timestamp_ms = int(self.global_timestamp + (frame_index * 1000 / fps))
                     # Process image and get results
                     results, processed_image = self.image_process(frame, holistic)
-                    
+
                     # Draw landmarks and display
                     display_image = self.draw_landmarks(processed_image, results)
 
-                    """if result and result.gestures:
-                        self.handle_gesture(video_file, frame_index, result)
-
-                    else:
-                        print(f"Video: {video_file}, Frame {frame_index}: No gestures detected")"""
-
                     cv.imshow("Video", display_image)
-                
+
                     if cv.waitKey(1) & 0xFF == ord("q"):
                         self.stop()
                         break
-                
+
                     frame_index += 1
-                
+
                 # Update the global timestamp for the next video
-                self.global_timestamp += int(cap.get(cv.CAP_PROP_FRAME_COUNT) * 1000 / fps)
+                self.global_timestamp += int(
+                    cap.get(cv.CAP_PROP_FRAME_COUNT) * 1000 / fps
+                )
                 cap.release()
-
-
 
     def train(self) -> None:
         pass
