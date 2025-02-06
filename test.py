@@ -18,4 +18,4 @@ for video_folder in video_folders:
     VideoGesturesRecognizer.video_folder = os.path.abspath(
         f"datasets/random_words/{video_folder}/"
     )
-    VideoGesturesRecognizer.create_dataset(np.array(video_folders), image_folder)
+    VideoGesturesRecognizer.create_dataset()

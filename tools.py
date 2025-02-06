@@ -5,6 +5,7 @@ import numpy as np
 import keyboard
 from dataclasses import dataclass
 from itertools import product
+from functools import wraps
 
 
 @dataclass
@@ -105,42 +106,6 @@ class VideoHandler(GestureHandler):
     video_folder: str = None
     global_timestamp: int = 0
 
-    def holistic(self, func) -> None:
-        # Define the actions (signs) that will be recorded and stored in the dataset
-        signs = np.array(self.video_folder)
-
-        # Define the number of sequences and frames to be recorded for each action
-        sequences = 30
-        frames = 10
-
-        # Set the path where the dataset will be stored
-        PATH = os.path.abspath("datasets/Alphabet_SLC/")
-        def wrapper() -> None:
-            with mp.solutions.holistic.Holistic(
-            min_detection_confidence=0.75, min_tracking_confidence=0.75
-                ) as holistic:
-                for video_file in os.listdir(self.video_folder):
-                    video_path: str = os.path.join(self.video_folder, video_file)
-                    if not video_file.endswith((".mp4", ".avi", ".mov")):
-                        continue
-                    print(f"Processing video: {video_file}")
-                    cap = cv.VideoCapture(video_path)
-                    if not cap.isOpened():
-                        print(f"Failed to open video: {video_file}")
-                        continue
-                    frame_index: int = 0
-                    fps = cap.get(cv.CAP_PROP_FPS) or 30  # Default to 30 FPS if unknown
-                    while True:
-                        success, frame = cap.read()
-                        if not success:
-                            break
-                        cv.imshow("Video", frame)
-                        func(signs, sequences, frames, cap, PATH, holistic)
-                        frame_index += 1
-                    # Update the global timestamp for the next video
-                    self.global_timestamp += int(cap.get(cv.CAP_PROP_FRAME_COUNT) * 1000 / fps)
-                    cap.release()
-
     def create_directories(self, path:str, signs:list[str], sequences) -> None:
         # Create directories for each action, sequence, and frame in the dataset
         for action, sequence in product(signs, range(sequences)):
@@ -149,60 +114,57 @@ class VideoHandler(GestureHandler):
             except:
                 pass
 
-    @holistic
-    def create_dataset(self, signs: list[str], sequences, frames, cap:cv.VideoCapture, path: str, holistic) -> None:
-        for action, sequence, frame in product(signs, range(sequences), range(frames)):
-            if frame == 0:
+    def create_dataset(self):
+        with mp.solutions.holistic.Holistic(min_detection_confidence=0.75, min_tracking_confidence=0.75) as holistic:
+            for video_file in os.listdir(self.video_folder):
+                video_path: str = os.path.join(self.video_folder, video_file)
+            
+                if not video_file.endswith((".mp4", ".avi", ".mov")):
+                    continue
+            
+                print(f"Processing video: {video_file}")
+                cap = cv.VideoCapture(video_path)
+            
+                if not cap.isOpened():
+                    print(f"Failed to open video: {video_file}")
+                    continue
+            
+                frame_index: int = 0
+                fps = cap.get(cv.CAP_PROP_FPS) or 30  # Default to 30 FPS if unknown
+            
                 while True:
-                    if keyboard.is_pressed(" "):
-                        break
-                    success, image = cap.read()
+                    success, frame = cap.read()
                     if not success:
-                        print("Error reading video or video ended")
                         break
-
+                
+                    rgb_frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
+                    mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_frame)
+                    # Ensure global timestamp is used
+                    timestamp_ms = int(self.global_timestamp + (frame_index * 1000 / fps))
                     # Process image and get results
-                    results, processed_image = self.image_process(image, holistic)
+                    results, processed_image = self.image_process(frame, holistic)
                     
                     # Draw landmarks and display
                     display_image = self.draw_landmarks(processed_image, results)
 
-                    # cv2.putText(image, 'Recording data for the "{}". Sequence number {}.'.format(action, sequence),
-                    #            (20,20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,255), 1, cv2.LINE_AA)
-                    # cv2.putText(image, 'Pause.', (20,400), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2, cv2.LINE_AA)
-                    # cv2.putText(image, 'Press "Space" when you are ready.', (20,450), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2, cv2.LINE_AA)
-                    cv.imshow("Camera", display_image)
-                    cv.waitKey(1)
+                    """if result and result.gestures:
+                        self.handle_gesture(video_file, frame_index, result)
 
-                    # Check if the 'Camera' window was closed and break the loop
-                    if cv.getWindowProperty("Camera", cv.WND_PROP_VISIBLE) < 1:
-                        break
-            else:
-                # For subsequent frames, directly read the image from the camera
-                success, image = cap.read()
-                if not success:
-                    print("Error reading video or video ended")
-                    break
-                # Process image and get results
-                results, processed_image = self.image_process(image, holistic)
+                    else:
+                        print(f"Video: {video_file}, Frame {frame_index}: No gestures detected")"""
                 
-                # Draw landmarks and display
-                display_image = self.draw_landmarks(processed_image, results)
+                    cv.imshow("Video", display_image)
+                
+                    if keyboard.is_pressed(" "):
+                        break
+                
+                    frame_index += 1
+                
+                # Update the global timestamp for the next video
+                self.global_timestamp += int(cap.get(cv.CAP_PROP_FRAME_COUNT) * 1000 / fps)
+                cap.release()
 
-                # Display text on the image indicating the action and sequence number being recorded
-                # cv.putText(image, 'Recroding data for the "{}". Sequence number {}.'.format(action, sequence),
-                #            (20,20), cv.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,255), 1, cv.LINE_AA)
-                cv.imshow("Camera", display_image)
-                cv.waitKey(1)
 
-            # Check if the 'Camera' window was closed and break the loop
-            if cv.getWindowProperty("Camera", cv.WND_PROP_VISIBLE) < 1:
-                break
-
-            # Extract the landmarks from both hands and save them in arrays
-            keypoints = self.keypoint_extraction(results)
-            frame_path = os.path.join(path, action, str(sequence), str(frame))
-            np.save(frame_path, keypoints)
 
     def train(self) -> None:
         pass
