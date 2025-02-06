@@ -2,6 +2,7 @@ import mediapipe as mp
 import cv2
 import numpy as np
 
+
 def draw_landmarks(image, results):
     """
     Draw the landmarks on the image.
@@ -14,9 +15,14 @@ def draw_landmarks(image, results):
         None
     """
     # Draw landmarks for left hand
-    mp.solutions.drawing_utils.draw_landmarks(image, results.left_hand_landmarks, mp.solutions.holistic.HAND_CONNECTIONS)
+    mp.solutions.drawing_utils.draw_landmarks(
+        image, results.left_hand_landmarks, mp.solutions.holistic.HAND_CONNECTIONS
+    )
     # Draw landmarks for right hand
-    mp.solutions.drawing_utils.draw_landmarks(image, results.right_hand_landmarks, mp.solutions.holistic.HAND_CONNECTIONS)
+    mp.solutions.drawing_utils.draw_landmarks(
+        image, results.right_hand_landmarks, mp.solutions.holistic.HAND_CONNECTIONS
+    )
+
 
 def image_process(image, model):
     """
@@ -41,6 +47,7 @@ def image_process(image, model):
     image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     return results
 
+
 def keypoint_extraction(results):
     """
     Extract the keypoints from the sign landmarks.
@@ -52,9 +59,21 @@ def keypoint_extraction(results):
         keypoints (numpy.ndarray): The extracted keypoints.
     """
     # Extract the keypoints for the left hand if present, otherwise set to zeros
-    lh = np.array([[res.x, res.y, res.z] for res in results.left_hand_landmarks.landmark]).flatten() if results.left_hand_landmarks else np.zeros(63)
+    lh = (
+        np.array(
+            [[res.x, res.y, res.z] for res in results.left_hand_landmarks.landmark]
+        ).flatten()
+        if results.left_hand_landmarks
+        else np.zeros(63)
+    )
     # Extract the keypoints for the right hand if present, otherwise set to zeros
-    rh = np.array([[res.x, res.y, res.z] for res in results.right_hand_landmarks.landmark]).flatten() if results.right_hand_landmarks else np.zeros(63)
+    rh = (
+        np.array(
+            [[res.x, res.y, res.z] for res in results.right_hand_landmarks.landmark]
+        ).flatten()
+        if results.right_hand_landmarks
+        else np.zeros(63)
+    )
     # Concatenate the keypoints for both hands
     keypoints = np.concatenate([lh, rh])
     return keypoints
