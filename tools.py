@@ -105,6 +105,15 @@ class VideoHandler(GestureHandler):
     video_folder: str = None
     global_timestamp: int = 0
 
+    def create_directories(self, path:str, signs:list[str], sequences) -> None:
+        # Create directories for each action, sequence, and frame in the dataset
+        for action, sequence in product(signs, range(sequences)):
+            try:
+                os.makedirs(os.path.join(path, action, str(sequence)))
+            except:
+                pass
+
+
     def create_dataset(self, signs: list[str], path: str) -> None:
         # Define the number of sequences and frames to be recorded for each action
         sequences = 30
@@ -113,12 +122,7 @@ class VideoHandler(GestureHandler):
         # Set the path where the dataset will be stored
         PATH = os.path.join(path)
 
-        """# Create directories for each action, sequence, and frame in the dataset
-        for action, sequence in product(signs, range(sequences)):
-            try:
-                os.makedirs(os.path.join(PATH, action, str(sequence)))
-            except:
-                pass"""
+        self.create_directories(PATH, signs, sequences)
 
         for video_file in os.listdir(self.video_folder):
             video_path: str = os.path.join(self.video_folder, video_file)
@@ -131,59 +135,15 @@ class VideoHandler(GestureHandler):
                 continue
             frame_index: int = 0
             fps = cap.get(cv.CAP_PROP_FPS) or 30  # Default to 30 FPS if unknown
-            # Create a MediaPipe Holistic object for hand tracking and landmark extraction
-            with mp.solutions.holistic.Holistic(
-                min_detection_confidence=0.75, min_tracking_confidence=0.75
-            ) as holistic:
-                # Loop through each action, sequence, and frame to record data
-                for action, sequence, frame in product(
-                    signs, range(sequences), range(frames)
-                ):
-                    # If it is the first frame of a sequence, wait for the spacebar key press to start recording
-                    if frame == 0:
-                        while True:
-                            if keyboard.is_pressed(" "):
-                                break
-                            _, image = cap.read()
-                            rgb_frame = cv.cvtColor(image, cv.COLOR_BGR2RGB)
-                            mp_image = mp.Image(
-                                image_format=mp.ImageFormat.SRGB, data=rgb_frame
-                            )
-                            results = self.image_process(image, holistic)
-                            # USE mp_image or rgb_frame down here
-                            self.draw_landmarks(image, results)
-
-                            cv.imshow("Camera", image)
-                            cv.waitKey(1)
-
-                            # Check if the 'Camera' window was closed and break the loop
-                            if cv.getWindowProperty("Camera", cv.WND_PROP_VISIBLE) < 1:
-                                break
-
-                    else:
-                        # For subsequent frames, directly read the image from the camera
-                        _, image = cap.read()
-                        # Process the image and extract hand landmarks using the MediaPipe Holistic pipeline
-                        results = self.image_process(image, holistic)
-                        # Draw the hand landmarks on the image
-                        self.draw_landmarks(image, results)
-
-                        cv.imshow("Camera", image)
-                        cv.waitKey(1)
-                    # Check if the 'Camera' window was closed and break the loop
-                    if cv.getWindowProperty("Camera", cv.WND_PROP_VISIBLE) < 1:
-                        break
-                    # Extract the landmarks from both hands and save them in arrays
-                    keypoints = self.keypoint_extraction(results)
-                    frame_path = os.path.join(PATH, action, str(sequence), str(frame))
-                    np.save(frame_path, keypoints)
-                    frame_index += 1
-                    # Update the global timestamp for the next video
-                    self.global_timestamp += int(
-                        cap.get(cv.CAP_PROP_FRAME_COUNT) * 1000 / fps
-                    )
-                    cap.release()
-                    cv.destroyAllWindows()
+            # THIS LINE BELOW NEEDS TO BE INSIDE THE WHILE LOOP
+            frame_index += 1
+            # THESE LINES NEED ARE GOOD IN THIS INDENTATION
+            # Update the global timestamp for the next video
+            self.global_timestamp += int(
+                cap.get(cv.CAP_PROP_FRAME_COUNT) * 1000 / fps
+            )
+            cap.release()
+            cv.destroyAllWindows()
 
     def train(self) -> None:
         pass
