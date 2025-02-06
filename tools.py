@@ -136,11 +136,13 @@ class VideoHandler(GestureHandler):
                     success, frame = cap.read()
                     if not success:
                         break
+
+                    print("PROCESSING FRAME")
                 
-                    rgb_frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
-                    mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_frame)
+                    #rgb_frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
+                    #mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_frame)
                     # Ensure global timestamp is used
-                    timestamp_ms = int(self.global_timestamp + (frame_index * 1000 / fps))
+                    #timestamp_ms = int(self.global_timestamp + (frame_index * 1000 / fps))
                     # Process image and get results
                     results, processed_image = self.image_process(frame, holistic)
                     
@@ -152,10 +154,11 @@ class VideoHandler(GestureHandler):
 
                     else:
                         print(f"Video: {video_file}, Frame {frame_index}: No gestures detected")"""
-                
+
                     cv.imshow("Video", display_image)
                 
-                    if keyboard.is_pressed(" "):
+                    if cv.waitKey(1) & 0xFF == ord("q"):
+                        self.stop()
                         break
                 
                     frame_index += 1
