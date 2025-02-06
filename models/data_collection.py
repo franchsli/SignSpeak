@@ -47,17 +47,22 @@ with mp.solutions.holistic.Holistic(
             while True:
                 if keyboard.is_pressed(" "):
                     break
-                _, image = cap.read()
-                image = image.copy()
+                success, image = cap.read()
+                if not success:
+                    print("Error reading video or video ended")
+                    break
 
-                results = image_process(image, holistic)
-                draw_landmarks(image, results)
+                # Process image and get results
+                results, processed_image = image_process(image, holistic)
+                
+                # Draw landmarks and display
+                display_image = draw_landmarks(processed_image, results)
 
                 # cv2.putText(image, 'Recording data for the "{}". Sequence number {}.'.format(action, sequence),
                 #            (20,20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,255), 1, cv2.LINE_AA)
                 # cv2.putText(image, 'Pause.', (20,400), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2, cv2.LINE_AA)
                 # cv2.putText(image, 'Press "Space" when you are ready.', (20,450), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 2, cv2.LINE_AA)
-                cv2.imshow("Camera", image)
+                cv2.imshow("Camera", display_image)
                 cv2.waitKey(1)
 
                 # Check if the 'Camera' window was closed and break the loop
@@ -65,17 +70,20 @@ with mp.solutions.holistic.Holistic(
                     break
         else:
             # For subsequent frames, directly read the image from the camera
-            _, image = cap.read()
-            image = image.copy()
-            # Process the image and extract hand landmarks using the MediaPipe Holistic pipeline
-            results = image_process(image, holistic)
-            # Draw the hand landmarks on the image
-            draw_landmarks(image, results)
+            success, image = cap.read()
+            if not success:
+                print("Error reading video or video ended")
+                break
+            # Process image and get results
+            results, processed_image = image_process(image, holistic)
+            
+            # Draw landmarks and display
+            display_image = draw_landmarks(processed_image, results)
 
             # Display text on the image indicating the action and sequence number being recorded
             # cv2.putText(image, 'Recroding data for the "{}". Sequence number {}.'.format(action, sequence),
             #            (20,20), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0,0,255), 1, cv2.LINE_AA)
-            cv2.imshow("Camera", image)
+            cv2.imshow("Camera", display_image)
             cv2.waitKey(1)
 
         # Check if the 'Camera' window was closed and break the loop

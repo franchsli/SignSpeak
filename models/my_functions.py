@@ -1,5 +1,5 @@
 import mediapipe as mp
-import cv2
+import cv2 as cv
 import numpy as np
 
 
@@ -12,16 +12,24 @@ def draw_landmarks(image, results):
         results: The landmarks detected by Mediapipe.
 
     Returns:
-        None
+        numpy.ndarray: The image with drawn landmarks
     """
-    # Draw landmarks for left hand
-    mp.solutions.drawing_utils.draw_landmarks(
-        image, results.left_hand_landmarks, mp.solutions.holistic.HAND_CONNECTIONS
-    )
-    # Draw landmarks for right hand
-    mp.solutions.drawing_utils.draw_landmarks(
-        image, results.right_hand_landmarks, mp.solutions.holistic.HAND_CONNECTIONS
-    )
+    # Make a copy of the image to ensure it's writable
+    image = image.copy()
+
+    # Draw landmarks for left hand if present
+    if results.left_hand_landmarks:
+        mp.solutions.drawing_utils.draw_landmarks(
+            image, results.left_hand_landmarks, mp.solutions.holistic.HAND_CONNECTIONS
+        )
+
+    # Draw landmarks for right hand if present
+    if results.right_hand_landmarks:
+        mp.solutions.drawing_utils.draw_landmarks(
+            image, results.right_hand_landmarks, mp.solutions.holistic.HAND_CONNECTIONS
+        )
+
+    return image
 
 
 def image_process(image, model):
@@ -33,19 +41,25 @@ def image_process(image, model):
         model: The Mediapipe holistic object.
 
     Returns:
-        results: The processed results containing sign landmarks.
+        tuple: (results, processed_image) where results contains the landmarks
+        and processed_image is the BGR image
     """
-    # Set the image to read-only mode
-    image.flags.writeable = False
+    # Make a copy to avoid modifying the original
+    image = image.copy()
+
     # Convert the image from BGR to RGB
-    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    image_rgb = cv.cvtColor(image, cv.COLOR_BGR2RGB)
+
     # Process the image using the model
-    results = model.process(image)
-    # Set the image back to writeable mode
-    image.flags.writeable = True
-    # Convert the image back from RGB to BGR
-    image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-    return results
+    # MediaPipe works better with read-only images
+    image_rgb.flags.writeable = False
+    results = model.process(image_rgb)
+    image_rgb.flags.writeable = True
+
+    # Convert back to BGR for OpenCV operations
+    processed_image = cv.cvtColor(image_rgb, cv.COLOR_RGB2BGR)
+
+    return results, processed_image
 
 
 def keypoint_extraction(results):
@@ -56,7 +70,7 @@ def keypoint_extraction(results):
         results: The processed results containing sign landmarks.
 
     Returns:
-        keypoints (numpy.ndarray): The extracted keypoints.
+        numpy.ndarray: The extracted keypoints.
     """
     # Extract the keypoints for the left hand if present, otherwise set to zeros
     lh = (
@@ -75,5 +89,4 @@ def keypoint_extraction(results):
         else np.zeros(63)
     )
     # Concatenate the keypoints for both hands
-    keypoints = np.concatenate([lh, rh])
-    return keypoints
+    return np.concatenate([lh, rh])
