@@ -4,6 +4,11 @@ A sign language translator.
 
 ## TODO
 
+- Fully implement data collection into VideoHandler.
+- Fully implement model training into VideoHandler.
+- Fully implement model testing into VideoHandler.
+- Use VideoHandler functionalities into WebCamHnadler.
+
 ***IMPORTANT***
 
 [use this repo](https://github.com/dgovor/Sign-Language-Translator)
