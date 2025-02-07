@@ -10,6 +10,15 @@ from itertools import product
 class GestureHandler:
     model_path: str = None
 
+    def get_label_name(self, file_name:str) -> str:
+        label = ''
+        for character in file_name:
+            if character == '.':
+                break
+            elif character.isalpha():
+                label += character
+        return label
+
     def draw_landmarks(self, image, results):
         """
         Draw the landmarks on the image.
@@ -114,7 +123,7 @@ class VideoHandler(GestureHandler):
             except:
                 pass
 
-    def create_dataset(self):
+    def create_dataset(self, path:str) -> None:
         with mp.solutions.holistic.Holistic(
             min_detection_confidence=0.75, min_tracking_confidence=0.75
         ) as holistic:
@@ -139,7 +148,7 @@ class VideoHandler(GestureHandler):
                     if not success:
                         break
 
-                    print("PROCESSING FRAME")
+                    print("PROCESSING FRAME:", frame_index)
 
                     # rgb_frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
                     # mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_frame)
@@ -158,6 +167,10 @@ class VideoHandler(GestureHandler):
                         break
 
                     frame_index += 1
+                    # Extract the landmarks from both hands and save them in arrays
+                    keypoints:np.ndarray = self.keypoint_extraction(results)
+                    frame_path = os.path.join(path, self.get_label_name(video_file), frame_index)
+                    np.save(frame_path, keypoints)
 
                 # Update the global timestamp for the next video
                 self.global_timestamp += int(
