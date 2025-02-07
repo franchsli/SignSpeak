@@ -118,10 +118,7 @@ class VideoHandler(GestureHandler):
     def create_directories(self, path: str, signs: list[str], sequences) -> None:
         # Create directories for each action, sequence, and frame in the dataset
         for action, sequence in product(signs, range(sequences)):
-            try:
-                os.makedirs(os.path.join(path, action, str(sequence)))
-            except:
-                pass
+            os.makedirs(os.path.join(path, action, str(sequence)), exist_ok=True)
 
     def create_dataset(self, path:str) -> None:
         with mp.solutions.holistic.Holistic(
@@ -168,7 +165,13 @@ class VideoHandler(GestureHandler):
 
                     # Extract the landmarks from both hands and save them in arrays
                     keypoints:np.ndarray = self.keypoint_extraction(results)
-                    frame_path = os.path.join(path, self.get_label_name(video_file), str(frame_index), f"frame_{frame_index}.npy")
+                    frame_path = os.path.join(path, self.get_label_name(video_file), f"frame_{frame_index}.npy")
+                    save_dir = os.path.dirname(frame_path)
+                    os.makedirs(save_dir, exist_ok=True)
+                    print(f"Saving keypoints shape {keypoints.shape} to {frame_path}")
+                    if os.path.exists(frame_path):
+                        loaded = np.load(frame_path)
+                        print(f"Verified save: loaded shape {loaded.shape}")
                     np.save(frame_path, keypoints)
 
                     frame_index += 1
