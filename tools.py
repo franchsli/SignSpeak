@@ -166,11 +166,12 @@ class VideoHandler(GestureHandler):
                         self.stop()
                         break
 
-                    frame_index += 1
                     # Extract the landmarks from both hands and save them in arrays
                     keypoints:np.ndarray = self.keypoint_extraction(results)
-                    frame_path = os.path.join(path, self.get_label_name(video_file), frame_index)
+                    frame_path = os.path.join(path, self.get_label_name(video_file), str(frame_index), f"frame_{frame_index}.npy")
                     np.save(frame_path, keypoints)
+
+                    frame_index += 1
 
                 # Update the global timestamp for the next video
                 self.global_timestamp += int(
