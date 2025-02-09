@@ -194,18 +194,18 @@ class VideoHandler(GestureHandler):
         label_map = {label:num for num, label in enumerate(labels)}
 
         # Initialize empty lists to store landmarks and labels
-        landmarks = []
+        landmarks, labels_integers = [], []
 
         # Iterate over actions and sequences to load landmarks and corresponding labels
         for label in os.listdir(path):
             temp = []
-            for binary_file in os.listdir(label):
+            for binary_file in os.listdir(os.path.join(path, label)):
                 if binary_file.endswith('.npy'):
                     x = 0
                     npy = np.load(os.path.join(path, label, binary_file))
                     temp.append(npy)
             landmarks.append(temp)
-            labels.append(label_map[label])
+            labels_integers.append(label_map[label])
 
             """for action, sequence in product(actions, range(sequences)):
             temp = []
@@ -216,7 +216,7 @@ class VideoHandler(GestureHandler):
             labels.append(label_map[action])"""
 
         # Convert landmarks and labels to numpy arrays
-        X, Y = np.array(landmarks), to_categorical(labels).astype(int)
+        X, Y = np.array(landmarks), to_categorical(labels_integers).astype(int)
 
         # Split the data into training and testing sets
         X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.10, random_state=34, stratify=Y)
