@@ -5,7 +5,6 @@ from sklearn.model_selection import train_test_split
 from keras.utils import to_categorical
 from itertools import product
 from sklearn import metrics
-
 from keras.models import Sequential
 from keras.layers import LSTM, Dense
 

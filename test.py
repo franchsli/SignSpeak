@@ -13,8 +13,11 @@ video_folders_path = os.path.abspath("datasets/random_words/")
 video_folders = os.listdir(video_folders_path)
 VideoGesturesRecognizer = VideoHandler("gesture_model_path", video_folder)
 
-for video_folder in video_folders:
+"""for video_folder in video_folders:
     VideoGesturesRecognizer.video_folder = os.path.abspath(
         f"datasets/random_words/{video_folder}/"
     )
     VideoGesturesRecognizer.create_dataset(image_folder)
+"""
+x = os.path.dirname(video_folder)
+print(x)

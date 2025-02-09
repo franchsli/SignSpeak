@@ -3,7 +3,11 @@ import cv2 as cv
 import mediapipe as mp
 import numpy as np
 from dataclasses import dataclass
-from itertools import product
+from sklearn.model_selection import train_test_split
+from keras.utils import to_categorical
+from sklearn import metrics
+from keras.models import Sequential
+from keras.layers import LSTM, Dense
 
 
 @dataclass
@@ -182,8 +186,66 @@ class VideoHandler(GestureHandler):
                 )
                 cap.release()
 
-    def train(self) -> None:
-        pass
+    def train(self, path:str) -> None:
+        parent_folder = os.path.dirname(self.video_folder)
+        labels = os.listdir(parent_folder)
+        signs = np.array(labels)
+        # Create a label map to map each action label to a numeric value
+        label_map = {label:num for num, label in enumerate(labels)}
+
+        # Initialize empty lists to store landmarks and labels
+        landmarks = []
+
+        # Iterate over actions and sequences to load landmarks and corresponding labels
+        for label in os.listdir(path):
+            temp = []
+            for binary_file in os.listdir(label):
+                if binary_file.endswith('.npy'):
+                    x = 0
+                    npy = np.load(os.path.join(path, label, binary_file))
+                    temp.append(npy)
+            landmarks.append(temp)
+            labels.append(label_map[label])
+
+            """for action, sequence in product(actions, range(sequences)):
+            temp = []
+            for frame in range(frames):
+                npy = np.load(os.path.join(PATH, action, str(sequence), str(frame) + '.npy'))
+                temp.append(npy)
+            landmarks.append(temp)
+            labels.append(label_map[action])"""
+
+        # Convert landmarks and labels to numpy arrays
+        X, Y = np.array(landmarks), to_categorical(labels).astype(int)
+
+        # Split the data into training and testing sets
+        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.10, random_state=34, stratify=Y)
+
+        # Define the model architecture
+        model = Sequential()
+        model.add(LSTM(32, return_sequences=True, activation='relu', input_shape=(10,126)))
+        model.add(LSTM(64, return_sequences=True, activation='relu'))
+        model.add(LSTM(32, return_sequences=False, activation='relu'))
+        model.add(Dense(32, activation='relu'))
+        model.add(Dense(signs.shape[0], activation='softmax'))
+
+        # Compile the model with Adam optimizer and categorical cross-entropy loss
+        model.compile(optimizer='Adam', loss='categorical_crossentropy', metrics=['categorical_accuracy'])
+        # Train the model
+        model.fit(X_train, Y_train, epochs=100)
+
+        # Save the trained model
+        model.save('models')
+
+        # Make predictions on the test set
+        predictions = np.argmax(model.predict(X_test), axis=1)
+        # Get the true labels from the test set
+        test_labels = np.argmax(Y_test, axis=1)
+
+        # Calculate the accuracy of the predictions
+        accuracy = metrics.accuracy_score(test_labels, predictions)
+        print(accuracy)
+
 
     def run(self) -> None:
 
