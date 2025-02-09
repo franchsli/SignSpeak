@@ -119,10 +119,10 @@ class VideoHandler(GestureHandler):
     video_folder: str = None
     global_timestamp: int = 0
 
-    def create_directories(self, path: str, signs: list[str], sequences) -> None:
-        # Create directories for each action, sequence, and frame in the dataset
-        for action, sequence in product(signs, range(sequences)):
-            os.makedirs(os.path.join(path, action, str(sequence)), exist_ok=True)
+    def create_directories(self, path: str) -> None:
+        parent_folder = os.path.dirname(self.video_folder)
+        for label in os.listdir(parent_folder):
+            os.makedirs(os.path.join(path, label), exist_ok=True)
 
     def create_dataset(self, path:str) -> None:
         with mp.solutions.holistic.Holistic(
