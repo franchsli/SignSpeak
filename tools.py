@@ -207,14 +207,6 @@ class VideoHandler(GestureHandler):
             landmarks.append(temp)
             labels_integers.append(label_map[label])
 
-            """for action, sequence in product(actions, range(sequences)):
-            temp = []
-            for frame in range(frames):
-                npy = np.load(os.path.join(PATH, action, str(sequence), str(frame) + '.npy'))
-                temp.append(npy)
-            landmarks.append(temp)
-            labels.append(label_map[action])"""
-
         # Convert landmarks and labels to numpy arrays
         X, Y = np.array(landmarks), to_categorical(labels_integers).astype(int)
 
