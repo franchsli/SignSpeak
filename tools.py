@@ -201,7 +201,7 @@ class VideoHandler(GestureHandler):
             temp = []
             for binary_file in os.listdir(os.path.join(path, label)):
                 if binary_file.endswith('.npy'):
-                    x = 0
+                    x = os.listdir(path)
                     npy = np.load(os.path.join(path, label, binary_file))
                     temp.append(npy)
             landmarks.append(temp)

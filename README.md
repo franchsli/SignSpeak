@@ -5,6 +5,9 @@ A sign language translator.
 ## TODO
 
 - Fully implement data collection into VideoHandler.
+  - **FIX** directories creation, sometimes it creates folders
+  ignoring the _ character, this raises a keyerror while training
+  at line 208.
   - Implement create_directories() into create_dataset().
     and check if the directories have been created.
   - Ignore empty numpy files in train().
