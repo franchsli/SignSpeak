@@ -33,9 +33,10 @@ class GestureHandler:
         return label
 
     def needed_landmarks_present(self, results) -> bool:
-        return (results.pose_landmarks and results.left_hand_landmarks) or (
-            results.pose_landmarks and results.right_hand_landmarks
-        )
+        pose = results.pose_landmarks
+        left_hand = results.left_hand_landmarks
+        right_hand = results.right_hand_landmarks
+        return (pose and left_hand) or (pose and right_hand)
 
     def draw_landmarks(self, image, results):
         """
@@ -185,15 +186,17 @@ class VideoHandler(GestureHandler):
                     # Process image and get results
                     results, processed_image = self.image_process(frame, holistic)
 
+                    if not self.needed_landmarks_present(results):
+                        print(f"Not enough landmarks in {frame_index}, skipping...")
+                        frame_index += 1
+                        continue
+
                     # Draw landmarks and display
                     display_image = self.draw_landmarks(processed_image, results)
 
                     # Extract the landmarks from both hands and save them in arrays
                     keypoints: np.ndarray = self.keypoint_extraction(results)
-                    if np.all(keypoints == 0):
-                        print(f"No landmarks detected in {frame_index}, skipping...")
-                        frame_index += 1
-                        continue
+
                     frame_path = os.path.join(
                         path,
                         self.get_label_name(video_file),

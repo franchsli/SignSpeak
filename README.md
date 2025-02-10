@@ -5,12 +5,16 @@ A sign language translator.
 ## TODO
 
 - Fully implement data collection into VideoHandler.
-  - Ignore frames that only have pose landmarks.
+  - Resize the frame display with cv.resize() before showing it.
+  - Run test.py code.
 - Fully implement model training into VideoHandler.
 - Fully implement model testing into VideoHandler.
 - Use VideoHandler functionalities into WebCamHnadler.
+- Implement an ImageHandler (think about it).
 
 ***IMPORTANT***
+
+- Check why running test.py is so slow.
 
 [use this repo](https://github.com/dgovor/Sign-Language-Translator)
 
