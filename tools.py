@@ -131,10 +131,16 @@ class VideoHandler(GestureHandler):
     def create_directories(self, path: str) -> None:
         parent_folder = os.path.dirname(self.video_folder)
         for label in os.listdir(parent_folder):
-            x = os.path.join(path, label)
             os.makedirs(os.path.join(path, label), exist_ok=True)
+    
+    def directories_already_created(self, path) -> bool:
+        parent_folder = os.path.dirname(self.video_folder)
+        return len(os.listdir(path)) == len(os.listdir(parent_folder))
 
     def create_dataset(self, path: str) -> None:
+        if not self.directories_already_created(path):
+            self.create_directories(path)
+
         with mp.solutions.holistic.Holistic(
             min_detection_confidence=0.75, min_tracking_confidence=0.75
         ) as holistic:
