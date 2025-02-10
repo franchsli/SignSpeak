@@ -132,7 +132,7 @@ class VideoHandler(GestureHandler):
         parent_folder = os.path.dirname(self.video_folder)
         for label in os.listdir(parent_folder):
             os.makedirs(os.path.join(path, label), exist_ok=True)
-    
+
     def directories_already_created(self, path) -> bool:
         parent_folder = os.path.dirname(self.video_folder)
         return len(os.listdir(path)) == len(os.listdir(parent_folder))
@@ -177,14 +177,12 @@ class VideoHandler(GestureHandler):
                     # Draw landmarks and display
                     display_image = self.draw_landmarks(processed_image, results)
 
-                    cv.imshow("Video", display_image)
-
-                    if cv.waitKey(1) & 0xFF == ord("q"):
-                        self.stop()
-                        break
-
                     # Extract the landmarks from both hands and save them in arrays
                     keypoints: np.ndarray = self.keypoint_extraction(results)
+                    if not np.any(keypoints):
+                        print(f"No landmarks detected in {frame_index}, skipping...")
+                        frame_index += 1
+                        continue
                     frame_path = os.path.join(
                         path,
                         self.get_label_name(video_file),
@@ -199,6 +197,12 @@ class VideoHandler(GestureHandler):
                     np.save(frame_path, keypoints)
 
                     frame_index += 1
+
+                    cv.imshow("Video", display_image)
+
+                    if cv.waitKey(1) & 0xFF == ord("q"):
+                        self.stop()
+                        break
 
                 # Update the global timestamp for the next video
                 self.global_timestamp += int(
