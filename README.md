@@ -5,6 +5,7 @@ A sign language translator.
 ## TODO
 
 - Fully implement data collection into VideoHandler.
+  - Ignore frames that only have pose landmarks.
 - Fully implement model training into VideoHandler.
 - Fully implement model testing into VideoHandler.
 - Use VideoHandler functionalities into WebCamHnadler.
