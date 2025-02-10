@@ -46,6 +46,14 @@ class GestureHandler:
         # Make a copy of the image to ensure it's writable
         image = image.copy()
 
+            # Draw pose landmarks
+        if results.pose_landmarks:
+            mp.solutions.drawing_utils.draw_landmarks(
+                image, 
+                results.pose_landmarks, 
+                mp.solutions.holistic.POSE_CONNECTIONS
+            )
+
         # Draw landmarks for left hand if present
         if results.left_hand_landmarks:
             mp.solutions.drawing_utils.draw_landmarks(
@@ -179,7 +187,7 @@ class VideoHandler(GestureHandler):
 
                     # Extract the landmarks from both hands and save them in arrays
                     keypoints: np.ndarray = self.keypoint_extraction(results)
-                    if not np.any(keypoints):
+                    if np.all(keypoints == 0):
                         print(f"No landmarks detected in {frame_index}, skipping...")
                         frame_index += 1
                         continue

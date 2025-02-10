@@ -5,7 +5,6 @@ A sign language translator.
 ## TODO
 
 - Fully implement data collection into VideoHandler.
-  - Ignore empty numpy files in train().
 - Fully implement model training into VideoHandler.
 - Fully implement model testing into VideoHandler.
 - Use VideoHandler functionalities into WebCamHnadler.
