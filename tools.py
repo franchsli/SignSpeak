@@ -14,12 +14,21 @@ from keras.layers import LSTM, Dense
 class GestureHandler:
     model_path: str = None
 
-    def get_label_name(self, file_name:str) -> str:
-        label = ''
+    def get_file_index(self, file_name: str) -> str:
+        index = ""
         for character in file_name:
-            if character == '.':
+            if character == ".":
                 break
-            elif character.isalpha():
+            elif character.isnumeric():
+                index += character
+        return index
+
+    def get_label_name(self, file_name: str) -> str:
+        label = ""
+        for character in file_name:
+            if character == ".":
+                break
+            elif character.isalpha() or character == "_":
                 label += character
         return label
 
@@ -122,9 +131,10 @@ class VideoHandler(GestureHandler):
     def create_directories(self, path: str) -> None:
         parent_folder = os.path.dirname(self.video_folder)
         for label in os.listdir(parent_folder):
+            x = os.path.join(path, label)
             os.makedirs(os.path.join(path, label), exist_ok=True)
 
-    def create_dataset(self, path:str) -> None:
+    def create_dataset(self, path: str) -> None:
         with mp.solutions.holistic.Holistic(
             min_detection_confidence=0.75, min_tracking_confidence=0.75
         ) as holistic:
@@ -168,8 +178,12 @@ class VideoHandler(GestureHandler):
                         break
 
                     # Extract the landmarks from both hands and save them in arrays
-                    keypoints:np.ndarray = self.keypoint_extraction(results)
-                    frame_path = os.path.join(path, self.get_label_name(video_file), f"frame_{frame_index}.npy")
+                    keypoints: np.ndarray = self.keypoint_extraction(results)
+                    frame_path = os.path.join(
+                        path,
+                        self.get_label_name(video_file),
+                        f"{self.get_file_index(video_file)}_frame_{frame_index}.npy",
+                    )
                     save_dir = os.path.dirname(frame_path)
                     os.makedirs(save_dir, exist_ok=True)
                     print(f"Saving keypoints shape {keypoints.shape} to {frame_path}")
@@ -186,12 +200,12 @@ class VideoHandler(GestureHandler):
                 )
                 cap.release()
 
-    def train(self, path:str) -> None:
+    def train(self, path: str) -> None:
         parent_folder = os.path.dirname(self.video_folder)
         labels = os.listdir(parent_folder)
         signs = np.array(labels)
         # Create a label map to map each action label to a numeric value
-        label_map = {label:num for num, label in enumerate(labels)}
+        label_map = {label: num for num, label in enumerate(labels)}
 
         # Initialize empty lists to store landmarks and labels
         landmarks, labels_integers = [], []
@@ -200,7 +214,7 @@ class VideoHandler(GestureHandler):
         for label in os.listdir(path):
             temp = []
             for binary_file in os.listdir(os.path.join(path, label)):
-                if binary_file.endswith('.npy'):
+                if binary_file.endswith(".npy"):
                     x = os.listdir(path)
                     npy = np.load(os.path.join(path, label, binary_file))
                     temp.append(npy)
@@ -211,23 +225,31 @@ class VideoHandler(GestureHandler):
         X, Y = np.array(landmarks), to_categorical(labels_integers).astype(int)
 
         # Split the data into training and testing sets
-        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.10, random_state=34, stratify=Y)
+        X_train, X_test, Y_train, Y_test = train_test_split(
+            X, Y, test_size=0.10, random_state=34, stratify=Y
+        )
 
         # Define the model architecture
         model = Sequential()
-        model.add(LSTM(32, return_sequences=True, activation='relu', input_shape=(10,126)))
-        model.add(LSTM(64, return_sequences=True, activation='relu'))
-        model.add(LSTM(32, return_sequences=False, activation='relu'))
-        model.add(Dense(32, activation='relu'))
-        model.add(Dense(signs.shape[0], activation='softmax'))
+        model.add(
+            LSTM(32, return_sequences=True, activation="relu", input_shape=(10, 126))
+        )
+        model.add(LSTM(64, return_sequences=True, activation="relu"))
+        model.add(LSTM(32, return_sequences=False, activation="relu"))
+        model.add(Dense(32, activation="relu"))
+        model.add(Dense(signs.shape[0], activation="softmax"))
 
         # Compile the model with Adam optimizer and categorical cross-entropy loss
-        model.compile(optimizer='Adam', loss='categorical_crossentropy', metrics=['categorical_accuracy'])
+        model.compile(
+            optimizer="Adam",
+            loss="categorical_crossentropy",
+            metrics=["categorical_accuracy"],
+        )
         # Train the model
         model.fit(X_train, Y_train, epochs=100)
 
         # Save the trained model
-        model.save('models')
+        model.save("models")
 
         # Make predictions on the test set
         predictions = np.argmax(model.predict(X_test), axis=1)
@@ -237,7 +259,6 @@ class VideoHandler(GestureHandler):
         # Calculate the accuracy of the predictions
         accuracy = metrics.accuracy_score(test_labels, predictions)
         print(accuracy)
-
 
     def run(self) -> None:
 
