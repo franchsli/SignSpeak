@@ -32,6 +32,11 @@ class GestureHandler:
                 label += character
         return label
 
+    def needed_landmarks_present(self, results) -> bool:
+        return (results.pose_landmarks and results.left_hand_landmarks) or (
+            results.pose_landmarks and results.right_hand_landmarks
+        )
+
     def draw_landmarks(self, image, results):
         """
         Draw the landmarks on the image.
@@ -46,12 +51,10 @@ class GestureHandler:
         # Make a copy of the image to ensure it's writable
         image = image.copy()
 
-            # Draw pose landmarks
+        # Draw pose landmarks
         if results.pose_landmarks:
             mp.solutions.drawing_utils.draw_landmarks(
-                image, 
-                results.pose_landmarks, 
-                mp.solutions.holistic.POSE_CONNECTIONS
+                image, results.pose_landmarks, mp.solutions.holistic.POSE_CONNECTIONS
             )
 
         # Draw landmarks for left hand if present
