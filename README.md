@@ -5,7 +5,6 @@ A sign language translator.
 ## TODO
 
 - Fully implement data collection into VideoHandler.
-  - Resize the frame display with cv.resize() before showing it.
   - Run test.py code.
 - Fully implement model training into VideoHandler.
 - Fully implement model testing into VideoHandler.

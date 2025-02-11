@@ -212,7 +212,8 @@ class VideoHandler(GestureHandler):
 
                     frame_index += 1
 
-                    cv.imshow("Video", display_image)
+                    resized_frame = cv.resize(frame, (960, 540))
+                    cv.imshow("Video", resized_frame)
 
                     if cv.waitKey(1) & 0xFF == ord("q"):
                         self.stop()
@@ -301,6 +302,7 @@ class VideoHandler(GestureHandler):
                 success, frame = cap.read()
                 if not success:
                     break
+                #resized = cv.resize(frame, (960, 540))
                 cv.imshow("Video", frame)
                 if cv.waitKey(1) & 0xFF == ord("q"):
                     self.stop()
