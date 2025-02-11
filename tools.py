@@ -302,7 +302,7 @@ class VideoHandler(GestureHandler):
                 success, frame = cap.read()
                 if not success:
                     break
-                #resized = cv.resize(frame, (960, 540))
+                # resized = cv.resize(frame, (960, 540))
                 cv.imshow("Video", frame)
                 if cv.waitKey(1) & 0xFF == ord("q"):
                     self.stop()
