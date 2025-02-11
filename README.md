@@ -4,8 +4,7 @@ A sign language translator.
 
 ## TODO
 
-- Fully implement data collection into VideoHandler.
-  - Run test.py code.
+- Document all the implemented functions so far.
 - Fully implement model training into VideoHandler.
 - Fully implement model testing into VideoHandler.
 - Use VideoHandler functionalities into WebCamHnadler.
@@ -13,7 +12,7 @@ A sign language translator.
 
 ***IMPORTANT***
 
-- Check why running test.py is so slow.
+- Check why running test.py takes so much time to start running.
 
 [use this repo](https://github.com/dgovor/Sign-Language-Translator)
 
