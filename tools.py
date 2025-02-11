@@ -212,7 +212,7 @@ class VideoHandler(GestureHandler):
 
                     frame_index += 1
 
-                    resized_frame = cv.resize(frame, (960, 540))
+                    resized_frame = cv.resize(display_image, (960, 540))
                     cv.imshow("Video", resized_frame)
 
                     if cv.waitKey(1) & 0xFF == ord("q"):
