@@ -2,16 +2,19 @@ import os
 import cv2 as cv
 import mediapipe as mp
 import numpy as np
+from mediapipe.python.solutions.holistic import Holistic
 from dataclasses import dataclass
-from sklearn.model_selection import train_test_split
 from keras.utils import to_categorical
-from sklearn import metrics
 from keras.models import Sequential
 from keras.layers import LSTM, Dense
+from sklearn import metrics
+from sklearn.model_selection import train_test_split
 
 
 @dataclass
 class GestureHandler:
+    """The Base Class for Sign Language detection"""
+
     model_path: str = None
 
     def get_file_index(self, file_name: str) -> str:
@@ -33,12 +36,22 @@ class GestureHandler:
         return label
 
     def needed_landmarks_present(self, results) -> bool:
+        """Returns True if the pose landmarks
+        and at least one hand's landmarks are present,
+        False otherwise.
+
+        Args:
+            results
+
+        Returns:
+            bool: If a pose and at least a hand are present.
+        """
         pose = results.pose_landmarks
         left_hand = results.left_hand_landmarks
         right_hand = results.right_hand_landmarks
         return (pose and left_hand) or (pose and right_hand)
 
-    def draw_landmarks(self, image, results):
+    def draw_landmarks(self, image: np.ndarray, results) -> np.ndarray:
         """
         Draw the landmarks on the image.
 
@@ -76,7 +89,7 @@ class GestureHandler:
 
         return image
 
-    def image_process(self, image, model):
+    def image_process(self, image: np.ndarray, model):
         """
         Process the image and obtain sign landmarks.
 
@@ -105,7 +118,7 @@ class GestureHandler:
 
         return results, processed_image
 
-    def keypoint_extraction(self, results):
+    def keypoint_extraction(self, results) -> np.ndarray:
         """
         Extract the keypoints from the sign landmarks.
 
@@ -116,7 +129,7 @@ class GestureHandler:
             numpy.ndarray: The extracted keypoints.
         """
         # Extract the keypoints for the left hand if present, otherwise set to zeros
-        lh = (
+        left_hand = (
             np.array(
                 [[res.x, res.y, res.z] for res in results.left_hand_landmarks.landmark]
             ).flatten()
@@ -124,7 +137,7 @@ class GestureHandler:
             else np.zeros(63)
         )
         # Extract the keypoints for the right hand if present, otherwise set to zeros
-        rh = (
+        right_hand = (
             np.array(
                 [[res.x, res.y, res.z] for res in results.right_hand_landmarks.landmark]
             ).flatten()
@@ -132,7 +145,7 @@ class GestureHandler:
             else np.zeros(63)
         )
         # Concatenate the keypoints for both hands
-        return np.concatenate([lh, rh])
+        return np.concatenate([left_hand, right_hand])
 
 
 @dataclass
@@ -153,7 +166,7 @@ class VideoHandler(GestureHandler):
         if not self.directories_already_created(path):
             self.create_directories(path)
 
-        with mp.solutions.holistic.Holistic(
+        with Holistic(
             min_detection_confidence=0.75, min_tracking_confidence=0.75
         ) as holistic:
             for video_file in os.listdir(self.video_folder):
@@ -240,7 +253,6 @@ class VideoHandler(GestureHandler):
             temp = []
             for binary_file in os.listdir(os.path.join(path, label)):
                 if binary_file.endswith(".npy"):
-                    x = os.listdir(path)
                     npy = np.load(os.path.join(path, label, binary_file))
                     temp.append(npy)
             landmarks.append(temp)
