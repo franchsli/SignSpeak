@@ -13,7 +13,7 @@ from sklearn.model_selection import train_test_split
 
 @dataclass
 class GestureHandler:
-    """The Base Class for Sign Language detection"""
+    """The Base Class for Sign Language detection."""
 
     model_path: str = None
 
@@ -150,6 +150,7 @@ class GestureHandler:
 
 @dataclass
 class VideoHandler(GestureHandler):
+    """Video Sign Language detector."""
     video_folder: str = None
     global_timestamp: int = 0
 
@@ -192,10 +193,6 @@ class VideoHandler(GestureHandler):
 
                     print("PROCESSING FRAME:", frame_index)
 
-                    # rgb_frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
-                    # mp_image = mp.Image(image_format=mp.ImageFormat.SRGB, data=rgb_frame)
-                    # Ensure global timestamp is used
-                    # timestamp_ms = int(self.global_timestamp + (frame_index * 1000 / fps))
                     # Process image and get results
                     results, processed_image = self.image_process(frame, holistic)
 
