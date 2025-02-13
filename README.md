@@ -4,15 +4,14 @@ A sign language translator.
 
 ## TODO
 
-- Document all the implemented functions so far.
+***IMPORTANT***
+
+- Check why running test.py takes so much time to start running (Check Claude chat).
+
 - Fully implement model training into VideoHandler.
 - Fully implement model testing into VideoHandler.
 - Use VideoHandler functionalities into WebCamHnadler.
 - Implement an ImageHandler (think about it).
-
-***IMPORTANT***
-
-- Check why running test.py takes so much time to start running.
 
 [use this repo](https://github.com/dgovor/Sign-Language-Translator)
 
