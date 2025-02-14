@@ -151,6 +151,7 @@ class GestureHandler:
 @dataclass
 class VideoHandler(GestureHandler):
     """Video Sign Language detector."""
+
     video_folder: str = None
     global_timestamp: int = 0
 
