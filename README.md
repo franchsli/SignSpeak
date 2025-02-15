@@ -7,11 +7,8 @@ A sign language translator.
 ***IMPORTANT***
 
 - Check why running test.py takes so much time to start running (Check Claude chat).
-
-- Fully implement model training into VideoHandler.
-  - Normalize the number of frames per label
-    train it correctly (check Claude chat).
 - Fully implement model testing into VideoHandler.
+  - Try to run and understan main.py file (backup/code/ folder)
 - Use VideoHandler functionalities into WebCamHnadler.
 - Implement an ImageHandler (think about it).
 
