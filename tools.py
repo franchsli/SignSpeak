@@ -236,7 +236,7 @@ class VideoHandler(GestureHandler):
                 )
                 cap.release()
 
-    def train(self, path: str) -> None:
+    def train(self, path: str, frames_per_label: int = 232) -> None:
         parent_folder = os.path.dirname(self.video_folder)
         labels = os.listdir(parent_folder)
         signs = np.array(labels)
@@ -249,10 +249,12 @@ class VideoHandler(GestureHandler):
         # Iterate over actions and sequences to load landmarks and corresponding labels
         for label in os.listdir(path):
             temp = []
+            frame_counter = 0
             for binary_file in os.listdir(os.path.join(path, label)):
-                if binary_file.endswith(".npy"):
+                if binary_file.endswith(".npy") and frame_counter < frames_per_label:
                     npy = np.load(os.path.join(path, label, binary_file))
                     temp.append(npy)
+                    frame_counter += 1
             landmarks.append(temp)
             labels_integers.append(label_map[label])
 
@@ -261,7 +263,7 @@ class VideoHandler(GestureHandler):
 
         # Split the data into training and testing sets
         X_train, X_test, Y_train, Y_test = train_test_split(
-            X, Y, test_size=0.10, random_state=34, stratify=Y
+            X, Y, test_size=0.10, random_state=34
         )
 
         # Define the model architecture
