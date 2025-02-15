@@ -236,7 +236,7 @@ class VideoHandler(GestureHandler):
                 )
                 cap.release()
 
-    def train(self, path: str, frames_per_label: int = 232) -> None:
+    def train(self, path: str) -> None:
         parent_folder = os.path.dirname(self.video_folder)
         labels = os.listdir(parent_folder)
         signs = np.array(labels)
@@ -246,17 +246,21 @@ class VideoHandler(GestureHandler):
         # Initialize empty lists to store landmarks and labels
         landmarks, labels_integers = [], []
 
-        # Iterate over actions and sequences to load landmarks and corresponding labels
+        SEQUENCE_LENGTH = 10  # Must match model's expected input
+
         for label in os.listdir(path):
             temp = []
-            frame_counter = 0
+            sequence = []
             for binary_file in os.listdir(os.path.join(path, label)):
-                if binary_file.endswith(".npy") and frame_counter < frames_per_label:
+                if binary_file.endswith(".npy"):
                     npy = np.load(os.path.join(path, label, binary_file))
-                    temp.append(npy)
-                    frame_counter += 1
-            landmarks.append(temp)
-            labels_integers.append(label_map[label])
+                    sequence.append(npy)
+                    if len(sequence) == SEQUENCE_LENGTH:
+                        temp.append(sequence)
+                        sequence = []
+            if temp:  # Only add if we have complete sequences
+                landmarks.extend(temp)
+                labels_integers.extend([label_map[label]] * len(temp))
 
         # Convert landmarks and labels to numpy arrays
         X, Y = np.array(landmarks), to_categorical(labels_integers).astype(int)
@@ -269,7 +273,7 @@ class VideoHandler(GestureHandler):
         # Define the model architecture
         model = Sequential()
         model.add(
-            LSTM(32, return_sequences=True, activation="relu", input_shape=(10, 126))
+            LSTM(32, return_sequences=True, activation="relu", input_shape=(SEQUENCE_LENGTH, 126))
         )
         model.add(LSTM(64, return_sequences=True, activation="relu"))
         model.add(LSTM(32, return_sequences=False, activation="relu"))
