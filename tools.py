@@ -290,7 +290,7 @@ class VideoHandler(GestureHandler):
         model.fit(X_train, Y_train, epochs=100)
 
         # Save the trained model
-        model.save("models")
+        model.save("models/model.keras")
 
         # Make predictions on the test set
         predictions = np.argmax(model.predict(X_test), axis=1)
