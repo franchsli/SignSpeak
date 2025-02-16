@@ -1,0 +1,105 @@
+"""File to test GestureHandler function without initializing
+the class and importing tools.py because it is too slow"""
+import mediapipe as mp
+import cv2 as cv
+import numpy as np
+
+
+def needed_landmarks_present(results) -> bool:
+    """Returns True if the pose landmarks
+    and at least one hand's landmarks are present,
+    False otherwise.
+    Args:
+        results
+    Returns:
+        bool: If a pose and at least a hand are present.
+    """
+    pose = results.pose_landmarks
+    left_hand = results.left_hand_landmarks
+    right_hand = results.right_hand_landmarks
+    return (pose and left_hand) or (pose and right_hand)
+
+
+def draw_landmarks(image: np.ndarray, results) -> np.ndarray:
+    """
+    Draw the landmarks on the image.
+    Args:
+        image (numpy.ndarray): The input image.
+        results: The landmarks detected by Mediapipe.
+    Returns:
+        numpy.ndarray: The image with drawn landmarks
+    """
+    # Make a copy of the image to ensure it's writable
+    image = image.copy()
+    # Draw pose landmarks
+    if results.pose_landmarks:
+        mp.solutions.drawing_utils.draw_landmarks(
+            image, results.pose_landmarks, mp.solutions.holistic.POSE_CONNECTIONS
+        )
+    # Draw landmarks for left hand if present
+    if results.left_hand_landmarks:
+        mp.solutions.drawing_utils.draw_landmarks(
+            image,
+            results.left_hand_landmarks,
+            mp.solutions.holistic.HAND_CONNECTIONS,
+        )
+    # Draw landmarks for right hand if present
+    if results.right_hand_landmarks:
+        mp.solutions.drawing_utils.draw_landmarks(
+            image,
+            results.right_hand_landmarks,
+            mp.solutions.holistic.HAND_CONNECTIONS,
+        )
+    return image
+
+
+def image_process(image: np.ndarray, model):
+    """
+    Process the image and obtain sign landmarks.
+    Args:
+        image (numpy.ndarray): The input image.
+        model: The Mediapipe holistic object.
+    Returns:
+        tuple: (results, processed_image) where results contains the landmarks
+        and processed_image is the BGR image
+    """
+    # Make a copy to avoid modifying the original
+    image = image.copy()
+    # Convert the image from BGR to RGB
+    image_rgb = cv.cvtColor(image, cv.COLOR_BGR2RGB)
+    # Process the image using the model
+    # MediaPipe works better with read-only images
+    image_rgb.flags.writeable = False
+    results = model.process(image_rgb)
+    image_rgb.flags.writeable = True
+    # Convert back to BGR for OpenCV operations
+    processed_image = cv.cvtColor(image_rgb, cv.COLOR_RGB2BGR)
+    return results, processed_image
+
+
+def keypoint_extraction(results) -> np.ndarray:
+    """
+    Extract the keypoints from the sign landmarks.
+    Args:
+        results: The processed results containing sign landmarks.
+    Returns:
+        numpy.ndarray: The extracted keypoints.
+    """
+    # Extract the keypoints for the left hand if present, otherwise set to zeros
+    left_hand = (
+        np.array(
+            [[res.x, res.y, res.z] for res in results.left_hand_landmarks.landmark]
+        ).flatten()
+        if results.left_hand_landmarks
+        else np.zeros(63)
+    )
+    # Extract the keypoints for the right hand if present, otherwise set to zeros
+    right_hand = (
+        np.array(
+            [[res.x, res.y, res.z] for res in results.right_hand_landmarks.landmark]
+        ).flatten()
+        if results.right_hand_landmarks
+        else np.zeros(63)
+    )
+    # Concatenate the keypoints for both hands
+    return np.concatenate([left_hand, right_hand])
