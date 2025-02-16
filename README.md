@@ -8,9 +8,11 @@ A sign language translator.
 
 - Check why running test.py takes so much time to start running (Check Claude chat).
 - Fully implement model testing into VideoHandler.
-  - Try to run and understan main.py file (backup/code/ folder)
+  - Try to run and understan main.py file.
+  - Speed up main.py execution time.
 - Use VideoHandler functionalities into WebCamHnadler.
 - Implement an ImageHandler (think about it).
+- Collect more data (sentences and letters) to train the VideoHandler with.
 
 [use this repo](https://github.com/dgovor/Sign-Language-Translator)
 
