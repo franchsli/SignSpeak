@@ -273,7 +273,12 @@ class VideoHandler(GestureHandler):
         # Define the model architecture
         model = Sequential()
         model.add(
-            LSTM(32, return_sequences=True, activation="relu", input_shape=(SEQUENCE_LENGTH, 126))
+            LSTM(
+                32,
+                return_sequences=True,
+                activation="relu",
+                input_shape=(SEQUENCE_LENGTH, 126),
+            )
         )
         model.add(LSTM(64, return_sequences=True, activation="relu"))
         model.add(LSTM(32, return_sequences=False, activation="relu"))
@@ -318,8 +323,12 @@ class VideoHandler(GestureHandler):
                 success, frame = cap.read()
                 if not success:
                     break
-                # resized = cv.resize(frame, (960, 540))
-                cv.imshow("Video", frame)
+                # Process image and get results
+                # results, processed_image = self.image_process(frame, holistic)
+
+                # edited_frame = self.draw_landmarks(frame)
+                resized = cv.resize(frame, (960, 540))
+                cv.imshow("Video", resized)
                 if cv.waitKey(1) & 0xFF == ord("q"):
                     self.stop()
                     break
