@@ -6,8 +6,8 @@ import mediapipe as mp
 import cv2
 from my_functions import *
 import keyboard
-from keras.models import load_model
-import language_tool_python
+from keras.models import load_model, Model
+from language_tool_python import LanguageToolPublicAPI
 
 # Set the path to the data directory
 PATH = os.path.abspath('data')
@@ -16,10 +16,10 @@ PATH = os.path.abspath('data')
 actions = np.array(os.listdir(PATH))
 
 # Load the trained model
-model = load_model('models/model.keras')
+model: Model = load_model('models/model.keras')
 
 # Create an instance of the grammar correction tool
-tool = language_tool_python.LanguageToolPublicAPI('es')
+tool = LanguageToolPublicAPI('es')
 
 # Initialize the lists
 sentence, keypoints, last_prediction, grammar, grammar_result = [], [], [], [], []
@@ -37,13 +37,13 @@ with mp.solutions.holistic.Holistic(min_detection_confidence=0.75, min_tracking_
     while cap.isOpened():
         # Read a frame from the camera
         _, image = cap.read()
+        resized_frame = cv.resize(image, (960, 540))
         # Process the image and obtain sign landmarks using image_process function from my_functions.py
-        results, processed_image = image_process(image, holistic)
+        results, processed_image = image_process(resized_frame, holistic)
         # Draw the sign landmarks on the image using draw_landmarks function from my_functions.py
         frame_with_landmarks = draw_landmarks(processed_image, results)
         # Extract keypoints from the pose landmarks using keypoint_extraction function from my_functions.py
         keypoints.append(keypoint_extraction(results))
-        resized_frame = cv.resize(frame_with_landmarks, (960, 540))
 
         # Check if 10 frames have been accumulated
         if len(keypoints) == 10:
@@ -98,22 +98,22 @@ with mp.solutions.holistic.Holistic(min_detection_confidence=0.75, min_tracking_
         if grammar_result:
             # Calculate the size of the text to be displayed and the X coordinate for centering the text on the image
             textsize = cv2.getTextSize(grammar_result, cv2.FONT_HERSHEY_SIMPLEX, 1, 2)[0]
-            text_X_coord = (resized_frame.shape[1] - textsize[0]) // 2
+            text_X_coord = (frame_with_landmarks.shape[1] - textsize[0]) // 2
 
-            # Draw the sentence on the resized_frame
-            cv2.putText(resized_frame, grammar_result, (text_X_coord, 470),
+            # Draw the sentence on the frame_with_landmarks
+            cv2.putText(frame_with_landmarks, grammar_result, (text_X_coord, 470),
                         cv2.FONT_HERSHEY_SIMPLEX, 1, (210, 4, 45), 2, cv2.LINE_AA)
         else:
-            # Calculate the size of the text to be displayed and the X coordinate for centering the text on the resized_frame
+            # Calculate the size of the text to be displayed and the X coordinate for centering the text on the frame_with_landmarks
             textsize = cv2.getTextSize(' '.join(sentence), cv2.FONT_HERSHEY_SIMPLEX, 1, 2)[0]
-            text_X_coord = (resized_frame.shape[1] - textsize[0]) // 2
+            text_X_coord = (frame_with_landmarks.shape[1] - textsize[0]) // 2
 
-            # Draw the sentence on the resized_frame
-            cv2.putText(resized_frame, ' '.join(sentence), (text_X_coord, 470),
+            # Draw the sentence on the frame_with_landmarks
+            cv2.putText(frame_with_landmarks, ' '.join(sentence), (text_X_coord, 470),
                         cv2.FONT_HERSHEY_SIMPLEX, 1, (210, 4, 45), 2, cv2.LINE_AA)
 
         # Show the image on the display
-        cv2.imshow('Camera', resized_frame)
+        cv2.imshow('Camera', frame_with_landmarks)
 
         cv2.waitKey(1)
 
