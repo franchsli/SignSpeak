@@ -6,11 +6,11 @@ A sign language translator.
 
 ***IMPORTANT***
 
-- Check why running test.py takes so much time to start running (Check Claude chat).
+- Check why running test.py takes so much time to start running (Ask Claude).
 - Fully implement model testing into VideoHandler.
   - Try to run and understand main.py file.
   - Add needed_landmarks_present method to model testing.
-  - Speed up main.py execution time (Check Claude chat).
+  - Speed up main.py execution time (Ask Claude).
   - Implement something to check if the last_prediction is a
 - Use VideoHandler functionalities into WebCamHandler.
 - Implement an ImageHandler (think about it).
