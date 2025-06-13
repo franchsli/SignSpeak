@@ -5,6 +5,22 @@ A sign language translator.
 ## TODO
 
 ***IMPORTANT***
+**Read Claude Chat and rework:**
+
+- File Organization.
+- Model Training Logic (tools.py).
+  - Fix with sliding window.
+- Real-time Prediction Issues (main.py).
+  - Grammar correction runs every frame (expensive).
+  - Confidence threshold (0.9) might be too high.
+  - Letter combination logic is complex.
+- Resource Management.
+- Architecture (classes).
+
+### Low priority
+
+After completing the to-do list, check which one of the tasks in this list
+stills needs a fix.
 
 - Check why running test.py takes so much time to start running (Ask Claude).
 - Fully implement model testing into VideoHandler.
