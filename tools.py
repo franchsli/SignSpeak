@@ -239,35 +239,39 @@ class VideoHandler(GestureHandler):
                     cap.get(cv.CAP_PROP_FRAME_COUNT) * 1000 / fps
                 )
                 cap.release()
+    
+    def create_sequences(self, path: str, labels: list[str], sequence_length: int):
+        landmarks, labels_integers = [], []
+        # Create a label map to map each action label to a numeric value
+        label_map = {label: num for num, label in enumerate(labels)}
+        
+        for label in os.listdir(path):
+            # Sort files to maintain temporal order
+            files = sorted([f for f in os.listdir(os.path.join(path, label)) if f.endswith('.npy')])
+            
+            all_frames = []
+            for file in files:
+                frame_data = np.load(os.path.join(path, label, file))
+                all_frames.append(frame_data)
+            
+            # Create sliding window sequences
+            for i in range(len(all_frames) - sequence_length + 1):
+                sequence = all_frames[i:i + sequence_length]
+                landmarks.append(sequence)
+                labels_integers.append(label_map[label])
+        
+        return np.array(landmarks), to_categorical(labels_integers).astype(int)
 
     def train(self, path: str) -> None:
         parent_folder = os.path.dirname(self.video_folder)
         labels = os.listdir(parent_folder)
         signs = np.array(labels)
-        # Create a label map to map each action label to a numeric value
-        label_map = {label: num for num, label in enumerate(labels)}
-
-        # Initialize empty lists to store landmarks and labels
-        landmarks, labels_integers = [], []
-
         SEQUENCE_LENGTH = 10  # Must match model's expected input
 
-        for label in os.listdir(path):
-            temp = []
-            sequence = []
-            for binary_file in os.listdir(os.path.join(path, label)):
-                if binary_file.endswith(".npy"):
-                    npy = np.load(os.path.join(path, label, binary_file))
-                    sequence.append(npy)
-                    if len(sequence) == SEQUENCE_LENGTH:
-                        temp.append(sequence)
-                        sequence = []
-            if temp:  # Only add if we have complete sequences
-                landmarks.extend(temp)
-                labels_integers.extend([label_map[label]] * len(temp))
+        landmarks, labels_integers = self.create_sequences(path, labels, SEQUENCE_LENGTH)
 
         # Convert landmarks and labels to numpy arrays
-        X, Y = np.array(landmarks), to_categorical(labels_integers).astype(int)
+        X, Y = landmarks, labels_integers
 
         # Split the data into training and testing sets
         X_train, X_test, Y_train, Y_test = train_test_split(
