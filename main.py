@@ -33,7 +33,6 @@ except RateLimitError:
 # Initialize the lists
 sentence, keypoints, last_prediction, grammar, grammar_result = [], [], [], [], []
 prediction_history = []
-previous_sentence_length = 0
 previous_sentence = []
 
 # Access the camera and check if the camera is opened successfully
@@ -69,8 +68,13 @@ with mp.solutions.holistic.Holistic(min_detection_confidence=0.75, min_tracking_
 
                 # Only run grammar correction when sentence changes
                 if len(sentence) > len(previous_sentence):
-                    grammar_result = tool.correct(' '.join(sentence))
+                    if tool:
+                        grammar_result = tool.correct(' '.join(sentence))
+                    else:
+                        grammar_result = None
                     previous_sentence = sentence.copy()
+                    print(sentence)
+                    print(grammar_result if grammar_result else None)
 
                 # Check if the maximum prediction value is above 0.7
                 if np.amax(prediction) > 0.7:
@@ -110,17 +114,6 @@ with mp.solutions.holistic.Holistic(min_detection_confidence=0.75, min_tracking_
                         sentence[-1] = sentence[-2] + sentence[-1]
                         sentence.pop(len(sentence) - 2)
                         sentence[-1] = sentence[-1].capitalize()
-
-
-            if len(sentence) > previous_sentence_length:
-                if tool:
-                    grammar_result = tool.correct(' '.join(sentence))
-                else:
-                    grammar_result = None
-                previous_sentence_length = len(sentence)
-                previous_sentence = sentence 
-                print(sentence)
-                print(grammar_result if grammar_result else None)
 
             if grammar_result:
                 # Calculate the size of the text to be displayed and the X coordinate for centering the text on the image
