@@ -23,6 +23,9 @@ tool = LanguageToolPublicAPI('es')
 
 # Initialize the lists
 sentence, keypoints, last_prediction, grammar, grammar_result = [], [], [], [], []
+prediction_history = []
+previous_sentence_length = 0
+previous_sentence = []
 
 # Access the camera and check if the camera is opened successfully
 # cap = cv2.VideoCapture(0)
@@ -54,14 +57,25 @@ with mp.solutions.holistic.Holistic(min_detection_confidence=0.75, min_tracking_
             # Clear the keypoints list for the next set of frames
             keypoints = []
 
-            # Check if the maximum prediction value is above 0.9
-            if np.amax(prediction) > 0.9:
-                # Check if the predicted sign is different from the previously predicted sign
-                if last_prediction != actions[np.argmax(prediction)]:
-                    # Append the predicted sign to the sentence list
-                    sentence.append(actions[np.argmax(prediction)])
-                    # Record a new prediction to use it on the next cycle
-                    last_prediction = actions[np.argmax(prediction)]
+            # Only run grammar correction when sentence changes
+            if len(sentence) > len(previous_sentence):
+                grammar_result = tool.correct(' '.join(sentence))
+                previous_sentence = sentence.copy()
+
+
+            if np.amax(prediction) > 0.7:
+                predicted_class = actions[np.argmax(prediction)]
+                
+                # Add prediction smoothing
+                prediction_history.append(predicted_class)
+                if len(prediction_history) > 3:
+                    prediction_history.pop(0)
+                
+                # Use most common prediction in recent history
+                if prediction_history.count(predicted_class) >= 2:
+                    if last_prediction != predicted_class:
+                        sentence.append(predicted_class)
+                        last_prediction = predicted_class
 
         # Limit the sentence length to 7 elements to make sure it fits on the screen
         if len(sentence) > 7:
@@ -88,12 +102,12 @@ with mp.solutions.holistic.Holistic(min_detection_confidence=0.75, min_tracking_
                     sentence[-1] = sentence[-1].capitalize()
 
 
-        # Record the words in the sentence list into a single string
-        text = ' '.join(sentence)
-        # Apply grammar correction tool and extract the corrected result
-        grammar_result = tool.correct(text)
-        print(sentence)
-        print(grammar_result)
+        if len(sentence) > previous_sentence_length:
+            grammar_result = tool.correct(' '.join(sentence))
+            previous_sentence_length = len(sentence)
+            previous_sentence = sentence 
+            print(sentence)
+            print(grammar_result)
 
         if grammar_result:
             # Calculate the size of the text to be displayed and the X coordinate for centering the text on the image

@@ -5,6 +5,9 @@ A sign language translator.
 ## TODO
 
 ***IMPORTANT***
+
+- Compare time complexity between June 13 last commit and June 29 last commit using time().
+
 **Read Claude Chat and rework:**
 
 - File Organization.
