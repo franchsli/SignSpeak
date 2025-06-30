@@ -10,6 +10,9 @@ from keras.models import load_model, Model
 from language_tool_python import LanguageToolPublicAPI
 from language_tool_python.utils import RateLimitError
 
+# set development variable to avoid unnecesary, excesive calls to the LanguageTool API
+DEBUG = True
+
 # Set the path to the data directory
 PATH = os.path.abspath('data')
 
@@ -22,7 +25,8 @@ model: Model = load_model('models/model.keras')
 # Create an instance of the grammar correction tool
 tool = None
 try:
-    tool = LanguageToolPublicAPI('es')
+    if not DEBUG:
+        tool = LanguageToolPublicAPI('es')
 except RateLimitError:
     print("You have exceeded the rate limit for the free LanguageTool API. Please try again later.")
 
@@ -148,4 +152,5 @@ with mp.solutions.holistic.Holistic(min_detection_confidence=0.75, min_tracking_
     cv2.destroyAllWindows()
 
     # Shut off the server
-    tool.close()
+    if tool:
+        tool.close()
