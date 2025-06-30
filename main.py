@@ -8,6 +8,7 @@ from my_functions import *
 import keyboard
 from keras.models import load_model, Model
 from language_tool_python import LanguageToolPublicAPI
+from language_tool_python.utils import RateLimitError
 
 # Set the path to the data directory
 PATH = os.path.abspath('data')
@@ -19,7 +20,11 @@ actions = np.array(os.listdir(PATH))
 model: Model = load_model('models/model.keras')
 
 # Create an instance of the grammar correction tool
-tool = LanguageToolPublicAPI('es')
+tool = None
+try:
+    tool = LanguageToolPublicAPI('es')
+except RateLimitError:
+    print("You have exceeded the rate limit for the free LanguageTool API. Please try again later.")
 
 # Initialize the lists
 sentence, keypoints, last_prediction, grammar, grammar_result = [], [], [], [], []
@@ -103,11 +108,14 @@ with mp.solutions.holistic.Holistic(min_detection_confidence=0.75, min_tracking_
 
 
         if len(sentence) > previous_sentence_length:
-            grammar_result = tool.correct(' '.join(sentence))
+            if tool:
+                grammar_result = tool.correct(' '.join(sentence))
+            else:
+                grammar_result = None
             previous_sentence_length = len(sentence)
             previous_sentence = sentence 
             print(sentence)
-            print(grammar_result)
+            print(grammar_result if grammar_result else None)
 
         if grammar_result:
             # Calculate the size of the text to be displayed and the X coordinate for centering the text on the image
