@@ -22,6 +22,7 @@ A sign language translator.
 After completing the to-do list, check which one of the tasks in this list
 stills needs a fix.
 
+- Implement UTF-8 encoding support in opencv putText()
 - Check why running test.py takes so much time to start running (Ask Claude).
 - Fully implement model testing into VideoHandler.
   - Try to run and understand main.py file.
