@@ -29,6 +29,8 @@ stills needs a fix.
 
 ## General Resources
 
+[Main dataset used](https://www.kaggle.com/datasets/juanrrai/10-words-slc-and-3-people)
+
 [Sign language processing](https://pypi.org/project/sign-language-tools/)
 
 [Text to Sign language library docs](https://sign-language-translator.readthedocs.io/en/latest/#building-custom-translators)
