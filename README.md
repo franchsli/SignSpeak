@@ -7,14 +7,6 @@ A sign language translator.
 ***IMPORTANT***
 **Read Claude Chat and rework:**
 
-- File Organization.
-- Model Training Logic (tools.py).
-  - Fix with sliding window.
-- Real-time Prediction Issues (main.py).
-  - Grammar correction runs every frame (expensive).
-  - Confidence threshold (0.9) might be too high.
-  - Letter combination logic is complex.
-- Resource Management.
 - Architecture (classes).
 
 ### Low priority
