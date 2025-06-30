@@ -9,6 +9,9 @@ import keyboard
 from keras.models import load_model, Model
 from language_tool_python import LanguageToolPublicAPI
 from language_tool_python.utils import RateLimitError
+from time import time
+
+start = time()
 
 # set development variable to avoid unnecesary, excesive calls to the LanguageTool API
 DEBUG = True
@@ -152,3 +155,6 @@ with mp.solutions.holistic.Holistic(min_detection_confidence=0.75, min_tracking_
         # Shut off the server
         if tool:
             tool.close()
+        
+        end = time()
+        print(f"Proccessing 6 seconds long video took {end - start} seconds")
