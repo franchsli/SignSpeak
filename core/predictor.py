@@ -7,7 +7,7 @@ class GesturePredictor:
 
         Args:
             model_path: Where the keras model is.
-            actions (ndarray): A numpy array containing the model's know
+            actions (ndarray): A numpy array containing the model's known
             words
         """
 
