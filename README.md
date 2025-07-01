@@ -7,7 +7,7 @@ A sign language translator.
 ***IMPORTANT***
 **Read Claude Chat and rework:**
 
-- Architecture (classes).
+- Architecture (Finish the SignLanguageTranslator class to work like main.py).
 
 ### Low priority
 

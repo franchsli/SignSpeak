@@ -18,8 +18,8 @@ class SignLanguageTranslator:
         self.predictor = GesturePredictor(model_path, actions)
         self.text_processor = TextProcessor(language)
         
-    def process_frame(self, frame):
-        # Orchestrates the pipeline
-        keypoints = self.processor.extract_keypoints(frame)
-        prediction = self.predictor.predict(keypoints)
-        return prediction
+
+    def translate(self, ):
+        # use opencv 0 for webcam and str for files
+        # add parameters
+        pass
