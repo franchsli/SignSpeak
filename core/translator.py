@@ -1,6 +1,6 @@
 import cv2 as cv
 from os import path, listdir
-from numpy import array, amax, argmax, newaxis
+from numpy import array, amax, argmax, newaxis, ndarray
 from string import ascii_lowercase, ascii_uppercase
 from time import time
 from keyboard import is_pressed
@@ -10,7 +10,7 @@ from text_processor import TextProcessor
 
 
 class SignLanguageTranslator:
-    def __init__(self, model_path: str, actions, mediapipe_confidence: float = 0.75, language = "es"):
+    def __init__(self, model_path: str, actions: ndarray, mediapipe_confidence: float = 0.75, language = "es"):
         """The generic class for a sing language translator
 
         Args:
@@ -23,6 +23,7 @@ class SignLanguageTranslator:
         
         self.processor = MediaPipeProcessor(mediapipe_confidence)
         self.predictor = GesturePredictor(model_path, actions)
+        self.actions = actions
         self.text_processor = TextProcessor(language)
         
 
@@ -39,16 +40,10 @@ class SignLanguageTranslator:
         in_real_time = True if video_input == 0 else in_real_time
         # set development variable to avoid unnecesary, excesive calls to the LanguageTool API
         DEBUG = True
-        # Set the path to the data directory
-        PATH = path.abspath('data')
-        # Create an array of action labels by listing the contents of the data directory
-        actions = array(listdir(PATH))
-
         # Initialize the lists
         sentence, keypoints, last_prediction, grammar, grammar_result = [], [], [], [], []
         prediction_history = []
         previous_sentence = []
-
         # Access the camera and check if the camera is opened successfully
         # cap = cv.VideoCapture(0)
         cap = cv.VideoCapture(path.abspath("data/ADIOS/ADIOS1.mp4"))
@@ -82,7 +77,7 @@ class SignLanguageTranslator:
 
                         # Only run grammar correction when sentence changes
                         if len(sentence) > len(previous_sentence):
-                            if self.text_processor.tool:
+                            if self.text_processor.tool and not DEBUG:
                                 grammar_result = self.text_processor.correct_sentence(' '.join(sentence))
                             else:
                                 grammar_result = None
@@ -92,7 +87,7 @@ class SignLanguageTranslator:
 
                         # Check if the maximum prediction value is above 0.7
                         if amax(prediction) > 0.7:
-                            predicted_class = actions[argmax(prediction)]
+                            predicted_class = self.actions[argmax(prediction)]
                             
                             # Add prediction smoothing
                             prediction_history.append(predicted_class)
@@ -123,7 +118,7 @@ class SignLanguageTranslator:
                         # Check if the last element of the sentence belongs to the alphabet (lower or upper cases)
                         if sentence[-1] in ascii_lowercase or sentence[-1] in ascii_uppercase:
                             # Check if the second last element of sentence belongs to the alphabet or is a new word
-                            if sentence[-2] in ascii_lowercase or sentence[-2] in ascii_uppercase or (sentence[-2] not in actions and sentence[-2] not in list(x.capitalize() for x in actions)):
+                            if sentence[-2] in ascii_lowercase or sentence[-2] in ascii_uppercase or (sentence[-2] not in self.actions and sentence[-2] not in list(x.capitalize() for x in self.actions)):
                                 # Combine last two elements
                                 sentence[-1] = sentence[-2] + sentence[-1]
                                 sentence.pop(len(sentence) - 2)
