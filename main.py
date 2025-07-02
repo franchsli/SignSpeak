@@ -51,7 +51,9 @@ with mp.solutions.holistic.Holistic(min_detection_confidence=0.75, min_tracking_
     try:
         while cap.isOpened():
             # Read a frame from the camera
-            _, image = cap.read()
+            success, image = cap.read()
+            if not success or image is None:
+                break
             resized_frame = cv.resize(image, (960, 540))
             # Process the image and obtain sign landmarks using image_process function from my_functions.py
             results, processed_image = image_process(resized_frame, holistic)

@@ -55,7 +55,9 @@ class SignLanguageTranslator:
             try:
                 while cap.isOpened():
                     # Read a frame from the camera
-                    _, image = cap.read()
+                    success, image = cap.read()
+                    if not success or image is None:
+                        break
                     resized_frame = cv.resize(image, (960, 540))
                     # Process the image and obtain sign landmarks using image_process
                     results, processed_image = self.processor.image_process(resized_frame, holistic)
