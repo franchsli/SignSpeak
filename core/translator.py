@@ -1,8 +1,7 @@
 import cv2 as cv
-from os import path, listdir
+from os import path
 from numpy import array, amax, argmax, newaxis, ndarray
 from string import ascii_lowercase, ascii_uppercase
-from time import time
 from keyboard import is_pressed
 from predictor import GesturePredictor
 from processor import MediaPipeProcessor
@@ -35,7 +34,6 @@ class SignLanguageTranslator:
             in_real_time (bool, optional): Whether if the translation should be displayed as it's translated or after the video is processed entirely.
             Note that this variable will be True if the video_input is the webcam.
         """
-        start = time()
         # set the parameter to true if the webcam is being translated
         in_real_time = True if video_input == 0 else in_real_time
         # set development variable to avoid unnecesary, excesive calls to the LanguageTool API
@@ -144,8 +142,7 @@ class SignLanguageTranslator:
 
             finally:
                 self._close_video_translation(cap)
-                end = time()
-                print(f"Proccessing 6 seconds long video took {end - start} seconds")
+
     
     def display_translation(self, frame: ndarray, translation: str):
         # Calculate the size of the text to be displayed and the X coordinate for centering the text on the image
