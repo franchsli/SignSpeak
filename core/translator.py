@@ -142,14 +142,7 @@ class SignLanguageTranslator:
                 pass
 
             finally:
-                # Release the camera and close all windows
-                cap.release()
-                cv.destroyAllWindows()
-
-                # Shut off the server
-                if self.text_processor.tool:
-                    self.text_processor.tool.close()
-                
+                self._close_video_translation(cap)
                 end = time()
                 print(f"Proccessing 6 seconds long video took {end - start} seconds")
     
@@ -160,3 +153,11 @@ class SignLanguageTranslator:
         # Draw the sentence on the frame
         cv.putText(frame, translation, (text_X_coord, 470),
                     cv.FONT_HERSHEY_SIMPLEX, 1, (210, 4, 45), 2, cv.LINE_AA)
+    
+    def _close_video_translation(self, video_capture: cv.VideoCapture):
+        # Release the camera and close all windows
+        video_capture.release()
+        cv.destroyAllWindows()
+        # Shut off the server
+        if self.text_processor.tool:
+            self.text_processor.tool.close()
