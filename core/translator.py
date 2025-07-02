@@ -59,11 +59,11 @@ class SignLanguageTranslator:
                     # Read a frame from the camera
                     _, image = cap.read()
                     resized_frame = cv.resize(image, (960, 540))
-                    # Process the image and obtain sign landmarks using image_process function from my_functions.py
+                    # Process the image and obtain sign landmarks using image_process
                     results, processed_image = self.processor.image_process(resized_frame, holistic)
-                    # Draw the sign landmarks on the image using draw_landmarks function from my_functions.py
+                    # Draw the sign landmarks on the image using draw_landmarks
                     frame_with_landmarks = self.processor.draw_landmarks(processed_image, results)
-                    # Extract keypoints from the pose landmarks using keypoint_extraction function from my_functions.py
+                    # Extract keypoints from the pose landmarks using keypoint_extraction
                     keypoints.append(self.processor.keypoint_extraction(results))
 
                     # Check if 10 frames have been accumulated
