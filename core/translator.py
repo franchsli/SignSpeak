@@ -125,21 +125,9 @@ class SignLanguageTranslator:
                                 sentence[-1] = sentence[-1].capitalize()
 
                     if grammar_result:
-                        # Calculate the size of the text to be displayed and the X coordinate for centering the text on the image
-                        textsize = cv.getTextSize(grammar_result, cv.FONT_HERSHEY_SIMPLEX, 1, 2)[0]
-                        text_X_coord = (frame_with_landmarks.shape[1] - textsize[0]) // 2
-
-                        # Draw the sentence on the frame_with_landmarks
-                        cv.putText(frame_with_landmarks, grammar_result, (text_X_coord, 470),
-                                    cv.FONT_HERSHEY_SIMPLEX, 1, (210, 4, 45), 2, cv.LINE_AA)
+                        self.display_translation(frame_with_landmarks, grammar_result)
                     else:
-                        # Calculate the size of the text to be displayed and the X coordinate for centering the text on the frame_with_landmarks
-                        textsize = cv.getTextSize(' '.join(sentence), cv.FONT_HERSHEY_SIMPLEX, 1, 2)[0]
-                        text_X_coord = (frame_with_landmarks.shape[1] - textsize[0]) // 2
-
-                        # Draw the sentence on the frame_with_landmarks
-                        cv.putText(frame_with_landmarks, ' '.join(sentence), (text_X_coord, 470),
-                                    cv.FONT_HERSHEY_SIMPLEX, 1, (210, 4, 45), 2, cv.LINE_AA)
+                        self.display_translation(frame_with_landmarks, ' '.join(sentence))
 
                     # Show the image on the display
                     cv.imshow('Camera', frame_with_landmarks)
@@ -164,3 +152,11 @@ class SignLanguageTranslator:
                 
                 end = time()
                 print(f"Proccessing 6 seconds long video took {end - start} seconds")
+    
+    def display_translation(self, frame: ndarray, translation: str):
+        # Calculate the size of the text to be displayed and the X coordinate for centering the text on the image
+        textsize = cv.getTextSize(translation, cv.FONT_HERSHEY_SIMPLEX, 1, 2)[0]
+        text_X_coord = (frame.shape[1] - textsize[0]) // 2
+        # Draw the sentence on the frame
+        cv.putText(frame, translation, (text_X_coord, 470),
+                    cv.FONT_HERSHEY_SIMPLEX, 1, (210, 4, 45), 2, cv.LINE_AA)
