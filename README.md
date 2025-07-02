@@ -7,7 +7,9 @@ A sign language translator.
 ***IMPORTANT***
 **Read Claude Chat and rework:**
 
-- Architecture (Finish the SignLanguageTranslator class to work like main.py).
+- Performance:
+  current import time = around 5 seconds.
+  current translation time = around 6.4 times slower.
 
 ### Low priority
 
