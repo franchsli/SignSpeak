@@ -9,12 +9,12 @@ from text_processor import TextProcessor
 
 
 class SignLanguageTranslator:
-    def __init__(self, model_path: str, actions: ndarray, mediapipe_confidence: float = 0.75, language = "es"):
+    def __init__(self, actions: ndarray, model_path: str = "models/model.keras", mediapipe_confidence: float = 0.75, language = "es"):
         """The generic class for a sing language translator
 
         Args:
-            model_path (str): Where the keras model is.
             actions (ndarray): A numpy array containing the model's known words.
+            model_path (str, optional): Where the keras model is.
             mediapipe_confidence (float, optional): The confidence of the mediapipe landmark detection. Defaults to 0.75.
             language (str, optional): The language's code that will be checked to correct
             the text. Defaults to "es".

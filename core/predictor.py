@@ -2,13 +2,13 @@ import numpy as np
 from numpy import ndarray
 from keras.models import load_model, Model
 class GesturePredictor:
-    def __init__(self, model_path, actions: ndarray):
+    def __init__(self, actions: ndarray, model_path: str = "models/model.keras"):
         """Class to predict gestures
 
         Args:
-            model_path: Where the keras model is.
             actions (ndarray): A numpy array containing the model's known
-            words
+            words.
+            model_path (str, optional): Where the keras model is.
         """
 
         self.model: Model = load_model(model_path)
