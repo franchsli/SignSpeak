@@ -21,7 +21,7 @@ class SignLanguageTranslator:
         """
         
         self.processor = MediaPipeProcessor(mediapipe_confidence)
-        self.predictor = GesturePredictor(model_path, actions)
+        self.predictor = GesturePredictor(actions, model_path)
         self.actions = actions
         self.text_processor = TextProcessor(language)
         
