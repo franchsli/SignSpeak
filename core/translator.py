@@ -123,11 +123,12 @@ class SignLanguageTranslator:
                                 sentence[-1] = sentence[-2] + sentence[-1]
                                 sentence.pop(len(sentence) - 2)
                                 sentence[-1] = sentence[-1].capitalize()
-
-                    if grammar_result:
-                        self.display_translation(frame_with_landmarks, grammar_result)
-                    else:
-                        self.display_translation(frame_with_landmarks, ' '.join(sentence))
+                    # display the translation if the user wants to
+                    if in_real_time:
+                        if grammar_result:
+                            self.display_translation(frame_with_landmarks, grammar_result)
+                        else:
+                            self.display_translation(frame_with_landmarks, ' '.join(sentence))
 
                     # Show the image on the display
                     cv.imshow('Camera', frame_with_landmarks)
