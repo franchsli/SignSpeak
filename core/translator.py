@@ -130,8 +130,8 @@ class SignLanguageTranslator:
                         else:
                             self.display_translation(frame_with_landmarks, ' '.join(sentence))
 
-                    # Show the image on the display
-                    cv.imshow('Camera', frame_with_landmarks)
+                        # Show the image on the display
+                        cv.imshow('Camera', frame_with_landmarks)
 
                     cv.waitKey(1)
 
