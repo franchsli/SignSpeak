@@ -7,12 +7,9 @@ A sign language translator.
 ***IMPORTANT***
 **Read Claude Chat and rework:**
 
-- Fix the late translation (when real time translation is not on).
-
 - Performance:
   current import time = around 5 seconds.
   current translation time = around 6.4 times slower.
-  current translation time (without the real time translation) = around 2 seconds - 3 times faster than the video.
 
 ### Low priority
 
