@@ -39,9 +39,9 @@ class SignLanguageTranslator:
         # set development variable to avoid unnecesary, excesive calls to the LanguageTool API
         DEBUG = True
         # Initialize the lists
-        sentence, keypoints, last_prediction, grammar, grammar_result = [], [], [], [], []
+        keypoints, last_prediction = [], []
         prediction_history = []
-        previous_sentence = []
+        sentence, grammar_result = "", ""
         # Access the camera and check if the camera is opened successfully
         # cap = cv.VideoCapture(0)
         cap = cv.VideoCapture(path.abspath("data/ADIOS/ADIOS1.mp4"))
@@ -52,7 +52,6 @@ class SignLanguageTranslator:
         # Create a holistic object for sign prediction
         with self.processor.holistic as holistic:
             # Run the loop while the camera is open
-            try:
                 while cap.isOpened():
                     # Read a frame from the camera
                     success, image = cap.read()
@@ -76,12 +75,13 @@ class SignLanguageTranslator:
                         keypoints = []
 
                         # Only run grammar correction when sentence changes
-                        if len(sentence) > len(previous_sentence):
+                        if len(prediction_history) > len(previous_prediction_history):
                             if self.text_processor.tool and not DEBUG:
                                 grammar_result = self.text_processor.correct_sentence(' '.join(sentence))
                             else:
                                 grammar_result = None
-                            previous_sentence = sentence.copy()
+                            previous_prediction_history = prediction_history.copy()
+                            sentence = " ".join(prediction_history)
                             print(sentence)
                             print(grammar_result if grammar_result else None)
 
@@ -91,13 +91,14 @@ class SignLanguageTranslator:
                             
                             # Add prediction smoothing
                             prediction_history.append(predicted_class)
+                            # What?
                             if len(prediction_history) > 3:
                                 prediction_history.pop(0)
                             
                             # Use most common prediction in recent history
                             if prediction_history.count(predicted_class) >= 2:
                                 if last_prediction != predicted_class:
-                                    sentence.append(predicted_class)
+                                    sentence += f" {predicted_class}"
                                     last_prediction = predicted_class
 
                     # Limit the sentence length to 7 elements to make sure it fits on the screen
@@ -106,29 +107,29 @@ class SignLanguageTranslator:
 
                     # Reset if the "Spacebar" is pressed
                     if is_pressed(' '):
-                        sentence, keypoints, last_prediction, grammar, grammar_result = [], [], [], [], []
+                        sentence, keypoints, last_prediction,  = "", [], [],
 
                     # Check if the list is not empty
-                    if sentence:
-                        # Capitalize the first word of the sentence
-                        sentence[0] = sentence[0].capitalize()
+                    if prediction_history:
+                        # Capitalize the first word of the prediction_history
+                        prediction_history[0] = prediction_history[0].capitalize()
 
-                    # Check if the sentence has at least two elements
-                    if len(sentence) >= 2:
-                        # Check if the last element of the sentence belongs to the alphabet (lower or upper cases)
-                        if sentence[-1] in ascii_lowercase or sentence[-1] in ascii_uppercase:
-                            # Check if the second last element of sentence belongs to the alphabet or is a new word
-                            if sentence[-2] in ascii_lowercase or sentence[-2] in ascii_uppercase or (sentence[-2] not in self.actions and sentence[-2] not in list(x.capitalize() for x in self.actions)):
+                    # Check if the prediction_history has at least two elements
+                    if len(prediction_history) >= 2:
+                        # Check if the last element of the prediction_history belongs to the alphabet (lower or upper cases)
+                        if prediction_history[-1] in ascii_lowercase or prediction_history[-1] in ascii_uppercase:
+                            # Check if the second last element of prediction_history belongs to the alphabet or is a new word
+                            if prediction_history[-2] in ascii_lowercase or prediction_history[-2] in ascii_uppercase or (prediction_history[-2] not in self.actions and prediction_history[-2] not in list(x.capitalize() for x in self.actions)):
                                 # Combine last two elements
-                                sentence[-1] = sentence[-2] + sentence[-1]
-                                sentence.pop(len(sentence) - 2)
-                                sentence[-1] = sentence[-1].capitalize()
+                                prediction_history[-1] = prediction_history[-2] + prediction_history[-1]
+                                prediction_history.pop(len(prediction_history) - 2)
+                                prediction_history[-1] = prediction_history[-1].capitalize()
                     # display the translation if the user wants to
                     if in_real_time:
                         if grammar_result:
                             self.display_translation(frame_with_landmarks, grammar_result)
                         else:
-                            self.display_translation(frame_with_landmarks, " ".join(sentence))
+                            self.display_translation(frame_with_landmarks, sentence)
 
                         # Show the image on the display
                         cv.imshow('Camera', frame_with_landmarks)
@@ -139,12 +140,11 @@ class SignLanguageTranslator:
                     if cv.getWindowProperty('Camera',cv.WND_PROP_VISIBLE) < 1:
                         break
             
-            except KeyboardInterrupt:
-                pass
 
-            finally:
+
+
                 self._close_video_translation(cap)
-                return " ".join(sentence) if not in_real_time else None
+                return sentence if not in_real_time else None
 
     
     def display_translation(self, frame: ndarray, translation: str):
