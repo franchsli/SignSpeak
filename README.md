@@ -7,6 +7,8 @@ A sign language translator.
 ***IMPORTANT***
 **Read Claude Chat and rework:**
 
+- Implement something to know if at least one hand is above the waist.
+
 - Performance:
   current import time = around 5 seconds.
   current translation time = around 6.4 times slower.
