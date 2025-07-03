@@ -40,7 +40,7 @@ class SignLanguageTranslator:
         DEBUG = True
         # Initialize the lists
         keypoints, last_prediction = [], []
-        prediction_history = []
+        prediction_history, previous_prediction_history = [], []
         sentence, grammar_result = "", ""
         # Access the camera and check if the camera is opened successfully
         # cap = cv.VideoCapture(0)
@@ -125,12 +125,12 @@ class SignLanguageTranslator:
                         self.display_translation(frame_with_landmarks, sentence)
                     # Show the image on the display
                     cv.imshow('Camera', frame_with_landmarks)
-                cv.waitKey(1)
-                # Check if the 'Camera' window was closed and break the loop
-                if cv.getWindowProperty('Camera',cv.WND_PROP_VISIBLE) < 1:
-                    break
-        
-            self._close_video_translation(cap)
+                    cv.waitKey(1)
+                    # Check if the 'Camera' window was closed and break the loop
+                    if cv.getWindowProperty('Camera',cv.WND_PROP_VISIBLE) < 1:
+                        break
+            
+                self._close_video_translation(cap, in_real_time)
             return sentence if not in_real_time else None
 
     
@@ -142,9 +142,10 @@ class SignLanguageTranslator:
         cv.putText(frame, translation, (text_X_coord, 470),
                     cv.FONT_HERSHEY_SIMPLEX, 1, (210, 4, 45), 2, cv.LINE_AA)
     
-    def _close_video_translation(self, video_capture: cv.VideoCapture):
+    def _close_video_translation(self, video_capture: cv.VideoCapture, in_real_time: bool):
         # Release the camera and close all windows
-        video_capture.release()
+        if in_real_time:
+            video_capture.release()
         cv.destroyAllWindows()
         # Shut off the server
         if self.text_processor.tool:
