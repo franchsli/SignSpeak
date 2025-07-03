@@ -97,9 +97,10 @@ class SignLanguageTranslator:
                             if last_prediction != predicted_class:
                                 sentence += f" {predicted_class}"
                                 last_prediction = predicted_class
-                # Limit the sentence length to 7 elements to make sure it fits on the screen
-                if len(sentence) > 7:
-                    sentence = sentence[-7:]
+                # Limit the prediction_history length to 7 elements to make sure it fits on the screen
+                if len(prediction_history) > 7:
+                    print("CUTTING THE prediction_history...")
+                    prediction_history = prediction_history[-7:]
                 # Reset if the "Spacebar" is pressed
                 if is_pressed(' '):
                     sentence, keypoints, last_prediction,  = "", [], [],
