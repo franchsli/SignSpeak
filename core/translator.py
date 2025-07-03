@@ -128,7 +128,7 @@ class SignLanguageTranslator:
                         if grammar_result:
                             self.display_translation(frame_with_landmarks, grammar_result)
                         else:
-                            self.display_translation(frame_with_landmarks, ' '.join(sentence))
+                            self.display_translation(frame_with_landmarks, " ".join(sentence))
 
                         # Show the image on the display
                         cv.imshow('Camera', frame_with_landmarks)
@@ -144,6 +144,7 @@ class SignLanguageTranslator:
 
             finally:
                 self._close_video_translation(cap)
+                return " ".join(sentence) if not in_real_time else None
 
     
     def display_translation(self, frame: ndarray, translation: str):
