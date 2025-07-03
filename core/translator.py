@@ -104,6 +104,8 @@ class SignLanguageTranslator:
                 # Reset if the "Spacebar" is pressed
                 if is_pressed(' '):
                     sentence, keypoints, last_prediction,  = "", [], [],
+                    prediction_history, previous_prediction_history = [], []
+                    grammar_result = ""
                 # Check if the list is not empty
                 if prediction_history:
                     # Capitalize the first word of the prediction_history
