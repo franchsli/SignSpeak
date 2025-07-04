@@ -12,7 +12,7 @@ A sign language translator.
 
 - Performance:
   current import time = around 5 seconds.
-  current translation time = around 6.1 times slower.
+  current translation time = around 6.3 times slower.
 
 ### Low priority
 
