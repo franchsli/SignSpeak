@@ -14,7 +14,7 @@ class MediaPipeProcessor:
         False otherwise.
 
         Args:
-            results
+            results: The holistic landmarker results.
 
         Returns:
             bool: If a pose and at least a hand are present.
@@ -29,7 +29,7 @@ class MediaPipeProcessor:
         its closest hip, False otherwise.
 
         Args:
-            results
+            results: The holistic landmarker results.
 
         Returns:
             bool: If at least one wrist is above its closest hip.
@@ -55,7 +55,7 @@ class MediaPipeProcessor:
 
         Args:
             image (numpy.ndarray): The input image.
-            results: The landmarks detected by Mediapipe.
+            results: The landmarks detected by Mediapipe (The holistic landmarker results).
 
         Returns:
             numpy.ndarray: The image with drawn landmarks
@@ -121,7 +121,7 @@ class MediaPipeProcessor:
         Extract the keypoints from the sign landmarks.
 
         Args:
-            results: The processed results containing sign landmarks.
+            results: The processed results containing sign landmarks (The holistic landmarker results).
 
         Returns:
             numpy.ndarray: The extracted keypoints.

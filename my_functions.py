@@ -4,13 +4,14 @@ import mediapipe as mp
 import cv2 as cv
 import numpy as np
 
-
 def needed_landmarks_present(results) -> bool:
     """Returns True if the pose landmarks
     and at least one hand's landmarks are present,
     False otherwise.
+
     Args:
-        results
+        results: The holistic landmarker results.
+
     Returns:
         bool: If a pose and at least a hand are present.
     """
@@ -24,7 +25,7 @@ def wrists_are_above_hips(results) -> bool:
     its closest hip, False otherwise.
 
     Args:
-        results
+        results: The holistic landmarker results.
 
     Returns:
         bool: If at least one wrist is above its closest hip.
@@ -47,9 +48,12 @@ def wrists_are_above_hips(results) -> bool:
 def draw_landmarks(image: np.ndarray, results) -> np.ndarray:
     """
     Draw the landmarks on the image.
+
     Args:
+
         image (numpy.ndarray): The input image.
-        results: The landmarks detected by Mediapipe.
+        results: The landmarks detected by Mediapipe (The holistic landmarker results).
+
     Returns:
         numpy.ndarray: The image with drawn landmarks
     """
@@ -104,8 +108,11 @@ def image_process(image: np.ndarray, model):
 def keypoint_extraction(results) -> np.ndarray:
     """
     Extract the keypoints from the sign landmarks.
+
     Args:
-        results: The processed results containing sign landmarks.
+
+        results: The processed results containing sign landmarks (The holistic landmarker results).
+        
     Returns:
         numpy.ndarray: The extracted keypoints.
     """
