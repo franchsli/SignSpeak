@@ -60,6 +60,14 @@ class SignLanguageTranslator:
                 resized_frame = cv.resize(image, (960, 540))
                 # Process the image and obtain sign landmarks using image_process
                 results, processed_image = self.processor.image_process(resized_frame, holistic)
+                #print("Face:", results.face_landmarks.landmark)
+                #print("Left hand:", results.left_hand_landmarks.landmark)
+                #print("Pose", results.pose_landmarks.landmark)
+                #print("Pose world", results.pose_world_landmarks.landmark)
+                #print("Right hand:", results.right_hand_landmarks.landmark)
+                if not self.processor.needed_landmarks_present(results):
+                    print("Not enough landmarks present in the frame, skipping...")
+                    continue
                 # Draw the sign landmarks on the image using draw_landmarks
                 frame_with_landmarks = self.processor.draw_landmarks(processed_image, results)
                 # Extract keypoints from the pose landmarks using keypoint_extraction

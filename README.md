@@ -8,10 +8,11 @@ A sign language translator.
 **Read Claude Chat and rework:**
 
 - Implement something to know if at least one hand is above the waist.
+  - Add that function inside the line 68 (if statement) of translator.py.
 
 - Performance:
   current import time = around 5 seconds.
-  current translation time = around 6.4 times slower.
+  current translation time = around 6.1 times slower.
 
 ### Low priority
 
