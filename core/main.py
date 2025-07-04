@@ -8,7 +8,6 @@ PATH = path.abspath('data')
 # Create an array of action labels by listing the contents of the data directory
 actions = array(listdir(PATH))
 translator = SignLanguageTranslator(actions)
-x = translator.translate_video(path.abspath("data/ADIOS/ADIOS1.mp4"), False)
-print(x)
+translator.translate_video(path.abspath("data/ADIOS/ADIOS1.mp4"))
 end = time()
 print(f"Proccessing 6 seconds long video took {end - start} seconds")

@@ -24,6 +24,7 @@ class MediaPipeProcessor:
         right_hand = results.right_hand_landmarks
         return (pose and left_hand) or (pose and right_hand)
 
+
     def draw_landmarks(self, image: np.ndarray, results) -> np.ndarray:
         """
         Draw the landmarks on the image.

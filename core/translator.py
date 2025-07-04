@@ -141,7 +141,7 @@ class SignLanguageTranslator:
                     if cv.getWindowProperty('Camera',cv.WND_PROP_VISIBLE) < 1:
                         break
             
-                self._close_video_translation(cap, in_real_time)
+            self._close_video_translation(cap, in_real_time)
             return sentence if not in_real_time else None
 
     
