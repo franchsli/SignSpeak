@@ -19,6 +19,30 @@ def needed_landmarks_present(results) -> bool:
     right_hand = results.right_hand_landmarks
     return (pose and left_hand) or (pose and right_hand)
 
+def wrists_are_above_hips(results) -> bool:
+    """Returns True if at least one wrist is above
+    its closest hip, False otherwise.
+
+    Args:
+        results
+
+    Returns:
+        bool: If at least one wrist is above its closest hip.
+    """
+    mp_holistic = mp.solutions.holistic
+    pose = results.pose_landmarks.landmark
+    left_hip, left_wrist = pose[mp_holistic.PoseLandmark.LEFT_HIP].y, pose[mp_holistic.PoseLandmark.LEFT_WRIST].y
+    right_hip, right_wrist = pose[mp_holistic.PoseLandmark.RIGHT_HIP].y, pose[mp_holistic.PoseLandmark.RIGHT_WRIST].y
+    if left_hip > 0.1 + left_wrist:
+        print("Left hand up!")
+    else:
+        print("Left hand down!")
+    if right_hip > 0.1 + right_wrist:
+        print("Right hand up!")
+    else:
+        print("Right hand down!")
+    return (left_hip > 0.1 + left_wrist) or (right_hip > 0.1 + right_wrist)
+
 
 def draw_landmarks(image: np.ndarray, results) -> np.ndarray:
     """

@@ -57,6 +57,12 @@ with mp.solutions.holistic.Holistic(min_detection_confidence=0.75, min_tracking_
             resized_frame = cv.resize(image, (960, 540))
             # Process the image and obtain sign landmarks using image_process function from my_functions.py
             results, processed_image = image_process(resized_frame, holistic)
+            if not needed_landmarks_present(results):
+                print("Not enough landmarks present in the frame, skipping...")
+                continue
+            if not wrists_are_above_hips(results):
+                print("No hand above hips in the frame, skipping...")
+                continue
             # Draw the sign landmarks on the image using draw_landmarks function from my_functions.py
             frame_with_landmarks = draw_landmarks(processed_image, results)
             # Extract keypoints from the pose landmarks using keypoint_extraction function from my_functions.py
