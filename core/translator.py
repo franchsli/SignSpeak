@@ -69,7 +69,7 @@ class SignLanguageTranslator:
                     print("Not enough landmarks present in the frame, skipping...")
                     continue
                 if not self.processor.wrists_are_above_hips(results):
-                    print("No wrist in the frame is above their closes hip, skipping...")
+                    print("No wrist in the frame is above its closest hip, skipping...")
                     continue
                 # Draw the sign landmarks on the image using draw_landmarks
                 frame_with_landmarks = self.processor.draw_landmarks(processed_image, results)

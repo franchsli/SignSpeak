@@ -7,6 +7,9 @@ A sign language translator.
 ***IMPORTANT***
 **Read Claude Chat and rework:**
 
+- Code readability:
+  - Simplify and/or make a function to do the things below if the prediction history has at least two elements
+  (statement in line 125)
 - Updates:
   - Create datasets for the keras model v2 and train the model.
 - Performance:
