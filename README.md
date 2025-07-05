@@ -7,8 +7,6 @@ A sign language translator.
 ***IMPORTANT***
 **Read Claude Chat and rework:**
 
-- Updates:
-  - Create datasets for the keras model v2 and train the model.
 - Performance:
   current import time = around 5 seconds.
   current translation time = around 6.3 times slower.
