@@ -99,7 +99,7 @@ class SignLanguageTranslator:
                         
                         # Add prediction smoothing
                         prediction_history.append(predicted_class)
-                        # What?
+                        # Removes the oldest prediction
                         if len(prediction_history) > 3:
                             prediction_history.pop(0)
                         
