@@ -121,16 +121,10 @@ class SignLanguageTranslator:
                 if prediction_history:
                     # Capitalize the first word of the prediction_history
                     prediction_history[0] = prediction_history[0].capitalize()
-                # Check if the prediction_history has at least two elements
-                if len(prediction_history) >= 2:
-                    # Check if the last element of the prediction_history belongs to the alphabet (lower or upper cases)
-                    if prediction_history[-1] in ascii_lowercase or prediction_history[-1] in ascii_uppercase:
-                        # Check if the second last element of prediction_history belongs to the alphabet or is a new word
-                        if prediction_history[-2] in ascii_lowercase or prediction_history[-2] in ascii_uppercase or (prediction_history[-2] not in self.actions and prediction_history[-2] not in list(x.capitalize() for x in self.actions)):
-                            # Combine last two elements
-                            prediction_history[-1] = prediction_history[-2] + prediction_history[-1]
-                            prediction_history.pop(len(prediction_history) - 2)
-                            prediction_history[-1] = prediction_history[-1].capitalize()
+                # Check if the prediction_history has at least two elements and one of them is a letter (for letter correction)
+                if len(prediction_history) >= 2 and len(prediction_history[-1]) == 1:
+                    # check if the current letter predictions are valid
+                    self.correct_current_letter_predictions()
                 # display the translation if the user wants to
                 if in_real_time:
                     if grammar_result:
@@ -155,6 +149,17 @@ class SignLanguageTranslator:
         # Draw the sentence on the frame
         cv.putText(frame, translation, (text_X_coord, 470),
                     cv.FONT_HERSHEY_SIMPLEX, 1, (210, 4, 45), 2, cv.LINE_AA)
+    
+    def correct_current_letter_predictions(self):
+        global prediction_history
+        # Check if the last element of the prediction_history belongs to the alphabet (lower or upper cases)
+        if prediction_history[-1] in ascii_lowercase or prediction_history[-1] in ascii_uppercase:
+            # Check if the penultimate element of prediction_history belongs to the alphabet or is a new word
+            if prediction_history[-2] in ascii_lowercase or prediction_history[-2] in ascii_uppercase or (prediction_history[-2] not in self.actions and prediction_history[-2] not in list(x.capitalize() for x in self.actions)):
+                # Combine last two elements
+                prediction_history[-1] = prediction_history[-2] + prediction_history[-1]
+                prediction_history.pop(len(prediction_history) - 2)
+                prediction_history[-1] = prediction_history[-1].capitalize()
     
     def _close_video_translation(self, video_capture: cv.VideoCapture, in_real_time: bool):
         # Release the camera and close all windows
