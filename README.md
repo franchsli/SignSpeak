@@ -7,8 +7,6 @@ A sign language translator.
 ***IMPORTANT***
 **Read Claude Chat and rework:**
 
-- Code readability:
-  - Reduce code from translate_video method.
 - Updates:
   - Create datasets for the keras model v2 and train the model.
 - Performance:
@@ -45,6 +43,7 @@ A sign language translator.
 After completing the to-do list, check which one of the tasks in this list
 stills needs a fix.
 
+- Break down translate_video() into smaller functions (check Claude Chat).
 - Implement UTF-8 encoding support in opencv putText()
 - Check why running test.py takes so much time to start running (Ask Claude).
 - Fully implement model testing into VideoHandler.
