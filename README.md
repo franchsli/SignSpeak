@@ -8,13 +8,37 @@ A sign language translator.
 **Read Claude Chat and rework:**
 
 - Code readability:
-  - Simplify and/or make a function to do the things below if the prediction history has at least two elements
-  (statement in line 125)
+  - Reduce code from translate_video method.
 - Updates:
   - Create datasets for the keras model v2 and train the model.
 - Performance:
   current import time = around 5 seconds.
   current translation time = around 6.3 times slower.
+  - Motion-based filtering:
+    Skip frames where hands move too fast (likely motion blur)
+    Skip frames where hands are too close together (overlapping gestures)
+    Skip frames during rapid hand position changes (transitioning between signs)
+
+  - Confidence-based filtering:
+
+    Skip frames where MediaPipe landmark confidence is below threshold
+    Skip frames where hand detection confidence drops significantly from previous frame
+
+  - Temporal filtering:
+
+    Skip frames immediately after a prediction (cooldown period)
+    Skip frames during the first/last second of video (setup/teardown gestures)
+
+  - Spatial filtering:
+
+    Skip frames where hands are too close to camera (too large/distorted)
+    Skip frames where hands are partially out of frame bounds
+    Skip frames where both hands are on same side of body (unnatural signing)
+
+  - Stability filtering:
+
+    Skip frames where landmark positions vary drastically from previous frame
+    Skip frames during periods of high hand jitter/tremor
 
 ### Low priority
 
