@@ -10,15 +10,6 @@ A sign language translator.
 - Performance:
   current import time = around 5 seconds.
   current translation time = around 6.3 times slower.
-  - Motion-based filtering:
-    Skip frames where hands move too fast (likely motion blur)
-    Skip frames where hands are too close together (overlapping gestures)
-    Skip frames during rapid hand position changes (transitioning between signs)
-
-  - Temporal filtering:
-
-    Skip frames immediately after a prediction (cooldown period)
-    Skip frames during the first/last second of video (setup/teardown gestures)
 
 ### Low priority
 
