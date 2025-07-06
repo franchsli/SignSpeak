@@ -5,7 +5,6 @@ A sign language translator.
 ## TODO
 
 ***IMPORTANT***
-**Read Claude Chat and rework:**
 
 - Performance:
   current import time = around 5 seconds.
@@ -16,14 +15,11 @@ A sign language translator.
 After completing the to-do list, check which one of the tasks in this list
 stills needs a fix.
 
-- Break down translate_video() into smaller functions (check Claude Chat).
 - Implement UTF-8 encoding support in opencv putText()
-- Check why running test.py takes so much time to start running (Ask Claude).
-- Fully implement model testing into VideoHandler.
-  - Try to run and understand main.py file.
-  - Add needed_landmarks_present method to model testing.
-  - Speed up main.py execution time (Ask Claude).
-  - Implement something to check if the last_prediction is a
+- Break down translate_video() into smaller functions (check Claude Chat).
+- Fully rework VideoHandler, GestureHandler, etc.
+  - These classes will only handle datasets creation and model training, nothing else.
+  Each class will specialize in handling one format (video, image, or webcam [think about this])
 - Use VideoHandler functionalities into WebCamHandler.
 - Implement an ImageHandler (think about it).
 - Collect more data (sentences and letters) to train the VideoHandler with.
