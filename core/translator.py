@@ -83,10 +83,10 @@ class SignLanguageTranslator:
                     prediction = self.predictor.model.predict(keypoints[newaxis, :, :])
                     # Clear the keypoints list for the next set of frames
                     keypoints = []
-                    # Only run grammar correction when sentence changes
+                    # Only run grammar correction when there's a new prediction
                     if len(prediction_history) > len(previous_prediction_history):
                         if self.text_processor.tool and not DEBUG:
-                            grammar_result = self.text_processor.correct_sentence(' '.join(sentence))
+                            grammar_result = self.text_processor.correct_sentence(" ".join(prediction_history))
                         else:
                             grammar_result = None
                         previous_prediction_history = prediction_history.copy()
@@ -113,7 +113,7 @@ class SignLanguageTranslator:
                     print("CUTTING THE prediction_history...")
                     prediction_history = prediction_history[-7:]
                 # Reset if the "Spacebar" is pressed
-                if is_pressed(' '):
+                if is_pressed(" "):
                     sentence, keypoints, last_prediction,  = "", [], [],
                     prediction_history, previous_prediction_history = [], []
                     grammar_result = ""
@@ -132,10 +132,10 @@ class SignLanguageTranslator:
                     else:
                         self.display_translation(frame_with_landmarks, sentence)
                     # Show the image on the display
-                    cv.imshow('Camera', frame_with_landmarks)
+                    cv.imshow("Camera", frame_with_landmarks)
                     cv.waitKey(1)
-                    # Check if the 'Camera' window was closed and break the loop
-                    if cv.getWindowProperty('Camera',cv.WND_PROP_VISIBLE) < 1:
+                    # Check if the "Camera" window was closed and break the loop
+                    if cv.getWindowProperty("Camera",cv.WND_PROP_VISIBLE) < 1:
                         break
             
             self._close_video_translation(cap, in_real_time)
