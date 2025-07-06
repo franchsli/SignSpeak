@@ -12,11 +12,8 @@ A sign language translator.
 
 ### Low priority
 
-After completing the to-do list, check which one of the tasks in this list
-stills needs a fix.
-
-- Implement UTF-8 encoding support in opencv putText()
-- Break down translate_video() into smaller functions (check Claude Chat).
+- Implement UTF-8 encoding support when showing the frames (use Pillow ImageDraw, ImageFont, Image classes)
+- Break down translate_video() into smaller functions (check Claude Chat [the first one]).
 - Fully rework VideoHandler, GestureHandler, etc.
   - These classes will only handle datasets creation and model training, nothing else.
   Each class will specialize in handling one format (video, image, or webcam [think about this])
