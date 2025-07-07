@@ -149,8 +149,9 @@ class SignLanguageTranslator:
                     cv.FONT_HERSHEY_SIMPLEX, 1, (210, 4, 45), 2, cv.LINE_AA)
     
     def _display_translation(self, frame: ndarray, translation: str)  -> ndarray:
-        # convert the opencv image to pillow
-        pillow_image = Image.fromarray(frame)
+        # Convert BGR to RGB for PIL
+        rgb_frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
+        pillow_image = Image.fromarray(rgb_frame)
         # conver the pillow Image to a drawable object
         draw_object = ImageDraw.Draw(pillow_image)
         text_X_coord = (frame.shape[1] - 40) // 2
