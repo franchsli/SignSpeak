@@ -138,11 +138,6 @@ class SignLanguageTranslator:
             
             self._close_video_translation(cap, in_real_time)
             return sentence if not in_real_time else None
-
-    
-    def _get_translation_x_coordinate(self, frame: ndarray, translation: str) -> int:
-        # Calculate the size of the text to be displayed and the X coordinate for centering the text on the image
-        pass
         
     
     def _display_translation(self, frame: ndarray, translation: str)  -> ndarray:
@@ -152,15 +147,19 @@ class SignLanguageTranslator:
         # conver the pillow Image to a drawable object
         draw_object = ImageDraw.Draw(pillow_image)
         font = ImageFont.truetype("arial.ttf", 35)
-        bbox = draw_object.textbbox((0, 0), translation, font=font)
-        text_width = bbox[2] - bbox[0]
-        text_X_coord = (frame.shape[1] - text_width) // 2
-        draw_object.text((text_X_coord, 470), translation, (86, 24, 201), font, align="center")
+        text_X_coord = self._get_translation_x_coordinate(frame, translation, draw_object, font)
+        draw_object.text((text_X_coord, 470), translation, (86, 24, 201), font)
         # Convert PIL image (RGB) back to OpenCV image (BGR)
         cv_image = cv.cvtColor(array(pillow_image), cv.COLOR_RGB2BGR)
         # Show the image on the display
         cv.imshow("Camera", cv_image)
         cv.waitKey(1)
+    
+    def _get_translation_x_coordinate(self, frame: ndarray, translation: str, draw_object: ImageDraw, font: ImageFont) -> int:
+        # Calculate the size of the text to be displayed and the X coordinate for centering the text on the image
+        bounding_box = draw_object.textbbox((0, 0), translation, font=font)
+        text_width = bounding_box[2] - bounding_box[0]
+        return (frame.shape[1] - text_width) // 2
     
     def correct_current_letter_predictions(self):
         global prediction_history
