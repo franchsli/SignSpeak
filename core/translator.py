@@ -125,7 +125,7 @@ class SignLanguageTranslator:
                 # Check if the prediction_history has at least two elements and one of them is a letter (for letter correction)
                 if len(prediction_history) >= 2 and len(prediction_history[-1]) == 1:
                     # check if the current letter predictions are valid
-                    self.correct_current_letter_predictions()
+                    self._correct_current_letter_predictions()
                 # display the translation if the user wants to
                 if in_real_time:
                     if grammar_result:
@@ -165,7 +165,7 @@ class SignLanguageTranslator:
         text_width = bounding_box[2] - bounding_box[0]
         return (frame.shape[1] - text_width) // 2
     
-    def correct_current_letter_predictions(self):
+    def _correct_current_letter_predictions(self):
         global prediction_history
         # Check if the last element of the prediction_history belongs to the alphabet (lower or upper cases)
         if prediction_history[-1] in ascii_lowercase or prediction_history[-1] in ascii_uppercase:
