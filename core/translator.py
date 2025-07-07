@@ -1,6 +1,7 @@
 import cv2 as cv
 from os import path
 from numpy import array, amax, argmax, newaxis, ndarray
+from PIL import ImageDraw, ImageFont, Image
 from string import ascii_lowercase, ascii_uppercase
 from keyboard import is_pressed
 from predictor import GesturePredictor
@@ -128,12 +129,9 @@ class SignLanguageTranslator:
                 # display the translation if the user wants to
                 if in_real_time:
                     if grammar_result:
-                        self.display_translation(frame_with_landmarks, grammar_result)
+                        self._display_translation(frame_with_landmarks, grammar_result)
                     else:
-                        self.display_translation(frame_with_landmarks, sentence)
-                    # Show the image on the display
-                    cv.imshow("Camera", frame_with_landmarks)
-                    cv.waitKey(1)
+                        self._display_translation(frame_with_landmarks, sentence + " Adiós")
                     # Check if the "Camera" window was closed and break the loop
                     if cv.getWindowProperty("Camera",cv.WND_PROP_VISIBLE) < 1:
                         break
@@ -149,6 +147,20 @@ class SignLanguageTranslator:
         # Draw the sentence on the frame
         cv.putText(frame, translation, (text_X_coord, 470),
                     cv.FONT_HERSHEY_SIMPLEX, 1, (210, 4, 45), 2, cv.LINE_AA)
+    
+    def _display_translation(self, frame: ndarray, translation: str)  -> ndarray:
+        # convert the opencv image to pillow
+        pillow_image = Image.fromarray(frame)
+        # conver the pillow Image to a drawable object
+        draw_object = ImageDraw.Draw(pillow_image)
+        text_X_coord = (frame.shape[1] - 40) // 2
+        font = ImageFont.truetype("arial.ttf", 40)
+        draw_object.text((text_X_coord, 470), translation, (210, 4, 45), font)
+        # Convert PIL image (RGB) back to OpenCV image (BGR)
+        cv_image = cv.cvtColor(array(pillow_image), cv.COLOR_RGB2BGR)
+        # Show the image on the display
+        cv.imshow("Camera", cv_image)
+        cv.waitKey(1)
     
     def correct_current_letter_predictions(self):
         global prediction_history
