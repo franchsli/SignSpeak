@@ -131,7 +131,7 @@ class SignLanguageTranslator:
                     if grammar_result:
                         self._display_translation(frame_with_landmarks, grammar_result)
                     else:
-                        self._display_translation(frame_with_landmarks, sentence + " Adiós")
+                        self._display_translation(frame_with_landmarks, sentence)
                     # Check if the "Camera" window was closed and break the loop
                     if cv.getWindowProperty("Camera",cv.WND_PROP_VISIBLE) < 1:
                         break
@@ -140,20 +140,24 @@ class SignLanguageTranslator:
             return sentence if not in_real_time else None
         
     
-    def _display_translation(self, frame: ndarray, translation: str)  -> ndarray:
-        # Convert BGR to RGB for PIL
-        rgb_frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
-        pillow_image = Image.fromarray(rgb_frame)
-        # conver the pillow Image to a drawable object
-        draw_object = ImageDraw.Draw(pillow_image)
-        font = ImageFont.truetype("arial.ttf", 35)
-        text_X_coord = self._get_translation_x_coordinate(frame, translation, draw_object, font)
-        draw_object.text((text_X_coord, 470), translation, (86, 24, 201), font)
-        # Convert PIL image (RGB) back to OpenCV image (BGR)
-        cv_image = cv.cvtColor(array(pillow_image), cv.COLOR_RGB2BGR)
+    def _display_translation(self, frame: ndarray, translation: str):
+        cv_image = self._overwrite_frame_with_text(frame, translation)
         # Show the image on the display
         cv.imshow("Camera", cv_image)
         cv.waitKey(1)
+    
+    def _overwrite_frame_with_text(self, frame: ndarray, text: str) -> ndarray:
+        # Convert BGR to RGB for PIL
+        rgb_frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
+        pillow_image = Image.fromarray(rgb_frame)
+        # convert the pillow Image to a drawable object
+        draw_object = ImageDraw.Draw(pillow_image)
+        font = ImageFont.truetype("arial.ttf", 35)
+        text_X_coord = self._get_translation_x_coordinate(frame, text, draw_object, font)
+        draw_object.text((text_X_coord, 470), text, (86, 24, 201), font)
+        # Convert PIL image (RGB) back to OpenCV image (BGR) and return it
+        return cv.cvtColor(array(pillow_image), cv.COLOR_RGB2BGR)
+        
     
     def _get_translation_x_coordinate(self, frame: ndarray, translation: str, draw_object: ImageDraw, font: ImageFont) -> int:
         # Calculate the size of the text to be displayed and the X coordinate for centering the text on the image
