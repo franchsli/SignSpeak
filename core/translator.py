@@ -44,8 +44,7 @@ class SignLanguageTranslator:
         prediction_history, previous_prediction_history = [], []
         sentence, grammar_result = "", ""
         # Access the camera and check if the camera is opened successfully
-        # cap = cv.VideoCapture(0)
-        cap = cv.VideoCapture(path.abspath("data/ADIOS/ADIOS1.mp4"))
+        cap = cv.VideoCapture(video_input)
         if not cap.isOpened():
             print("Cannot access camera.")
             exit()
