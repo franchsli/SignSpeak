@@ -12,6 +12,7 @@ A sign language translator.
 
 ### Low priority
 
+- Add documentation to SignLanguageTranslator methods.
 - Break down translate_video() into smaller functions (check Claude Chat [the first one]).
 - Fully rework VideoHandler, GestureHandler, etc.
   - These classes will only handle datasets creation and model training, nothing else.

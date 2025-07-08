@@ -117,7 +117,7 @@ class SignLanguageTranslator:
                     sentence, keypoints, last_prediction,  = "", [], [],
                     prediction_history, previous_prediction_history = [], []
                     grammar_result = ""
-                # Check if the list is not empty
+                # Check if the prediction_history is not empty
                 if prediction_history:
                     # Capitalize the first word of the prediction_history
                     prediction_history[0] = prediction_history[0].capitalize()
