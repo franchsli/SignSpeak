@@ -151,12 +151,13 @@ class SignLanguageTranslator:
         cv.imshow("Camera", cv_image)
         cv.waitKey(1)
     
-    def _overwrite_frame_with_text(self, frame: ndarray, text: str) -> ndarray:
+    def _overwrite_frame_with_text(self, frame: ndarray, text: str, text_size: int = 40) -> ndarray:
         """Overwrites the desired text in the given frame.
 
         Args:
             frame (ndarray): The opencv frame to overwrite.
             text (str): The desired text.
+            text_size (int, optional): The desired size in which the text will be written. Defaults to 40.
 
         Returns:
             ndarray: The overwritten frame.
@@ -166,7 +167,7 @@ class SignLanguageTranslator:
         pillow_image = Image.fromarray(rgb_frame)
         # convert the pillow Image to a drawable object
         draw_object = ImageDraw.Draw(pillow_image)
-        font = ImageFont.truetype("arial.ttf", 35)
+        font = ImageFont.truetype("arial.ttf", text_size)
         text_X_coord = self._get_translation_x_coordinate(frame, text, draw_object, font)
         draw_object.text((text_X_coord, 470), text, (86, 24, 201), font)
         # Convert PIL image (RGB) back to OpenCV image (BGR) and return it
