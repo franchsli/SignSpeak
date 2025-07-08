@@ -109,6 +109,7 @@ class SignLanguageTranslator:
                                 sentence += f" {predicted_class}"
                                 last_prediction = predicted_class
                 # Limit the prediction_history length to 7 elements to make sure it fits on the screen
+                # TODO: REWORK THIS LOGIC, TO IMPLEMENT MULTILINE TEXT (Check Pillow multiline_text)
                 if len(prediction_history) > 7:
                     print("CUTTING THE prediction_history...")
                     prediction_history = prediction_history[-7:]
@@ -119,11 +120,13 @@ class SignLanguageTranslator:
                     grammar_result = ""
                 # Check if the prediction_history is not empty
                 if prediction_history:
+                    # ALERT: This is LETTER ONLY logic.
                     # Capitalize the first word of the prediction_history
                     prediction_history[0] = prediction_history[0].capitalize()
                 # Check if the prediction_history has at least two elements and one of them is a letter (for letter correction)
                 if len(prediction_history) >= 2 and len(prediction_history[-1]) == 1:
                     # check if the current letter predictions are valid
+                    # ALERT: This is LETTER ONLY logic.
                     self._correct_current_letter_predictions()
                 # display the translation if the user wants to
                 if in_real_time:
