@@ -136,7 +136,7 @@ class SignLanguageTranslator:
                         break
             
             self._close_video_translation(cap, in_real_time)
-            return sentence if not in_real_time else None
+            return sentence
         
     
     def _display_translation(self, frame: ndarray, translation: str):
