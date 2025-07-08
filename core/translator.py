@@ -192,6 +192,9 @@ class SignLanguageTranslator:
         return (frame.shape[1] - text_width) // 2
     
     def _correct_current_letter_predictions(self):
+        """Corrects the current letter predictions by checking if the predictions are letter and combine them.
+        (e.g. ['H', 'O', 'L', 'A'] -> 'Hola').
+        """
         global prediction_history
         # Check if the last element of the prediction_history belongs to the alphabet (lower or upper cases)
         if prediction_history[-1] in ascii_lowercase or prediction_history[-1] in ascii_uppercase:
