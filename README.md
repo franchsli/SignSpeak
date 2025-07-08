@@ -4,15 +4,8 @@ A sign language translator.
 
 ## TODO
 
-***IMPORTANT***
-
-- Performance:
-  current import time = around 5 seconds.
-  current translation time = around 6.3 times slower.
-
 ### Low priority
 
-- Add documentation to SignLanguageTranslator methods.
 - Break down translate_video() into smaller functions (check Claude Chat [the first one]).
 - Fully rework VideoHandler, GestureHandler, etc.
   - These classes will only handle datasets creation and model training, nothing else.
@@ -37,3 +30,9 @@ A sign language translator.
 [More Data](https://www.youtube.com/watch?v=JMraBJsA9oI&list=PLI7rDimYXOdhyty-lEXsxQgiLfYKnnqmY&index=4)
 
 [Very good dataset](https://bivl2ab.uis.edu.co/dataset-info)
+
+***IMPORTANT***
+
+- Performance:
+  current import time = around 5 seconds.
+  current translation time = around 6.3 times slower.
