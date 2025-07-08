@@ -4,15 +4,21 @@ A sign language translator.
 
 ## TODO
 
+## High priority
+
+- Fix the immediate issue by removing the letter-combination logic.
+- Extract constants: Frame sizes, confidence thresholds, sequence lengths.
+- Improve error handling: Model loading, video file access.
+
 ### Low priority
 
-- Break down translate_video() into smaller functions (check Claude Chat [the first one]).
 - Fully rework VideoHandler, GestureHandler, etc.
   - These classes will only handle datasets creation and model training, nothing else.
   Each class will specialize in handling one format (video, image, or webcam [think about this])
 - Use VideoHandler functionalities into WebCamHandler.
 - Implement an ImageHandler (think about it).
-- Implement some of the suggestions from Claude and maybe convert the  core folder classes to dataclasses.
+- Implement some of the suggestions from Claude and maybe convert the core folder classes to dataclasses.
+- Add logging: Replace print statements.
 - Collect more data (sentences and letters) to train the VideoHandler with.
 
 [use this repo](https://github.com/dgovor/Sign-Language-Translator)
