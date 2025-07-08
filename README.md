@@ -18,6 +18,7 @@ A sign language translator.
   Each class will specialize in handling one format (video, image, or webcam [think about this])
 - Use VideoHandler functionalities into WebCamHandler.
 - Implement an ImageHandler (think about it).
+- Implement some of the suggestions from Claude and maybe convert the  core folder classes to dataclasses.
 - Collect more data (sentences and letters) to train the VideoHandler with.
 
 [use this repo](https://github.com/dgovor/Sign-Language-Translator)
