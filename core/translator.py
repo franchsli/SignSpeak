@@ -140,6 +140,12 @@ class SignLanguageTranslator:
         
     
     def _display_translation(self, frame: ndarray, translation: str):
+        """Shows the current frame with the given translation.
+
+        Args:
+            frame (ndarray): The current opencv frame.
+            translation (str): The curent translation.
+        """
         cv_image = self._overwrite_frame_with_text(frame, translation)
         # Show the image on the display
         cv.imshow("Camera", cv_image)
