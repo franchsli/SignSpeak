@@ -134,8 +134,8 @@ class SignLanguageTranslator:
                         self._display_translation(frame_with_landmarks, grammar_result)
                     else:
                         self._display_translation(frame_with_landmarks, sentence)
-                    # Check if the "Camera" window was closed and break the loop
-                    if cv.getWindowProperty("Camera",cv.WND_PROP_VISIBLE) < 1:
+                    # Check if the "Translation" window was closed and break the loop
+                    if cv.getWindowProperty("Translation", cv.WND_PROP_VISIBLE) < 1:
                         break
             
             self._close_video_translation(cap, in_real_time)
@@ -151,7 +151,7 @@ class SignLanguageTranslator:
         """
         cv_image = self._overwrite_frame_with_text(frame, translation)
         # Show the image on the display
-        cv.imshow("Camera", cv_image)
+        cv.imshow("Translation", cv_image)
         cv.waitKey(1)
     
     def _overwrite_frame_with_text(self, frame: ndarray, text: str, text_size: int = 40) -> ndarray:
