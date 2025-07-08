@@ -206,6 +206,12 @@ class SignLanguageTranslator:
                 prediction_history[-1] = prediction_history[-1].capitalize()
     
     def _close_video_translation(self, video_capture: cv.VideoCapture, in_real_time: bool):
+        """Closes given video capture and destroys all the opencv windows.
+
+        Args:
+            video_capture (cv.VideoCapture)
+            in_real_time (bool): If the translation is being shown in real time or not.
+        """
         # Release the camera and close all windows
         if in_real_time:
             video_capture.release()
