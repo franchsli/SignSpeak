@@ -6,6 +6,10 @@ A sign language translator.
 
 ## High priority
 
+- Use the correction tool only at the end of translate_video() method to return the corrected version.
+- Add a note in the transle_video() method to clarify that the frames shown will be uncorrected.
+  - "The real-time display shows uncorrected translation for immediate feedback.
+        For grammatically corrected text, use the returned translation."
 - Fix the immediate issue by removing the letter-combination logic.
 - Extract constants: Frame sizes, confidence thresholds, sequence lengths.
 - Improve error handling: Model loading, video file access.
