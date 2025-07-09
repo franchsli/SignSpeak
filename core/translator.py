@@ -114,12 +114,7 @@ class SignLanguageTranslator:
                 if is_pressed(" "):
                     sentence, keypoints, last_prediction,  = "", [], [],
                     prediction_history, previous_prediction_history = [], []
-                    grammar_result = ""
-                # Check if the prediction_history is not empty
-                if prediction_history:
-                    # ALERT: This is LETTER ONLY logic.
-                    # Capitalize the first word of the prediction_history
-                    prediction_history[0] = prediction_history[0].capitalize()
+
                 # Check if the prediction_history has at least two elements and one of them is a letter (for letter correction)
                 if len(prediction_history) >= 2 and len(prediction_history[-1]) == 1:
                     # check if the current letter predictions are valid
@@ -134,8 +129,9 @@ class SignLanguageTranslator:
             
             self._close_video_translation(cap, in_real_time)
             if self.text_processor.tool and not DEBUG:
-                corrected_sentence = self.text_processor.correct_sentence(sentence)
-                sentence = corrected_sentence if corrected_sentence else sentence
+                capitalized_sentence = sentence.capitalize()
+                corrected_sentence = self.text_processor.correct_sentence(capitalized_sentence)
+                sentence = corrected_sentence if corrected_sentence else capitalized_sentence
             return sentence
         
     
