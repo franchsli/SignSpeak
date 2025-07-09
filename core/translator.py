@@ -90,15 +90,9 @@ class SignLanguageTranslator:
                     prediction = self.predictor.model.predict(keypoints[newaxis, :, :])
                     # Clear the keypoints list for the next set of frames
                     keypoints = []
-                    # Update variables when there's a new prediction
-                    if len(prediction_history) > len(previous_prediction_history):
-                        previous_prediction_history = prediction_history.copy()
-                        sentence = " ".join(prediction_history)
-                        print(sentence)
                     # Check if the maximum prediction value is above 0.7
                     if amax(prediction) > CONFIDENCE_THRESHOLD:
                         predicted_class = self.actions[argmax(prediction)]
-                        
                         # Add prediction smoothing
                         prediction_history.append(predicted_class)
                         # Removes the oldest prediction
@@ -110,6 +104,11 @@ class SignLanguageTranslator:
                             if last_prediction != predicted_class:
                                 sentence += f" {predicted_class}"
                                 last_prediction = predicted_class
+                    # Update variables when there's a new prediction
+                    if len(prediction_history) > len(previous_prediction_history):
+                        previous_prediction_history = prediction_history.copy()
+                        sentence = " ".join(prediction_history)
+                        print(sentence)
                 # Limit the prediction_history length to 7 elements to make sure it fits on the screen
                 # TODO: REWORK THIS LOGIC, TO IMPLEMENT MULTILINE TEXT (Check Pillow multiline_text)
                 if len(prediction_history) > 7:
