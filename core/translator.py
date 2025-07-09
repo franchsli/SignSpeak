@@ -115,11 +115,6 @@ class SignLanguageTranslator:
                     sentence, keypoints, last_prediction,  = "", [], [],
                     prediction_history, previous_prediction_history = [], []
 
-                # Check if the prediction_history has at least two elements and one of them is a letter (for letter correction)
-                if len(prediction_history) >= 2 and len(prediction_history[-1]) == 1:
-                    # check if the current letter predictions are valid
-                    # ALERT: This is LETTER ONLY logic.
-                    self._correct_current_letter_predictions()
                 # display the translation if the user wants to
                 if in_real_time:
                     self._display_translation(frame_with_landmarks, sentence)
