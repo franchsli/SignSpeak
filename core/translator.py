@@ -49,6 +49,11 @@ class SignLanguageTranslator:
         keypoints, last_prediction = [], []
         prediction_history, previous_prediction_history = [], []
         sentence = ""
+        # Initialize constant variables
+        CONFIDENCE_THRESHOLD = 0.7
+        DESIRED_FRAME_WIDTH = 960
+        DESIRED_FRAME_HEIGHT = 540
+        EXPECTED_MODEL_KEYPOINTS_COUNT = 10
         # Access the camera and check if the camera is opened successfully
         cap = cv.VideoCapture(video_input)
         if not cap.isOpened():
@@ -63,7 +68,7 @@ class SignLanguageTranslator:
                 success, image = cap.read()
                 if not success or image is None:
                     break
-                resized_frame = cv.resize(image, (960, 540))
+                resized_frame = cv.resize(image, (DESIRED_FRAME_WIDTH, DESIRED_FRAME_HEIGHT))
                 # Process the image and obtain sign landmarks using image_process
                 results, processed_image = self.processor.image_process(resized_frame, holistic)
 
@@ -78,7 +83,7 @@ class SignLanguageTranslator:
                 # Extract keypoints from the pose landmarks using keypoint_extraction
                 keypoints.append(self.processor.keypoint_extraction(results))
                 # Check if 10 frames have been accumulated
-                if len(keypoints) == 10:
+                if len(keypoints) == EXPECTED_MODEL_KEYPOINTS_COUNT:
                     # Convert keypoints list to a numpy array
                     keypoints = array(keypoints)
                     # Make a prediction on the keypoints using the loaded model
@@ -91,7 +96,7 @@ class SignLanguageTranslator:
                         sentence = " ".join(prediction_history)
                         print(sentence)
                     # Check if the maximum prediction value is above 0.7
-                    if amax(prediction) > 0.7:
+                    if amax(prediction) > CONFIDENCE_THRESHOLD:
                         predicted_class = self.actions[argmax(prediction)]
                         
                         # Add prediction smoothing

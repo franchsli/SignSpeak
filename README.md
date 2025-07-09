@@ -6,7 +6,6 @@ A sign language translator.
 
 ## High priority
 
-- Extract constants: Frame sizes, confidence thresholds, sequence lengths.
 - Improve error handling: Model loading, video file access.
 
 ### Low priority
