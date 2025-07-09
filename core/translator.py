@@ -45,8 +45,8 @@ class SignLanguageTranslator:
         in_real_time = True if video_input == 0 else in_real_time
         # set development variable to avoid unnecesary, excesive calls to the LanguageTool API
         DEBUG = True
-        # Initialize the lists
-        keypoints, last_prediction = [], []
+        # Initialize the variables neeeded
+        keypoints, last_prediction = [], ""
         prediction_history, previous_prediction_history = [], []
         sentence = ""
         # Initialize constant variables
@@ -116,7 +116,7 @@ class SignLanguageTranslator:
                     prediction_history = prediction_history[-7:]
                 # Reset if the "Spacebar" is pressed
                 if is_pressed(" "):
-                    sentence, keypoints, last_prediction,  = "", [], [],
+                    sentence, keypoints, last_prediction,  = "", [], ""
                     prediction_history, previous_prediction_history = [], []
 
                 # display the translation if the user wants to
