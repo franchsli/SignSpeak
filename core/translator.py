@@ -11,7 +11,7 @@ from text_processor import TextProcessor
 
 class SignLanguageTranslator:
     def __init__(self, actions: ndarray, model_path: str = "models/model.keras", mediapipe_confidence: float = 0.75, language = "es"):
-        """The generic class for a sing language translator
+        """The generic class for a sign language translator
 
         Args:
             actions (ndarray): A numpy array containing the model's known words.
