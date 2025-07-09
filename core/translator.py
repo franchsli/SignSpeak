@@ -127,10 +127,10 @@ class SignLanguageTranslator:
                         break
             
             self._close_video_translation(cap, in_real_time)
+            sentence = sentence.capitalize()
             if self.text_processor.tool and not DEBUG:
-                capitalized_sentence = sentence.capitalize()
-                corrected_sentence = self.text_processor.correct_sentence(capitalized_sentence)
-                sentence = corrected_sentence if corrected_sentence else capitalized_sentence
+                corrected_sentence = self.text_processor.correct_sentence(sentence)
+                sentence = corrected_sentence if corrected_sentence else sentence
             return sentence
         
     
