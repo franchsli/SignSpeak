@@ -107,6 +107,7 @@ class SignLanguageTranslator:
                     # Update variables when there's a new prediction
                     if len(prediction_history) > len(previous_prediction_history):
                         previous_prediction_history = prediction_history.copy()
+                        # TODO: Improve this if statement, no way this O(n) function runs every 10 frame
                         sentence = " ".join(prediction_history)
                         print(sentence)
                 # Limit the prediction_history length to 7 elements to make sure it fits on the screen
