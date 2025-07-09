@@ -6,7 +6,6 @@ A sign language translator.
 
 ## High priority
 
-- Fix the immediate issue by removing the letter-combination logic.
 - Extract constants: Frame sizes, confidence thresholds, sequence lengths.
 - Improve error handling: Model loading, video file access.
 
