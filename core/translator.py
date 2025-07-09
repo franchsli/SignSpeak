@@ -36,7 +36,7 @@ class SignLanguageTranslator:
             Defaults to True. Note that this variable will be True if the video_input is the webcam.
         
         Returns:
-            str: The corrected translation.
+            str: The corrected translation if it was corrected successfully, the raw translation if not.
             
         NOTE: The real-time display shows uncorrected translation for immediate feedback.
                 For grammatically corrected text, use the returned translation.
@@ -138,7 +138,8 @@ class SignLanguageTranslator:
             
             self._close_video_translation(cap, in_real_time)
             if self.text_processor.tool:
-                sentence = self.text_processor.correct_sentence(sentence)
+                corrected_sentence = self.text_processor.correct_sentence(sentence)
+                sentence = corrected_sentence if corrected_sentence else sentence
             return sentence
         
     
