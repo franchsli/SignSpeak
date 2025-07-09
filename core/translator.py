@@ -42,7 +42,7 @@ class SignLanguageTranslator:
         # Initialize the lists
         keypoints, last_prediction = [], []
         prediction_history, previous_prediction_history = [], []
-        sentence, grammar_result = "", ""
+        sentence = ""
         # Access the camera and check if the camera is opened successfully
         cap = cv.VideoCapture(video_input)
         if not cap.isOpened():
@@ -83,16 +83,11 @@ class SignLanguageTranslator:
                     prediction = self.predictor.model.predict(keypoints[newaxis, :, :])
                     # Clear the keypoints list for the next set of frames
                     keypoints = []
-                    # Only run grammar correction when there's a new prediction
+                    # Update variables when there's a new prediction
                     if len(prediction_history) > len(previous_prediction_history):
-                        if self.text_processor.tool and not DEBUG:
-                            grammar_result = self.text_processor.correct_sentence(" ".join(prediction_history))
-                        else:
-                            grammar_result = None
                         previous_prediction_history = prediction_history.copy()
                         sentence = " ".join(prediction_history)
                         print(sentence)
-                        print(grammar_result if grammar_result else None)
                     # Check if the maximum prediction value is above 0.7
                     if amax(prediction) > 0.7:
                         predicted_class = self.actions[argmax(prediction)]
@@ -130,15 +125,14 @@ class SignLanguageTranslator:
                     self._correct_current_letter_predictions()
                 # display the translation if the user wants to
                 if in_real_time:
-                    if grammar_result:
-                        self._display_translation(frame_with_landmarks, grammar_result)
-                    else:
-                        self._display_translation(frame_with_landmarks, sentence)
+                    self._display_translation(frame_with_landmarks, sentence)
                     # Check if the "Translation" window was closed and break the loop
                     if cv.getWindowProperty("Translation", cv.WND_PROP_VISIBLE) < 1:
                         break
             
             self._close_video_translation(cap, in_real_time)
+            if self.text_processor.tool:
+                sentence = self.text_processor.correct_sentence(sentence)
             return sentence
         
     
