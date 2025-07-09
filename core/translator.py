@@ -133,7 +133,7 @@ class SignLanguageTranslator:
                         break
             
             self._close_video_translation(cap, in_real_time)
-            if self.text_processor.tool:
+            if self.text_processor.tool and not DEBUG:
                 corrected_sentence = self.text_processor.correct_sentence(sentence)
                 sentence = corrected_sentence if corrected_sentence else sentence
             return sentence
