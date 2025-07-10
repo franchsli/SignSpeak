@@ -46,7 +46,7 @@ class SignLanguageTranslator:
         # set development variable to avoid unnecesary, excesive calls to the LanguageTool API
         DEBUG = True
         # Initialize the variables neeeded
-        keypoints, last_prediction = [], ""
+        keypoints = []
         prediction_history, previous_prediction_history = [], []
         sentence = ""
         # Initialize constant variables
@@ -94,15 +94,6 @@ class SignLanguageTranslator:
                     if amax(prediction) > CONFIDENCE_THRESHOLD:
                         predicted_class = self.actions[argmax(prediction)]
                         prediction_history.append(predicted_class)
-                        # Removes the oldest prediction
-                        if len(prediction_history) > 3:
-                            prediction_history.pop(0)
-                        
-                        # Use most common prediction in recent history
-                        if prediction_history.count(predicted_class) >= 2:
-                            if last_prediction != predicted_class:
-                                sentence += f" {predicted_class}"
-                                last_prediction = predicted_class
                     # Update variables when there's a new prediction
                     if len(prediction_history) > len(previous_prediction_history):
                         previous_prediction_history = prediction_history.copy()
@@ -119,7 +110,7 @@ class SignLanguageTranslator:
                     prediction_history = prediction_history[-7:]
                 # Reset if the "Spacebar" is pressed
                 if is_pressed(" "):
-                    sentence, keypoints, last_prediction,  = "", [], ""
+                    sentence, keypoints  = "", []
                     prediction_history, previous_prediction_history = [], []
 
                 # display the translation if the user wants to
