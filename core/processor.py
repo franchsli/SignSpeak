@@ -100,6 +100,7 @@ class MediaPipeProcessor:
         # Process the image using the model
         # MediaPipe works better with read-only images
         image_rgb.flags.writeable = False
+        # TODO: Improve this, model processing, it's so slow that it adds atleast 29 seconds on a 6 seconds long video (and 30 on average)
         results = model.process(image_rgb)
         image_rgb.flags.writeable = True
 
