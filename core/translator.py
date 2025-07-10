@@ -46,8 +46,8 @@ class SignLanguageTranslator:
         # set development variable to avoid unnecesary, excesive calls to the LanguageTool API
         DEBUG = True
         # Initialize the variables neeeded
-        keypoints = []
-        prediction_history, previous_prediction_history = [], []
+        keypoints, last_prediction = [], ""
+        prediction_history = []
         sentence = ""
         # Initialize constant variables
         CONFIDENCE_THRESHOLD = 0.7
@@ -93,15 +93,14 @@ class SignLanguageTranslator:
                     # Check if the maximum prediction value is above 0.7
                     if amax(prediction) > CONFIDENCE_THRESHOLD:
                         predicted_class = self.actions[argmax(prediction)]
-                        prediction_history.append(predicted_class)
-                    # Update variables when there's a new prediction
-                    if len(prediction_history) > len(previous_prediction_history):
-                        previous_prediction_history = prediction_history.copy()
-                        # update the sentence with a space if it's not the first one
-                        if sentence:
-                            sentence += f" {predicted_class}"
-                        else:
-                            sentence += predicted_class
+                        if predicted_class != last_prediction:
+                            prediction_history.append(predicted_class)
+                            last_prediction = predicted_class
+                            # update the sentence with a space if it's not the first one
+                            if sentence:
+                                sentence += f" {predicted_class}"
+                            else:
+                                sentence += predicted_class
                         print(sentence)
                 # Limit the prediction_history length to 7 elements to make sure it fits on the screen
                 # TODO: REWORK THIS LOGIC, TO IMPLEMENT MULTILINE TEXT (Check Pillow multiline_text)
@@ -110,8 +109,8 @@ class SignLanguageTranslator:
                     prediction_history = prediction_history[-7:]
                 # Reset if the "Spacebar" is pressed
                 if is_pressed(" "):
-                    sentence, keypoints  = "", []
-                    prediction_history, previous_prediction_history = [], []
+                    sentence, keypoints, last_prediction,  = "", [], ""
+                    prediction_history = []
 
                 # display the translation if the user wants to
                 if in_real_time:
