@@ -6,7 +6,6 @@ A sign language translator.
 
 ## High priority
 
-- Do the thing written in line 110 in translator.py.
 - Improve error handling: Model loading, video file access.
 
 ### Low priority

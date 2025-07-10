@@ -93,7 +93,6 @@ class SignLanguageTranslator:
                     # Check if the maximum prediction value is above 0.7
                     if amax(prediction) > CONFIDENCE_THRESHOLD:
                         predicted_class = self.actions[argmax(prediction)]
-                        # Add prediction smoothing
                         prediction_history.append(predicted_class)
                         # Removes the oldest prediction
                         if len(prediction_history) > 3:
@@ -107,8 +106,11 @@ class SignLanguageTranslator:
                     # Update variables when there's a new prediction
                     if len(prediction_history) > len(previous_prediction_history):
                         previous_prediction_history = prediction_history.copy()
-                        # TODO: Improve this if statement, no way this O(n) function runs every 10 frame
-                        sentence = " ".join(prediction_history)
+                        # update the sentence with a space if it's not the first one
+                        if sentence:
+                            sentence += f" {predicted_class}"
+                        else:
+                            sentence += predicted_class
                         print(sentence)
                 # Limit the prediction_history length to 7 elements to make sure it fits on the screen
                 # TODO: REWORK THIS LOGIC, TO IMPLEMENT MULTILINE TEXT (Check Pillow multiline_text)
