@@ -38,14 +38,6 @@ class MediaPipeProcessor:
         pose = results.pose_landmarks.landmark
         left_hip, left_wrist = pose[mp_holistic.PoseLandmark.LEFT_HIP].y, pose[mp_holistic.PoseLandmark.LEFT_WRIST].y
         right_hip, right_wrist = pose[mp_holistic.PoseLandmark.RIGHT_HIP].y, pose[mp_holistic.PoseLandmark.RIGHT_WRIST].y
-        if left_hip > 0.1 + left_wrist:
-            print("Left hand up!")
-        else:
-            print("Left hand down!")
-        if right_hip > 0.1 + right_wrist:
-            print("Right hand up!")
-        else:
-            print("Right hand down!")
         return (left_hip > 0.1 + left_wrist) or (right_hip > 0.1 + right_wrist)
 
 
