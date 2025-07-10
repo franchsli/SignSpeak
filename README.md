@@ -18,6 +18,12 @@ A sign language translator.
 - Implement some of the suggestions from Claude and maybe convert the core folder classes to dataclasses.
 - Add logging: Replace print statements.
 - Collect more data (sentences and letters) to train the VideoHandler with.
+- Implement frame division.
+  Divide the frame by the number of people there and process the signs of everyone.
+  - Add person detection (YOLO/MediaPipe Person Segmentation).
+  - Crop bounding boxes around each person.
+  - Run existing MediaPipe pipeline on each crop.
+  - Merge results with person IDs.
 
 [use this repo](https://github.com/dgovor/Sign-Language-Translator)
 
