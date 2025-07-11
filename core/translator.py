@@ -120,7 +120,7 @@ class SignLanguageTranslator:
         
         self._close_video_translation(cap, in_real_time)
         sentence = sentence.capitalize()
-        if self.text_processor.tool and not DEBUG:
+        if self.text_processor.language_tool and not DEBUG:
             corrected_sentence = self.text_processor.correct_sentence(sentence)
             sentence = corrected_sentence if corrected_sentence else sentence
         return sentence
@@ -205,5 +205,5 @@ class SignLanguageTranslator:
             video_capture.release()
         cv.destroyAllWindows()
         # Shut off the server
-        if self.text_processor.tool:
-            self.text_processor.tool.close()
+        if self.text_processor.language_tool:
+            self.text_processor.language_tool.close()
