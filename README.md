@@ -16,6 +16,7 @@ A sign language translator.
 
 - Implement some of the suggestions from Claude and maybe convert the core folder classes to dataclasses.
 - Add logging: Replace print statements.
+- Remove "DEBUG" variable in translate_video() method.
 - Collect more data (sentences and letters) to train the VideoHandler with.
 - Implement frame division.
   Divide the frame by the number of people there and process the signs of everyone.
