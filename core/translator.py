@@ -60,71 +60,67 @@ class SignLanguageTranslator:
             print("Cannot access camera.")
             exit()
 
-        # Create a holistic object for sign prediction
-        with self.processor.holistic as holistic:
-            # Run the loop while the camera is open
-            while cap.isOpened():
-                # Read a frame from the camera
-                success, image = cap.read()
-                if not success or image is None:
+        # Run the loop while the camera is open
+        while cap.isOpened():
+            # Read a frame from the camera
+            success, image = cap.read()
+            if not success or image is None:
+                break
+            resized_frame = cv.resize(image, (DESIRED_FRAME_WIDTH, DESIRED_FRAME_HEIGHT))
+            # Process the image and obtain sign landmarks using image_process
+            results, processed_image = self.processor.image_process(resized_frame)
+            if not self.processor.needed_landmarks_present(results):
+                print("Not enough landmarks present in the frame, skipping...")
+                continue
+            if not self.processor.wrists_are_above_hips(results):
+                print("No wrist in the frame is above its closest hip, skipping...")
+                continue
+            # Draw the sign landmarks on the image using draw_landmarks
+            frame_with_landmarks = self.processor.draw_landmarks(processed_image, results)
+            # Extract keypoints from the pose landmarks using keypoint_extraction
+            keypoints.append(self.processor.keypoint_extraction(results))
+            # Check if 10 frames have been accumulated
+            if len(keypoints) == EXPECTED_MODEL_KEYPOINTS_COUNT:
+                # Convert keypoints list to a numpy array
+                keypoints = array(keypoints)
+                # Make a prediction on the keypoints using the loaded model
+                prediction = self.predictor.model.predict(keypoints[newaxis, :, :])
+                # Clear the keypoints list for the next set of frames
+                keypoints = []
+                # Check if the maximum prediction value is above 0.7
+                if amax(prediction) > CONFIDENCE_THRESHOLD:
+                    predicted_class = self.actions[argmax(prediction)]
+                    if predicted_class != last_prediction:
+                        prediction_history.append(predicted_class)
+                        last_prediction = predicted_class
+                        # update the sentence with a space if it's not the first one
+                        if sentence:
+                            sentence += f" {predicted_class}"
+                        else:
+                            sentence += predicted_class
+                    print(sentence)
+            # Limit the prediction_history length to 7 elements to make sure it fits on the screen
+            # TODO: REWORK THIS LOGIC, TO IMPLEMENT MULTILINE TEXT (Check Pillow multiline_text)
+            if len(prediction_history) > 7:
+                print("CUTTING THE prediction_history...")
+                prediction_history = prediction_history[-7:]
+            # Reset if the "Spacebar" is pressed
+            if is_pressed(" "):
+                sentence, keypoints, last_prediction,  = "", [], ""
+                prediction_history = []
+            # display the translation if the user wants to
+            if in_real_time:
+                self._display_translation(frame_with_landmarks, sentence)
+                # Check if the "Translation" window was closed and break the loop
+                if cv.getWindowProperty("Translation", cv.WND_PROP_VISIBLE) < 1:
                     break
-                resized_frame = cv.resize(image, (DESIRED_FRAME_WIDTH, DESIRED_FRAME_HEIGHT))
-                # Process the image and obtain sign landmarks using image_process
-                results, processed_image = self.processor.image_process(resized_frame)
-
-                if not self.processor.needed_landmarks_present(results):
-                    print("Not enough landmarks present in the frame, skipping...")
-                    continue
-                if not self.processor.wrists_are_above_hips(results):
-                    print("No wrist in the frame is above its closest hip, skipping...")
-                    continue
-                # Draw the sign landmarks on the image using draw_landmarks
-                frame_with_landmarks = self.processor.draw_landmarks(processed_image, results)
-                # Extract keypoints from the pose landmarks using keypoint_extraction
-                keypoints.append(self.processor.keypoint_extraction(results))
-                # Check if 10 frames have been accumulated
-                if len(keypoints) == EXPECTED_MODEL_KEYPOINTS_COUNT:
-                    # Convert keypoints list to a numpy array
-                    keypoints = array(keypoints)
-                    # Make a prediction on the keypoints using the loaded model
-                    prediction = self.predictor.model.predict(keypoints[newaxis, :, :])
-                    # Clear the keypoints list for the next set of frames
-                    keypoints = []
-                    # Check if the maximum prediction value is above 0.7
-                    if amax(prediction) > CONFIDENCE_THRESHOLD:
-                        predicted_class = self.actions[argmax(prediction)]
-                        if predicted_class != last_prediction:
-                            prediction_history.append(predicted_class)
-                            last_prediction = predicted_class
-                            # update the sentence with a space if it's not the first one
-                            if sentence:
-                                sentence += f" {predicted_class}"
-                            else:
-                                sentence += predicted_class
-                        print(sentence)
-                # Limit the prediction_history length to 7 elements to make sure it fits on the screen
-                # TODO: REWORK THIS LOGIC, TO IMPLEMENT MULTILINE TEXT (Check Pillow multiline_text)
-                if len(prediction_history) > 7:
-                    print("CUTTING THE prediction_history...")
-                    prediction_history = prediction_history[-7:]
-                # Reset if the "Spacebar" is pressed
-                if is_pressed(" "):
-                    sentence, keypoints, last_prediction,  = "", [], ""
-                    prediction_history = []
-
-                # display the translation if the user wants to
-                if in_real_time:
-                    self._display_translation(frame_with_landmarks, sentence)
-                    # Check if the "Translation" window was closed and break the loop
-                    if cv.getWindowProperty("Translation", cv.WND_PROP_VISIBLE) < 1:
-                        break
-            
-            self._close_video_translation(cap, in_real_time)
-            sentence = sentence.capitalize()
-            if self.text_processor.tool and not DEBUG:
-                corrected_sentence = self.text_processor.correct_sentence(sentence)
-                sentence = corrected_sentence if corrected_sentence else sentence
-            return sentence
+        
+        self._close_video_translation(cap, in_real_time)
+        sentence = sentence.capitalize()
+        if self.text_processor.tool and not DEBUG:
+            corrected_sentence = self.text_processor.correct_sentence(sentence)
+            sentence = corrected_sentence if corrected_sentence else sentence
+        return sentence
         
     
     def _display_translation(self, frame: ndarray, translation: str):
