@@ -60,7 +60,7 @@ class SignLanguageTranslator:
             if video_input:
                 print(f"Cannot access the given video input ({video_input}).")
             else:
-                print("Cannot acces the camera.")
+                print("Cannot access the camera.")
             return
 
         # Run the loop while the camera is open
