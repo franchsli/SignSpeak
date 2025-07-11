@@ -2,7 +2,7 @@ import numpy as np
 import cv2 as cv
 import mediapipe as mp
 class MediaPipeProcessor:
-    def __init__(self, confidence=0.75):
+    def __init__(self, confidence: float = 0.75):
         self.holistic = mp.solutions.holistic.Holistic(
             min_detection_confidence=confidence,
             min_tracking_confidence=confidence

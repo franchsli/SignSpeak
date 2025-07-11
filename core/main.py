@@ -7,7 +7,7 @@ start = time()
 PATH = path.abspath('data')
 # Create an array of action labels by listing the contents of the data directory
 actions = array(listdir(PATH))
-translator = SignLanguageTranslator(actions)
+translator = SignLanguageTranslator(actions, model_path="TILIN")
 translation = translator.translate_video(path.abspath("data/ADIOS/ADIOS1.mp4"), True)
 print(translation)
 end = time()
