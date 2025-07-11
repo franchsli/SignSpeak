@@ -79,13 +79,12 @@ class MediaPipeProcessor:
 
         return image
 
-    def image_process(self, image: np.ndarray, model):
+    def image_process(self, image: np.ndarray):
         """
         Process the image and obtain sign landmarks.
 
         Args:
             image (numpy.ndarray): The input image.
-            model: The Mediapipe holistic object.
 
         Returns:
             tuple: (results, processed_image) where results contains the landmarks
@@ -101,7 +100,7 @@ class MediaPipeProcessor:
         # MediaPipe works better with read-only images
         image_rgb.flags.writeable = False
         # TODO: Improve this, model processing, it's so slow that it adds atleast 29 seconds on a 6 seconds long video (and 30 on average)
-        results = model.process(image_rgb)
+        results = self.holistic.process(image_rgb)
         image_rgb.flags.writeable = True
 
         # Convert back to BGR for OpenCV operations

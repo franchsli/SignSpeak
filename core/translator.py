@@ -70,7 +70,7 @@ class SignLanguageTranslator:
                     break
                 resized_frame = cv.resize(image, (DESIRED_FRAME_WIDTH, DESIRED_FRAME_HEIGHT))
                 # Process the image and obtain sign landmarks using image_process
-                results, processed_image = self.processor.image_process(resized_frame, holistic)
+                results, processed_image = self.processor.image_process(resized_frame)
 
                 if not self.processor.needed_landmarks_present(results):
                     print("Not enough landmarks present in the frame, skipping...")
