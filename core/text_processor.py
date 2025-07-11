@@ -13,8 +13,6 @@ class TextProcessor:
             self.tool = None
             print("You have exceeded the rate limit for the free LanguageTool API. Please try again later. The class must be re initialized later")
 
-        # think what to do with this
-        self.cache = {}
         
     def correct_sentence(self, sentence: str):
         try:
