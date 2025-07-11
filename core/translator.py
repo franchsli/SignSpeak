@@ -57,7 +57,10 @@ class SignLanguageTranslator:
         # Access the camera and check if the camera is opened successfully
         cap = cv.VideoCapture(video_input)
         if not cap.isOpened():
-            print("Cannot access camera.")
+            if video_input:
+                print(f"Cannot access the given video input ({video_input}).")
+            else:
+                print("Cannot acces the camera.")
             return
 
         # Run the loop while the camera is open
