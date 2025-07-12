@@ -1,18 +1,16 @@
 import os
 import cv2 as cv
-import mediapipe as mp
 import numpy as np
-from mediapipe.python.solutions.holistic import Holistic
 from dataclasses import dataclass
 from keras.utils import to_categorical
 from keras.models import Sequential
 from keras.layers import LSTM, Dense
 from sklearn import metrics
 from sklearn.model_selection import train_test_split
-
+from core.processor import MediaPipeProcessor
 
 @dataclass
-class GestureHandler:
+class GestureHandler(MediaPipeProcessor):
     """The Base Class for Sign Language detection."""
 
     def get_file_index(self, file_name: str) -> str:
@@ -33,141 +31,6 @@ class GestureHandler:
                 label += character
         return label
 
-    def needed_landmarks_present(self, results) -> bool:
-        """Returns True if the pose landmarks
-        and at least one hand's landmarks are present,
-        False otherwise.
-
-        Args:
-            results
-
-        Returns:
-            bool: If a pose and at least a hand are present.
-        """
-        pose = results.pose_landmarks
-        left_hand = results.left_hand_landmarks
-        right_hand = results.right_hand_landmarks
-        return (pose and left_hand) or (pose and right_hand)
-    
-    def wrists_are_above_hips(self, results) -> bool:
-        """Returns True if at least one wrist is above
-        its closest hip, False otherwise.
-
-        Args:
-            results
-
-        Returns:
-            bool: If at least one wrist is above its closest hip.
-        """
-        mp_holistic = mp.solutions.holistic
-        pose = results.pose_landmarks.landmark
-        left_hip, left_wrist = pose[mp_holistic.PoseLandmark.LEFT_HIP].y, pose[mp_holistic.PoseLandmark.LEFT_WRIST].y
-        right_hip, right_wrist = pose[mp_holistic.PoseLandmark.RIGHT_HIP].y, pose[mp_holistic.PoseLandmark.RIGHT_WRIST].y
-        if left_hip > 0.1 + left_wrist:
-            print("Left hand up!")
-        else:
-            print("Left hand down!")
-        if right_hip > 0.1 + right_wrist:
-            print("Right hand up!")
-        else:
-            print("Right hand down!")
-        return (left_hip > 0.1 + left_wrist) or (right_hip > 0.1 + right_wrist)
-
-    def draw_landmarks(self, image: np.ndarray, results) -> np.ndarray:
-        """
-        Draw the landmarks on the image.
-
-        Args:
-            image (numpy.ndarray): The input image.
-            results: The landmarks detected by Mediapipe.
-
-        Returns:
-            numpy.ndarray: The image with drawn landmarks
-        """
-        # Make a copy of the image to ensure it's writable
-        image = image.copy()
-
-        # Draw pose landmarks
-        if results.pose_landmarks:
-            mp.solutions.drawing_utils.draw_landmarks(
-                image, results.pose_landmarks, mp.solutions.holistic.POSE_CONNECTIONS
-            )
-
-        # Draw landmarks for left hand if present
-        if results.left_hand_landmarks:
-            mp.solutions.drawing_utils.draw_landmarks(
-                image,
-                results.left_hand_landmarks,
-                mp.solutions.holistic.HAND_CONNECTIONS,
-            )
-
-        # Draw landmarks for right hand if present
-        if results.right_hand_landmarks:
-            mp.solutions.drawing_utils.draw_landmarks(
-                image,
-                results.right_hand_landmarks,
-                mp.solutions.holistic.HAND_CONNECTIONS,
-            )
-
-        return image
-
-    def image_process(self, image: np.ndarray, model):
-        """
-        Process the image and obtain sign landmarks.
-
-        Args:
-            image (numpy.ndarray): The input image.
-            model: The Mediapipe holistic object.
-
-        Returns:
-            tuple: (results, processed_image) where results contains the landmarks
-            and processed_image is the BGR image
-        """
-        # Make a copy to avoid modifying the original
-        image = image.copy()
-
-        # Convert the image from BGR to RGB
-        image_rgb = cv.cvtColor(image, cv.COLOR_BGR2RGB)
-
-        # Process the image using the model
-        # MediaPipe works better with read-only images
-        image_rgb.flags.writeable = False
-        results = model.process(image_rgb)
-        image_rgb.flags.writeable = True
-
-        # Convert back to BGR for OpenCV operations
-        processed_image = cv.cvtColor(image_rgb, cv.COLOR_RGB2BGR)
-
-        return results, processed_image
-
-    def keypoint_extraction(self, results) -> np.ndarray:
-        """
-        Extract the keypoints from the sign landmarks.
-
-        Args:
-            results: The processed results containing sign landmarks.
-
-        Returns:
-            numpy.ndarray: The extracted keypoints.
-        """
-        # Extract the keypoints for the left hand if present, otherwise set to zeros
-        left_hand = (
-            np.array(
-                [[res.x, res.y, res.z] for res in results.left_hand_landmarks.landmark]
-            ).flatten()
-            if results.left_hand_landmarks
-            else np.zeros(63)
-        )
-        # Extract the keypoints for the right hand if present, otherwise set to zeros
-        right_hand = (
-            np.array(
-                [[res.x, res.y, res.z] for res in results.right_hand_landmarks.landmark]
-            ).flatten()
-            if results.right_hand_landmarks
-            else np.zeros(63)
-        )
-        # Concatenate the keypoints for both hands
-        return np.concatenate([left_hand, right_hand])
 
 
 @dataclass
@@ -190,82 +53,63 @@ class VideoHandler(GestureHandler):
         if not self.directories_already_created(path):
             self.create_directories(path)
 
-        with Holistic(
-            min_detection_confidence=0.75, min_tracking_confidence=0.75
-        ) as holistic:
-            for video_file in os.listdir(self.video_folder):
-                video_path: str = os.path.join(self.video_folder, video_file)
 
-                if not video_file.endswith((".mp4", ".avi", ".mov")):
-                    continue
-
-                print(f"Processing video: {video_file}")
-                cap = cv.VideoCapture(video_path)
-
-                if not cap.isOpened():
-                    print(f"Failed to open video: {video_file}")
-                    continue
-
-                frame_index: int = 0
-                fps = cap.get(cv.CAP_PROP_FPS) or 30  # Default to 30 FPS if unknown
-
-                while True:
-                    success, frame = cap.read()
-                    if not success:
-                        break
-
-                    print("PROCESSING FRAME:", frame_index)
-
-                    resized_frame = cv.resize(frame, (640, 480))
-
-                    # Process image and get results
-                    results, processed_image = self.image_process(
-                        resized_frame, holistic
-                    )
-
-                    if not self.needed_landmarks_present(results):
-                        print(f"Not enough landmarks in {frame_index}, skipping...")
-                        frame_index += 1
-                        continue
-
-                    if not self.wrists_are_above_hips(results):
-                        print(f"No hands above the hips in {frame_index}, skipping...")
-                        frame_index += 1
-                        continue
-
-                    # Draw landmarks and display
-                    display_image = self.draw_landmarks(processed_image, results)
-
-                    # Extract the landmarks from both hands and save them in arrays
-                    keypoints: np.ndarray = self.keypoint_extraction(results)
-
-                    frame_path = os.path.join(
-                        path,
-                        self.get_label_name(video_file),
-                        f"{self.get_file_index(video_file)}_frame_{frame_index}.npy",
-                    )
-                    save_dir = os.path.dirname(frame_path)
-                    os.makedirs(save_dir, exist_ok=True)
-                    print(f"Saving keypoints shape {keypoints.shape} to {frame_path}")
-                    if os.path.exists(frame_path):
-                        loaded = np.load(frame_path)
-                        print(f"Verified save: loaded shape {loaded.shape}")
-                    np.save(frame_path, keypoints)
-
-                    frame_index += 1
-
-                    resized_frame = cv.resize(display_image, (960, 540))
-                    cv.imshow("Video", resized_frame)
-
-                    if cv.waitKey(1) & 0xFF == ord("q"):
-                        self.stop()
-                        break
-
-                # Update the global timestamp for the next video
-                self.global_timestamp += int(
-                    cap.get(cv.CAP_PROP_FRAME_COUNT) * 1000 / fps
+        for video_file in os.listdir(self.video_folder):
+            video_path: str = os.path.join(self.video_folder, video_file)
+            if not video_file.endswith((".mp4", ".avi", ".mov")):
+                continue
+            print(f"Processing video: {video_file}")
+            cap = cv.VideoCapture(video_path)
+            if not cap.isOpened():
+                print(f"Failed to open video: {video_file}")
+                continue
+            frame_index: int = 0
+            fps = cap.get(cv.CAP_PROP_FPS) or 30  # Default to 30 FPS if unknown
+            while True:
+                success, frame = cap.read()
+                if not success:
+                    break
+                print("PROCESSING FRAME:", frame_index)
+                resized_frame = cv.resize(frame, (640, 480))
+                # Process image and get results
+                results, processed_image = self.image_process(
+                    resized_frame, self.holistic
                 )
-                cap.release()
+                if not self.needed_landmarks_present(results):
+                    print(f"Not enough landmarks in {frame_index}, skipping...")
+                    frame_index += 1
+                    continue
+                if not self.wrists_are_above_hips(results):
+                    print(f"No hands above the hips in {frame_index}, skipping...")
+                    frame_index += 1
+                    continue
+                # Draw landmarks and display
+                display_image = self.draw_landmarks(processed_image, results)
+                # Extract the landmarks from both hands and save them in arrays
+                keypoints: np.ndarray = self.keypoint_extraction(results)
+                frame_path = os.path.join(
+                    path,
+                    self.get_label_name(video_file),
+                    f"{self.get_file_index(video_file)}_frame_{frame_index}.npy",
+                )
+                save_dir = os.path.dirname(frame_path)
+                os.makedirs(save_dir, exist_ok=True)
+                print(f"Saving keypoints shape {keypoints.shape} to {frame_path}")
+                if os.path.exists(frame_path):
+                    loaded = np.load(frame_path)
+                    print(f"Verified save: loaded shape {loaded.shape}")
+                np.save(frame_path, keypoints)
+                frame_index += 1
+                resized_frame = cv.resize(display_image, (960, 540))
+                cv.imshow("Video", resized_frame)
+                if cv.waitKey(1) & 0xFF == ord("q"):
+                    self.stop()
+                    break
+            # Update the global timestamp for the next video
+            self.global_timestamp += int(
+                cap.get(cv.CAP_PROP_FRAME_COUNT) * 1000 / fps
+            )
+            cap.release()
     
     def create_sequences(self, path: str, labels: list[str], sequence_length: int):
         landmarks, labels_integers = [], []
@@ -342,40 +186,38 @@ class VideoHandler(GestureHandler):
         print(accuracy)
 
     def run(self) -> None:
-        with Holistic() as holistic:
-            for video_file in os.listdir(self.video_folder):
-                video_path: str = os.path.join(self.video_folder, video_file)
-                if not video_file.endswith((".mp4", ".avi", ".mov")):
-                    continue
-                print(f"Processing video: {video_file}")
-                cap = cv.VideoCapture(video_path)
-                if not cap.isOpened():
-                    print(f"Failed to open video: {video_file}")
-                    continue
-                frame_index: int = 0
-                fps = cap.get(cv.CAP_PROP_FPS) or 30  # Default to 30 FPS if unknown
-                while True:
-                    success, frame = cap.read()
-                    if not success:
-                        break
-
-                    resized_frame = cv.resize(frame, (640, 480))
-                    results, processed_image = self.image_process(
-                        resized_frame, holistic
-                    )
-                    frame_with_landmarks = self.draw_landmarks(processed_image, results)
-                    cv.imshow("Video", frame_with_landmarks)
-                    print(frame_index)
-                    if cv.waitKey(1) & 0xFF == ord("q"):
-                        self.stop()
-                        break
-                    frame_index += 1
-                print("Frames per second", frame_index / 60)
-                # Update the global timestamp for the next video
-                self.global_timestamp += int(
-                    cap.get(cv.CAP_PROP_FRAME_COUNT) * 1000 / fps
+        for video_file in os.listdir(self.video_folder):
+            video_path: str = os.path.join(self.video_folder, video_file)
+            if not video_file.endswith((".mp4", ".avi", ".mov")):
+                continue
+            print(f"Processing video: {video_file}")
+            cap = cv.VideoCapture(video_path)
+            if not cap.isOpened():
+                print(f"Failed to open video: {video_file}")
+                continue
+            frame_index: int = 0
+            fps = cap.get(cv.CAP_PROP_FPS) or 30  # Default to 30 FPS if unknown
+            while True:
+                success, frame = cap.read()
+                if not success:
+                    break
+                resized_frame = cv.resize(frame, (640, 480))
+                results, processed_image = self.image_process(
+                    resized_frame, self.holistic
                 )
-                cap.release()
+                frame_with_landmarks = self.draw_landmarks(processed_image, results)
+                cv.imshow("Video", frame_with_landmarks)
+                print(frame_index)
+                if cv.waitKey(1) & 0xFF == ord("q"):
+                    self.stop()
+                    break
+                frame_index += 1
+            print("Frames per second", frame_index / 60)
+            # Update the global timestamp for the next video
+            self.global_timestamp += int(
+                cap.get(cv.CAP_PROP_FRAME_COUNT) * 1000 / fps
+            )
+            cap.release()
 
     def stop(self) -> None:
         cv.destroyAllWindows()
