@@ -11,7 +11,7 @@ from core.processor import MediaPipeProcessor
 
 @dataclass
 class GestureHandler(MediaPipeProcessor):
-    """The Base Class for Sign Language detection."""
+    """The Base Class for Sign Language data creation."""
 
     def get_file_index(self, file_name: str) -> str:
         """Returns the numeric value in the given file name.
@@ -55,7 +55,7 @@ class GestureHandler(MediaPipeProcessor):
 
 @dataclass
 class VideoHandler(GestureHandler):
-    """Video Sign Language detector."""
+    """Video Sign Language data pipeline."""
 
     video_folder: str = None
     global_timestamp: int = 0
