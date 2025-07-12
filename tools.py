@@ -15,8 +15,6 @@ from sklearn.model_selection import train_test_split
 class GestureHandler:
     """The Base Class for Sign Language detection."""
 
-    model_path: str = None
-
     def get_file_index(self, file_name: str) -> str:
         index = ""
         for character in file_name:
