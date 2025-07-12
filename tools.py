@@ -53,7 +53,6 @@ class VideoHandler(GestureHandler):
         if not self.directories_already_created(path):
             self.create_directories(path)
 
-
         for video_file in os.listdir(self.video_folder):
             video_path: str = os.path.join(self.video_folder, video_file)
             if not video_file.endswith((".mp4", ".avi", ".mov")):
@@ -67,7 +66,7 @@ class VideoHandler(GestureHandler):
             fps = cap.get(cv.CAP_PROP_FPS) or 30  # Default to 30 FPS if unknown
             while True:
                 success, frame = cap.read()
-                if not success:
+                if not success or frame is None:
                     break
                 print("PROCESSING FRAME:", frame_index)
                 resized_frame = cv.resize(frame, (640, 480))
