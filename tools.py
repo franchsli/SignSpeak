@@ -185,39 +185,6 @@ class VideoHandler(GestureHandler):
         accuracy = metrics.accuracy_score(test_labels, predictions)
         print(accuracy)
 
-    def run(self) -> None:
-        for video_file in os.listdir(self.video_folder):
-            video_path: str = os.path.join(self.video_folder, video_file)
-            if not video_file.endswith((".mp4", ".avi", ".mov")):
-                continue
-            print(f"Processing video: {video_file}")
-            cap = cv.VideoCapture(video_path)
-            if not cap.isOpened():
-                print(f"Failed to open video: {video_file}")
-                continue
-            frame_index: int = 0
-            fps = cap.get(cv.CAP_PROP_FPS) or 30  # Default to 30 FPS if unknown
-            while True:
-                success, frame = cap.read()
-                if not success:
-                    break
-                resized_frame = cv.resize(frame, (640, 480))
-                results, processed_image = self.image_process(
-                    resized_frame, self.holistic
-                )
-                frame_with_landmarks = self.draw_landmarks(processed_image, results)
-                cv.imshow("Video", frame_with_landmarks)
-                print(frame_index)
-                if cv.waitKey(1) & 0xFF == ord("q"):
-                    self.stop()
-                    break
-                frame_index += 1
-            print("Frames per second", frame_index / 60)
-            # Update the global timestamp for the next video
-            self.global_timestamp += int(
-                cap.get(cv.CAP_PROP_FRAME_COUNT) * 1000 / fps
-            )
-            cap.release()
 
     def stop(self) -> None:
         cv.destroyAllWindows()
