@@ -14,6 +14,17 @@ class GestureHandler(MediaPipeProcessor):
     """The Base Class for Sign Language detection."""
 
     def get_file_index(self, file_name: str) -> str:
+        """Returns the numeric value in the given file name.
+        This numeric value refers to the index of the video of
+        some label.
+        (e. g. ADIOS1 -> 1, ADIOS2 -> 2, etc.)
+
+        Args:
+            file_name (str)
+
+        Returns:
+            str: The file index.
+        """
         index = ""
         for character in file_name:
             if character == ".":
