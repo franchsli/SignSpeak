@@ -34,6 +34,15 @@ class GestureHandler(MediaPipeProcessor):
         return index
 
     def get_label_name(self, file_name: str) -> str:
+        """Returns the label name of the given file name.
+        The label is associated with the gesture shown in the file.
+
+        Args:
+            file_name (str)
+
+        Returns:
+            str:
+        """
         label = ""
         for character in file_name:
             if character == ".":
