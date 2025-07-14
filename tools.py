@@ -11,9 +11,14 @@ from core.processor import MediaPipeProcessor
 
 @dataclass
 class GestureHandler(MediaPipeProcessor):
-    """The Base Class for Sign Language data creation."""
+    """The Base Class for Sign Language data creation.
+
+        Args:
+            data_parent_folder (str): The folder that contains all the data
+            that will be used in the dataset creation.
+    """
     
-    dataset_parent_folder: str = None
+    data_parent_folder: str = None
 
     def get_file_index(self, file_name: str) -> str:
         """Returns the numeric value in the given file name.
@@ -54,7 +59,7 @@ class GestureHandler(MediaPipeProcessor):
         return label
     
     def create_dataset_directories(self, path: str) -> None:
-        for label in os.listdir(self.dataset_parent_folder):
+        for label in os.listdir(self.data_parent_folder):
             os.makedirs(os.path.join(path, label), exist_ok=True)
 
 
