@@ -61,6 +61,9 @@ class GestureHandler(MediaPipeProcessor):
     def create_dataset_directories(self, path: str) -> None:
         for label in os.listdir(self.data_parent_folder):
             os.makedirs(os.path.join(path, label), exist_ok=True)
+    
+    def dataset_directories_already_created(self, path: str) -> bool:
+        return len(os.listdir(path)) == len(os.listdir(self.data_parent_folder))
 
 
 @dataclass
