@@ -59,6 +59,11 @@ class GestureHandler(MediaPipeProcessor):
         return label
     
     def create_dataset_directories(self, path: str) -> None:
+        """Creates all the needed directories for the dataset inside the given path.
+
+        Args:
+            path (str): Where the directories should be created.
+        """
         for label in os.listdir(self.data_parent_folder):
             os.makedirs(os.path.join(path, label), exist_ok=True)
     
