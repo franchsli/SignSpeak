@@ -166,8 +166,7 @@ class VideoHandler(GestureHandler):
         return np.array(landmarks), to_categorical(labels_integers).astype(int)
 
     def train(self, path: str) -> None:
-        parent_folder = os.path.dirname(self.video_folder)
-        labels = os.listdir(parent_folder)
+        labels = os.listdir(self.data_parent_folder)
         signs = np.array(labels)
         SEQUENCE_LENGTH = 10  # Must match model's expected input
 
