@@ -116,8 +116,6 @@ class VideoHandler(GestureHandler):
                     print(f"Failed to open video: {video_file}")
                     continue
                 frame_index: int = 0
-                # TODO: Remove this variable if it's safe to do so
-                fps = cap.get(cv.CAP_PROP_FPS) or 30  # Default to 30 FPS if unknown
                 while True:
                     success, frame = cap.read()
                     if not success or frame is None:
