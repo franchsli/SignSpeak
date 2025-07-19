@@ -86,18 +86,9 @@ class VideoHandler(GestureHandler):
 
     video_folder: str = None
 
-    def create_directories(self, path: str) -> None:
-        parent_folder = os.path.dirname(self.video_folder)
-        for label in os.listdir(parent_folder):
-            os.makedirs(os.path.join(path, label), exist_ok=True)
-
-    def directories_already_created(self, path) -> bool:
-        parent_folder = os.path.dirname(self.video_folder)
-        return len(os.listdir(path)) == len(os.listdir(parent_folder))
-
     def create_dataset(self, path: str) -> None:
-        if not self.directories_already_created(path):
-            self.create_directories(path)
+        if not self.dataset_directories_already_created(path):
+            self.create_dataset_directories(path)
 
         for video_file in os.listdir(self.video_folder):
             video_path: str = os.path.join(self.video_folder, video_file)
