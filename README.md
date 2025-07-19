@@ -6,6 +6,9 @@ A sign language translator.
 
 ## High priority
 
+- Try to install all the required packages onl (in a new venv), without dependencies (like Jax who throws errors)
+  - If this does not work, install anything in venv individually without dependencies.
+  - use py -3.11 to create the venv
 - Fully rework VideoHandler, GestureHandler, etc.
   - These classes will only handle datasets creation and model training, nothing else.
   Each class will specialize in handling one format (video, image, or webcam [think about this])
