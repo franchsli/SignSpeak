@@ -95,7 +95,7 @@ class VideoHandler(GestureHandler):
             self.create_dataset_directories(path)
         
         for video_folder in os.listdir(self.data_parent_folder):
-            for video_file in os.listdir(video_folder):
+            for video_file in os.listdir(os.path.join(self.data_parent_folder, video_folder)):
                 video_path: str = os.path.join(video_folder, video_file)
                 if not video_file.endswith((".mp4", ".avi", ".mov")):
                     continue
