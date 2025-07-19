@@ -181,6 +181,11 @@ class VideoHandler(GestureHandler):
         return np.array(landmarks), to_categorical(labels_integers).astype(int)
 
     def train(self, path: str) -> None:
+        """Creates a trained model using the dataset inside the path.
+
+        Args:
+            path (str): Where the dataset is.
+        """
         labels = os.listdir(self.data_parent_folder)
         signs = np.array(labels)
         SEQUENCE_LENGTH = 10  # Must match model's expected input

@@ -6,6 +6,7 @@ A sign language translator.
 
 ## High priority
 
+- Add docstring to create_sequences method.
 - Implement ImageHandler.
 
 ### Low priority
