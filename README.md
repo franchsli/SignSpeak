@@ -7,13 +7,8 @@ A sign language translator.
 ## High priority
 
 - Fully rework VideoHandler, GestureHandler, etc.
-  - These classes will only handle datasets creation and model training, nothing else.
-  Each class will specialize in handling one format (video, image, or webcam [think about this])
-  - Fix AttributeError: 'VideoHandler' object has no attribute 'holistic'.
   - Implement ImageHandler.
-  - Rework ImageHandler and VideoHandler create datasets only knowing the parent directory (to avoid doing it manually with loops).
 - Use VideoHandler functionalities into WebCamHandler.
-- Implement an ImageHandler (think about it).
 
 ### Low priority
 
