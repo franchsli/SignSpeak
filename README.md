@@ -7,6 +7,7 @@ A sign language translator.
 ## High priority
 
 - Try to install all the required packages onl (in a new venv), without dependencies (like Jax who throws errors)
+  **IMPORTANT** Try to create a venv replica with the installed interpreter and then run pip freeze from there.
   - If this does not work, install anything in venv individually without dependencies.
   - use py -3.11 to create the venv
 - Fully rework VideoHandler, GestureHandler, etc.
