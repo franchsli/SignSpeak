@@ -84,65 +84,64 @@ class GestureHandler(MediaPipeProcessor):
 class VideoHandler(GestureHandler):
     """Video Sign Language data pipeline."""
 
-    video_folder: str = None
-
     def create_dataset(self, path: str) -> None:
         if not self.dataset_directories_already_created(path):
             self.create_dataset_directories(path)
-
-        for video_file in os.listdir(self.video_folder):
-            video_path: str = os.path.join(self.video_folder, video_file)
-            if not video_file.endswith((".mp4", ".avi", ".mov")):
-                continue
-            print(f"Processing video: {video_file}")
-            cap = cv.VideoCapture(video_path)
-            if not cap.isOpened():
-                print(f"Failed to open video: {video_file}")
-                continue
-            frame_index: int = 0
-            # TODO: Remove this variable if it's safe to do so
-            fps = cap.get(cv.CAP_PROP_FPS) or 30  # Default to 30 FPS if unknown
-            while True:
-                success, frame = cap.read()
-                if not success or frame is None:
-                    break
-                print("PROCESSING FRAME:", frame_index)
-                resized_frame = cv.resize(frame, (640, 480))
-                # Process image and get results
-                results, processed_image = self.image_process(
-                    resized_frame, self.holistic
-                )
-                if not self.needed_landmarks_present(results):
-                    print(f"Not enough landmarks in {frame_index}, skipping...")
-                    frame_index += 1
+        
+        for video_folder in os.listdir(self.data_parent_folder):
+            for video_file in os.listdir(video_folder):
+                video_path: str = os.path.join(video_folder, video_file)
+                if not video_file.endswith((".mp4", ".avi", ".mov")):
                     continue
-                if not self.wrists_are_above_hips(results):
-                    print(f"No hands above the hips in {frame_index}, skipping...")
-                    frame_index += 1
+                print(f"Processing video: {video_file}")
+                cap = cv.VideoCapture(video_path)
+                if not cap.isOpened():
+                    print(f"Failed to open video: {video_file}")
                     continue
-                # Draw landmarks and display
-                display_image = self.draw_landmarks(processed_image, results)
-                # Extract the landmarks from both hands and save them in arrays
-                keypoints: np.ndarray = self.keypoint_extraction(results)
-                frame_path = os.path.join(
-                    path,
-                    self.get_label_name(video_file),
-                    f"{self.get_file_index(video_file)}_frame_{frame_index}.npy",
-                )
-                save_dir = os.path.dirname(frame_path)
-                os.makedirs(save_dir, exist_ok=True)
-                print(f"Saving keypoints shape {keypoints.shape} to {frame_path}")
-                if os.path.exists(frame_path):
-                    loaded = np.load(frame_path)
-                    print(f"Verified save: loaded shape {loaded.shape}")
-                np.save(frame_path, keypoints)
-                frame_index += 1
-                resized_frame = cv.resize(display_image, (960, 540))
-                cv.imshow("Video", resized_frame)
-                if cv.waitKey(1) & 0xFF == ord("q"):
-                    self.stop()
-                    break
-            cap.release()
+                frame_index: int = 0
+                # TODO: Remove this variable if it's safe to do so
+                fps = cap.get(cv.CAP_PROP_FPS) or 30  # Default to 30 FPS if unknown
+                while True:
+                    success, frame = cap.read()
+                    if not success or frame is None:
+                        break
+                    print("PROCESSING FRAME:", frame_index)
+                    resized_frame = cv.resize(frame, (640, 480))
+                    # Process image and get results
+                    results, processed_image = self.image_process(
+                        resized_frame, self.holistic
+                    )
+                    if not self.needed_landmarks_present(results):
+                        print(f"Not enough landmarks in {frame_index}, skipping...")
+                        frame_index += 1
+                        continue
+                    if not self.wrists_are_above_hips(results):
+                        print(f"No hands above the hips in {frame_index}, skipping...")
+                        frame_index += 1
+                        continue
+                    # Draw landmarks and display
+                    display_image = self.draw_landmarks(processed_image, results)
+                    # Extract the landmarks from both hands and save them in arrays
+                    keypoints: np.ndarray = self.keypoint_extraction(results)
+                    frame_path = os.path.join(
+                        path,
+                        self.get_label_name(video_file),
+                        f"{self.get_file_index(video_file)}_frame_{frame_index}.npy",
+                    )
+                    save_dir = os.path.dirname(frame_path)
+                    os.makedirs(save_dir, exist_ok=True)
+                    print(f"Saving keypoints shape {keypoints.shape} to {frame_path}")
+                    if os.path.exists(frame_path):
+                        loaded = np.load(frame_path)
+                        print(f"Verified save: loaded shape {loaded.shape}")
+                    np.save(frame_path, keypoints)
+                    frame_index += 1
+                    resized_frame = cv.resize(display_image, (960, 540))
+                    cv.imshow("Video", resized_frame)
+                    if cv.waitKey(1) & 0xFF == ord("q"):
+                        self.stop()
+                        break
+                cap.release()
     
     def create_sequences(self, path: str, labels: list[str], sequence_length: int):
         landmarks, labels_integers = [], []
