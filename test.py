@@ -7,7 +7,7 @@ video_folders = os.listdir(video_folders_path)
 VideoGesturesRecognizer = VideoHandler(data_parent_folder=video_folders_path)
 # VideoGesturesRecognizer.create_directories(os.path.abspath("test"))
 # create datasets code
-VideoGesturesRecognizer.create_dataset(os.path.abspath("testing"))
+# VideoGesturesRecognizer.create_dataset(os.path.abspath("testing"))
 
 # training code (after all the datasets are created)
-# VideoGesturesRecognizer.train(os.path.abspath("testing"))
+# VideoGesturesRecognizer.train(os.path.abspath("test"))

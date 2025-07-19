@@ -126,7 +126,7 @@ class VideoHandler(GestureHandler):
                     resized_frame = cv.resize(frame, (640, 480))
                     # Process image and get results
                     results, processed_image = self.image_process(
-                        resized_frame, self.holistic
+                        resized_frame
                     )
                     if not self.needed_landmarks_present(results):
                         print(f"Not enough landmarks in {frame_index}, skipping...")
