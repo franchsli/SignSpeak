@@ -12,6 +12,7 @@ A sign language translator.
 
 - Implement some of the suggestions from Claude and maybe convert the core folder classes to dataclasses.
 - Add logging: Replace print statements.
+- Use tdqm to implement a load bar  in dataset creation and other methods if needed.
 - Remove "DEBUG" variable in translate_video() method.
 - Collect more data (sentences and letters) to train the VideoHandler with.
 - Implement frame division.
