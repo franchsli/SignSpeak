@@ -85,6 +85,12 @@ class VideoHandler(GestureHandler):
     """Video Sign Language data pipeline."""
 
     def create_dataset(self, path: str) -> None:
+        """
+        Creates the dataset for the model training in the given path.
+
+        Args:
+            path (str): Where the dataset will be created.
+        """
         if not self.dataset_directories_already_created(path):
             self.create_dataset_directories(path)
         
