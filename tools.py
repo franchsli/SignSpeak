@@ -9,16 +9,19 @@ from sklearn import metrics
 from sklearn.model_selection import train_test_split
 from core.processor import MediaPipeProcessor
 
-@dataclass
-class GestureHandler(MediaPipeProcessor):
-    """The Base Class for Sign Language data creation.
 
-        Args:
-            data_parent_folder (str): The folder that contains all the data
-            that will be used in the dataset creation.
-    """
+class GestureHandler(MediaPipeProcessor):
+    def __init__(self, confidence: float = 0.75, data_parent_folder: str = None):
+        """The Base Class for Sign Language data creation.
+
+            Args:
+                confidence (float) 
+                data_parent_folder (str): The folder that contains all the data
+                that will be used in the dataset creation.
+        """
+        self.data_parent_folder = data_parent_folder
+        super().__init__(confidence)
     
-    data_parent_folder: str = None
 
     def get_file_index(self, file_name: str) -> str:
         """Returns the numeric value in the given file name.
@@ -80,9 +83,16 @@ class GestureHandler(MediaPipeProcessor):
         return len(os.listdir(path)) == len(os.listdir(self.data_parent_folder))
 
 
-@dataclass
 class VideoHandler(GestureHandler):
-    """Video Sign Language data pipeline."""
+    def __init__(self, confidence: float = 0.75, data_parent_folder: str = None):
+        """Video Sign Language data pipeline.
+        
+            Args:
+                confidence (float) 
+                data_parent_folder (str): The folder that contains all the data
+                that will be used in the dataset creation.
+        """
+        super().__init__(confidence, data_parent_folder)
 
     def create_dataset(self, path: str) -> None:
         """
