@@ -6,9 +6,7 @@ A sign language translator.
 
 ## High priority
 
-- Fully rework VideoHandler, GestureHandler, etc.
-  - Implement ImageHandler.
-- Use VideoHandler functionalities into WebCamHandler.
+- Implement ImageHandler.
 
 ### Low priority
 
