@@ -165,7 +165,7 @@ class VideoHandler(GestureHandler):
         
         for label in os.listdir(path):
             # Sort files to maintain temporal order
-            files = sorted([f for f in os.listdir(os.path.join(path, label)) if f.endswith('.npy')])
+            files = sorted([file for file in os.listdir(os.path.join(path, label)) if file.endswith('.npy')])
             
             all_frames = []
             for file in files:
