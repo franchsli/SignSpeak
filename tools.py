@@ -158,11 +158,11 @@ class VideoHandler(GestureHandler):
                         break
                 cap.release()
     
-    def create_sequences(self, path: str, labels: list[str], sequence_length: int = 10):
+    def create_sequences(self, dataset_path: str, labels: list[str], sequence_length: int = 10):
         """Creates overlapping sequences from frame data and the labels integers for training.
 
         Args:
-            path (str): Where the dataset is.
+            dataset_path (str): Where the dataset is.
             labels (list[str]): The words that the model will learn.
             sequence_length (int): The length of the overlapping sequences. Defaults to 10.
 
@@ -173,13 +173,13 @@ class VideoHandler(GestureHandler):
         # Create a label map to map each action label to a numeric value
         label_map = {label: num for num, label in enumerate(labels)}
         
-        for label in os.listdir(path):
+        for label in os.listdir(dataset_path):
             # Sort files to maintain temporal order
-            files = sorted([file for file in os.listdir(os.path.join(path, label)) if file.endswith('.npy')])
+            files = sorted([file for file in os.listdir(os.path.join(dataset_path, label)) if file.endswith('.npy')])
             
             all_frames = []
             for file in files:
-                frame_data = np.load(os.path.join(path, label, file))
+                frame_data = np.load(os.path.join(dataset_path, label, file))
                 all_frames.append(frame_data)
             
             # Create sliding window sequences
@@ -190,17 +190,17 @@ class VideoHandler(GestureHandler):
         
         return np.array(landmarks), to_categorical(labels_integers).astype(int)
 
-    def train(self, path: str) -> None:
-        """Creates a trained model using the dataset inside the path.
+    def train(self, dataset_path: str) -> None:
+        """Creates a trained model using the dataset inside the dataset path.
 
         Args:
-            path (str): Where the dataset is.
+            dataset_path (str): Where the dataset is.
         """
         labels = os.listdir(self.data_parent_folder)
         signs = np.array(labels)
         SEQUENCE_LENGTH = 10  # Must match model's expected input
 
-        landmarks, labels_integers = self.create_sequences(path, labels, SEQUENCE_LENGTH)
+        landmarks, labels_integers = self.create_sequences(dataset_path, labels, SEQUENCE_LENGTH)
 
         # Convert landmarks and labels to numpy arrays
         X, Y = landmarks, labels_integers
