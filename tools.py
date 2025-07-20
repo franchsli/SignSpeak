@@ -205,7 +205,7 @@ class VideoHandler(GestureHandler):
         # X, Y = landmarks, labels_integers
 
         # Split the data into training and testing sets
-        landmarks_train, landmarks_test, labels_integers_train, labels_integers_test = train_test_split(
+        training_landmarks, testing_landmarks, training_labels_integers, testing_labels_integers = train_test_split(
             landmarks, labels_integers, test_size=0.10, random_state=34
         )
 
@@ -231,15 +231,15 @@ class VideoHandler(GestureHandler):
             metrics=["categorical_accuracy"],
         )
         # Train the model
-        model.fit(landmarks_train, labels_integers_train, epochs=100)
+        model.fit(training_landmarks, training_labels_integers, epochs=100)
 
         # Save the trained model
         model.save("models/model.keras")
 
         # Make predictions on the test set
-        predictions = np.argmax(model.predict(landmarks_test), axis=1)
+        predictions = np.argmax(model.predict(testing_landmarks), axis=1)
         # Get the true labels from the test set
-        test_labels = np.argmax(labels_integers_test, axis=1)
+        test_labels = np.argmax(testing_labels_integers, axis=1)
 
         # Calculate the accuracy of the predictions
         accuracy = metrics.accuracy_score(test_labels, predictions)
