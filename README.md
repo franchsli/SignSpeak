@@ -6,7 +6,7 @@ A sign language translator.
 
 ## High priority
 
-- Add docstring to create_sequences method.
+- Add model_path argument to train().
 - Implement ImageHandler.
 
 ### Low priority

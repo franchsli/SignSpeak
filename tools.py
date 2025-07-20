@@ -175,6 +175,7 @@ class VideoHandler(GestureHandler):
         
         for label in os.listdir(dataset_path):
             # Sort files to maintain temporal order
+            # TODO: Check if this sorting is necesary, remove if so
             files = sorted([file for file in os.listdir(os.path.join(dataset_path, label)) if file.endswith('.npy')])
             
             all_frames = []
