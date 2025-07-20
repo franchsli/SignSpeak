@@ -202,12 +202,11 @@ class VideoHandler(GestureHandler):
 
         landmarks, labels_integers = self.create_sequences(dataset_path, labels, SEQUENCE_LENGTH)
 
-        # Convert landmarks and labels to numpy arrays
-        X, Y = landmarks, labels_integers
+        # X, Y = landmarks, labels_integers
 
         # Split the data into training and testing sets
-        X_train, X_test, Y_train, Y_test = train_test_split(
-            X, Y, test_size=0.10, random_state=34
+        landmarks_train, landmarks_test, labels_integers_train, labels_integers_test = train_test_split(
+            landmarks, labels_integers, test_size=0.10, random_state=34
         )
 
         # Define the model architecture
@@ -232,15 +231,15 @@ class VideoHandler(GestureHandler):
             metrics=["categorical_accuracy"],
         )
         # Train the model
-        model.fit(X_train, Y_train, epochs=100)
+        model.fit(landmarks_train, labels_integers_train, epochs=100)
 
         # Save the trained model
         model.save("models/model.keras")
 
         # Make predictions on the test set
-        predictions = np.argmax(model.predict(X_test), axis=1)
+        predictions = np.argmax(model.predict(landmarks_test), axis=1)
         # Get the true labels from the test set
-        test_labels = np.argmax(Y_test, axis=1)
+        test_labels = np.argmax(labels_integers_test, axis=1)
 
         # Calculate the accuracy of the predictions
         accuracy = metrics.accuracy_score(test_labels, predictions)
