@@ -158,7 +158,17 @@ class VideoHandler(GestureHandler):
                         break
                 cap.release()
     
-    def create_sequences(self, path: str, labels: list[str], sequence_length: int):
+    def create_sequences(self, path: str, labels: list[str], sequence_length: int = 10):
+        """Creates overlapping sequences from frame data and the labels integers for training.
+
+        Args:
+            path (str): Where the dataset is.
+            labels (list[str]): The words that the model will learn.
+            sequence_length (int): The length of the overlapping sequences. Defaults to 10.
+
+        Returns:
+            tuple: The overlapping sequences and the labels integers.
+        """
         landmarks, labels_integers = [], []
         # Create a label map to map each action label to a numeric value
         label_map = {label: num for num, label in enumerate(labels)}
