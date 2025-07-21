@@ -6,7 +6,7 @@ A sign language translator.
 
 ## High priority
 
-- Implement ImageHandler.
+- Test ImageHandler dataset creation and training (in training use a **custom** model path).
 
 ### Low priority
 
@@ -14,8 +14,9 @@ A sign language translator.
 - Add logging: Replace print statements.
 - Use tdqm to implement a load bar  in dataset creation and other methods if needed.
 - Remove "DEBUG" variable in translate_video() method.
-- Collect more data (sentences and letters) to train the VideoHandler with.
-- Implement frame division.
+- Collect more sentences to train the VideoHandler with.
+- Collect letters to train the ImageHandler with.
+- Implement frame division (think about this).
   Divide the frame by the number of people there and process the signs of everyone.
   - Add person detection (YOLO/MediaPipe Person Segmentation).
   - Crop bounding boxes around each person.
