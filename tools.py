@@ -82,6 +82,9 @@ class GestureHandler(MediaPipeProcessor):
         """
         return len(os.listdir(path)) == len(os.listdir(self.data_parent_folder))
 
+    def stop(self) -> None:
+        cv.destroyAllWindows()
+
 class ImageHandler(GestureHandler):
     def __init__(self, confidence: float = 0.75, data_parent_folder: str = None):
         """Image Sign Language data pipeline.
@@ -229,9 +232,6 @@ class ImageHandler(GestureHandler):
                     labels_integers.append(label_map[label])
         
         return np.array(landmarks), to_categorical(labels_integers).astype(int)
-
-    def stop(self) -> None:
-        cv.destroyAllWindows()
         
 
 class VideoHandler(GestureHandler):
@@ -398,6 +398,3 @@ class VideoHandler(GestureHandler):
         accuracy = metrics.accuracy_score(test_labels, predictions)
         print(accuracy)
 
-
-    def stop(self) -> None:
-        cv.destroyAllWindows()
