@@ -162,7 +162,6 @@ class ImageHandler(GestureHandler):
         """
         labels = os.listdir(self.data_parent_folder)
         signs = np.array(labels)
-        SEQUENCE_LENGTH = 10  # Must match model's expected input
 
         landmarks, labels_integers = self.load_single_frames(dataset_path, labels)
 
@@ -210,7 +209,17 @@ class ImageHandler(GestureHandler):
         print(accuracy)
     
     def load_single_frames(self, path: str, labels: list[str]):
-        pass
+        landmarks, labels_integers = [], []
+        label_map = {label: num for num, label in enumerate(labels)}
+        
+        for label in os.listdir(path):
+            for file in os.listdir(os.path.join(path, label)):
+                if file.endswith('.npy'):
+                    frame_data = np.load(os.path.join(path, label, file))
+                    landmarks.append(frame_data)
+                    labels_integers.append(label_map[label])
+        
+        return np.array(landmarks), to_categorical(labels_integers).astype(int)
 
 
     def stop(self) -> None:
