@@ -90,7 +90,7 @@ class GestureHandler(MediaPipeProcessor):
 
 class ImageHandler(GestureHandler):
     def __init__(self, confidence: float = 0.75, data_parent_folder: str = None):
-        """Image Sign Language data pipeline.
+        """Sign Language data pipeline for images.
         
             Args:
                 confidence (float) 
@@ -239,7 +239,7 @@ class ImageHandler(GestureHandler):
 
 class VideoHandler(GestureHandler):
     def __init__(self, confidence: float = 0.75, data_parent_folder: str = None):
-        """Video Sign Language data pipeline.
+        """Sign Language data pipeline for videos.
         
             Args:
                 confidence (float) 
