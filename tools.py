@@ -82,6 +82,17 @@ class GestureHandler(MediaPipeProcessor):
         """
         return len(os.listdir(path)) == len(os.listdir(self.data_parent_folder))
 
+class ImageHandler(GestureHandler):
+    def __init__(self, confidence: float = 0.75, data_parent_folder: str = None):
+        """Image Sign Language data pipeline.
+        
+            Args:
+                confidence (float) 
+                data_parent_folder (str): The folder that contains all the data
+                that will be used in the dataset creation.
+        """
+        super().__init__(confidence, data_parent_folder)
+        
 
 class VideoHandler(GestureHandler):
     def __init__(self, confidence: float = 0.75, data_parent_folder: str = None):
