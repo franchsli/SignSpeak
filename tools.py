@@ -208,19 +208,27 @@ class ImageHandler(GestureHandler):
         accuracy = metrics.accuracy_score(test_labels, predictions)
         print(accuracy)
     
-    def load_single_frames(self, path: str, labels: list[str]):
+    def load_single_frames(self, dataset_path: str, labels: list[str]):
+        """Loads the frames data into an numpy array for model training.
+
+        Args:
+            dataset_path (str): Where the dataset is.
+            labels (list[str]): The words that the model will learn.
+
+        Returns:
+            tuple: The frames data and the labels integers.
+        """
         landmarks, labels_integers = [], []
         label_map = {label: num for num, label in enumerate(labels)}
         
-        for label in os.listdir(path):
-            for file in os.listdir(os.path.join(path, label)):
+        for label in os.listdir(dataset_path):
+            for file in os.listdir(os.path.join(dataset_path, label)):
                 if file.endswith('.npy'):
-                    frame_data = np.load(os.path.join(path, label, file))
+                    frame_data = np.load(os.path.join(dataset_path, label, file))
                     landmarks.append(frame_data)
                     labels_integers.append(label_map[label])
         
         return np.array(landmarks), to_categorical(labels_integers).astype(int)
-
 
     def stop(self) -> None:
         cv.destroyAllWindows()
