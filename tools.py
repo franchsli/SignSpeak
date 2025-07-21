@@ -18,6 +18,9 @@ class GestureHandler(MediaPipeProcessor):
                 confidence (float) 
                 data_parent_folder (str): The folder that contains all the data
                 that will be used in the dataset creation.
+            
+            **NOTE** This class is ONLY a collection of methods that both ImageHandler and
+            VideoHandler use.
         """
         self.data_parent_folder = data_parent_folder
         super().__init__(confidence)
