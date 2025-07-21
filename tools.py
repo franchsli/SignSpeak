@@ -191,11 +191,12 @@ class VideoHandler(GestureHandler):
         
         return np.array(landmarks), to_categorical(labels_integers).astype(int)
 
-    def train(self, dataset_path: str) -> None:
+    def train(self, dataset_path: str, model_path: str = "models/model.keras") -> None:
         """Creates a trained model using the dataset inside the dataset path.
 
         Args:
             dataset_path (str): Where the dataset is.
+            model_path (str): Where the resulting model should be stored.
         """
         labels = os.listdir(self.data_parent_folder)
         signs = np.array(labels)
@@ -235,7 +236,7 @@ class VideoHandler(GestureHandler):
         model.fit(training_landmarks, training_labels_integers, epochs=100)
 
         # Save the trained model
-        model.save("models/model.keras")
+        model.save(model_path)
 
         # Make predictions on the test set
         predictions = np.argmax(model.predict(testing_landmarks), axis=1)

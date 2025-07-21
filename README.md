@@ -6,7 +6,6 @@ A sign language translator.
 
 ## High priority
 
-- Add model_path argument to train().
 - Implement ImageHandler.
 
 ### Low priority
