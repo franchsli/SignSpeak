@@ -152,6 +152,69 @@ class ImageHandler(GestureHandler):
                         self.stop()
                         break
                 cap.release()
+
+    def train(self, dataset_path: str, model_path: str = "models/model.keras") -> None:
+        """Creates a trained model using the dataset inside the dataset path.
+
+        Args:
+            dataset_path (str): Where the dataset is.
+            model_path (str): Where the resulting model should be stored.
+        """
+        labels = os.listdir(self.data_parent_folder)
+        signs = np.array(labels)
+        SEQUENCE_LENGTH = 10  # Must match model's expected input
+
+        landmarks, labels_integers = self.load_single_frames(dataset_path, labels)
+
+        # X, Y = landmarks, labels_integers
+
+        # Split the data into training and testing sets
+        training_landmarks, testing_landmarks, training_labels_integers, testing_labels_integers = train_test_split(
+            landmarks, labels_integers, test_size=0.10, random_state=34
+        )
+
+        # Define the model architecture
+        model = Sequential()
+        model.add(
+            Dense(
+                32,
+                return_sequences=True,
+                activation="relu",
+                input_shape=(126,),
+            )
+        )
+        model.add(Dense(64, return_sequences=True, activation="relu"))
+        model.add(Dense(32, return_sequences=False, activation="relu"))
+        model.add(Dense(32, activation="relu"))
+        model.add(Dense(signs.shape[0], activation="softmax"))
+
+        # Compile the model with Adam optimizer and categorical cross-entropy loss
+        model.compile(
+            optimizer="Adam",
+            loss="categorical_crossentropy",
+            metrics=["categorical_accuracy"],
+        )
+        # Train the model
+        model.fit(training_landmarks, training_labels_integers, epochs=100)
+
+        # Save the trained model
+        model.save(model_path)
+
+        # Make predictions on the test set
+        predictions = np.argmax(model.predict(testing_landmarks), axis=1)
+        # Get the true labels from the test set
+        test_labels = np.argmax(testing_labels_integers, axis=1)
+
+        # Calculate the accuracy of the predictions
+        accuracy = metrics.accuracy_score(test_labels, predictions)
+        print(accuracy)
+    
+    def load_single_frames(self, path: str, labels: list[str]):
+        pass
+
+
+    def stop(self) -> None:
+        cv.destroyAllWindows()
         
 
 class VideoHandler(GestureHandler):
