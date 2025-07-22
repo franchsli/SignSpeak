@@ -14,7 +14,7 @@ class MediaPipeProcessor:
     def __init__(self, confidence: float = 0.75, mode: str = "holistic"):
         self.mode = mode
         if self.mode == ProcessorMode.HOLISTIC:
-            self.holistic = Holistic(
+            self.model = Holistic(
                 min_detection_confidence=confidence,
                 min_tracking_confidence=confidence
             )
@@ -113,7 +113,7 @@ class MediaPipeProcessor:
         # MediaPipe works better with read-only images
         image_rgb.flags.writeable = False
         # TODO: Improve this, model processing, it's so slow that it adds atleast 29 seconds on a 6 seconds long video (and 30 on average)
-        results = self.holistic.process(image_rgb)
+        results = self.model.process(image_rgb)
         image_rgb.flags.writeable = True
 
         # Convert back to BGR for OpenCV operations
