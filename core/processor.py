@@ -1,11 +1,11 @@
 import numpy as np
 import cv2 as cv
 import mediapipe as mp
-from enum import Enum
+from enum import StrEnum
 from mediapipe.python.solutions.holistic import Holistic
 from mediapipe.python.solutions.hands import Hands
 
-class ProcessorMode(Enum):
+class ProcessorMode(StrEnum):
     HANDS = "hands"
     HOLISTIC = "holistic"
 
