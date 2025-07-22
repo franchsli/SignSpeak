@@ -6,7 +6,7 @@ A sign language translator.
 
 ## High priority
 
-- Test ImageHandler dataset creation and training (in training use a **custom** model path).
+- Customize needed_landmarks_present() method in ImageHandler to match the context of images.
 
 ### Low priority
 
