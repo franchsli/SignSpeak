@@ -9,11 +9,15 @@ class ProcessorMode(Enum):
 
 
 class MediaPipeProcessor:
-    def __init__(self, confidence: float = 0.75):
-        self.holistic = mp.solutions.holistic.Holistic(
-            min_detection_confidence=confidence,
-            min_tracking_confidence=confidence
-        )
+    def __init__(self, confidence: float = 0.75, mode: str = "holistic"):
+        self.mode = mode
+        if self.mode == ProcessorMode.HOLISTIC:
+            self.holistic = mp.solutions.holistic.Holistic(
+                min_detection_confidence=confidence,
+                min_tracking_confidence=confidence
+            )
+        elif self.mode == ProcessorMode.HANDS:
+            pass
 
     def needed_landmarks_present(self, results) -> bool:
         """Returns True if the pose landmarks
