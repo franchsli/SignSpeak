@@ -1,6 +1,13 @@
 import numpy as np
 import cv2 as cv
 import mediapipe as mp
+from enum import Enum
+
+class ProcessorMode(Enum):
+    HANDS = "hands"
+    HOLISTIC = "holistic"
+
+
 class MediaPipeProcessor:
     def __init__(self, confidence: float = 0.75):
         self.holistic = mp.solutions.holistic.Holistic(
