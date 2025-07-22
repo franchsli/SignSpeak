@@ -19,7 +19,11 @@ class MediaPipeProcessor:
                 min_tracking_confidence=confidence
             )
         elif self.mode == ProcessorMode.HANDS:
-            pass
+            self.model = Hands(
+                static_image_mode=True,
+                min_detection_confidence=confidence,
+                min_tracking_confidence=confidence
+            )
 
     def needed_landmarks_present(self, results) -> bool:
         """Returns True if the pose landmarks
