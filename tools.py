@@ -181,7 +181,7 @@ class ImageHandler(GestureHandler):
         model = Sequential()
         model.add(
             Dense(
-                32,
+                128,
                 activation="relu",
                 input_shape=(126,),
             )
