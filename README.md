@@ -6,8 +6,7 @@ A sign language translator.
 
 ## High priority
 
-- Use MediaPipe hands in ImageHandler instead of holistic.
-- Customize needed_landmarks_present() method in ImageHandler to match the context of images.
+- Extend MediaPipeProcessor methods to handle Hands results, only hands, etc. Depending on the processor mode.
 
 ### Low priority
 
