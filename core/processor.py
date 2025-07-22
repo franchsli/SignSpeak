@@ -2,6 +2,8 @@ import numpy as np
 import cv2 as cv
 import mediapipe as mp
 from enum import Enum
+from mediapipe.python.solutions.holistic import Holistic
+from mediapipe.python.solutions.hands import Hands
 
 class ProcessorMode(Enum):
     HANDS = "hands"
@@ -12,7 +14,7 @@ class MediaPipeProcessor:
     def __init__(self, confidence: float = 0.75, mode: str = "holistic"):
         self.mode = mode
         if self.mode == ProcessorMode.HOLISTIC:
-            self.holistic = mp.solutions.holistic.Holistic(
+            self.holistic = Holistic(
                 min_detection_confidence=confidence,
                 min_tracking_confidence=confidence
             )
