@@ -118,45 +118,44 @@ class ImageHandler(GestureHandler):
                 if not cap.isOpened():
                     print(f"Failed to open image: {image_file}")
                     continue
-                while True:
-                    success, frame = cap.read()
-                    if not success or frame is None:
-                        break
-                    print("PROCESSING FRAME:", image_file)
-                    resized_frame = cv.resize(frame, (640, 480))
-                    # Process image and get results
-                    results, processed_image = self.image_process(
-                        resized_frame
-                    )
-                    # TODO: think abut these statements
-                    # as they might ny be necesary in the Image context
-                    if not self.needed_landmarks_present(results):
-                        print(f"Not enough landmarks in {image_file}, skipping...")
-                        continue
-                    if not self.wrists_are_above_hips(results):
-                        print(f"No hands above the hips in {image_file}, skipping...")
-                        continue
-                    # Draw landmarks and display
-                    display_image = self.draw_landmarks(processed_image, results)
-                    # Extract the landmarks from both hands and save them in arrays
-                    keypoints: np.ndarray = self.keypoint_extraction(results)
-                    frame_path = os.path.join(
-                        path,
-                        self.get_label_name(image_file),
-                        f"{self.get_file_index(image_file)}.npy",
-                    )
-                    save_dir = os.path.dirname(frame_path)
-                    os.makedirs(save_dir, exist_ok=True)
-                    print(f"Saving keypoints shape {keypoints.shape} to {frame_path}")
-                    if os.path.exists(frame_path):
-                        loaded = np.load(frame_path)
-                        print(f"Verified save: loaded shape {loaded.shape}")
-                    np.save(frame_path, keypoints)
-                    resized_frame = cv.resize(display_image, (960, 540))
-                    cv.imshow("Image", resized_frame)
-                    if cv.waitKey(1) & 0xFF == ord("q"):
-                        self.stop()
-                        break
+                success, frame = cap.read()
+                if not success or frame is None:
+                    break
+                print("PROCESSING FRAME:", image_file)
+                resized_frame = cv.resize(frame, (640, 480))
+                # Process image and get results
+                results, processed_image = self.image_process(
+                    resized_frame
+                )
+                # TODO: think abut these statements
+                # as they might not be necesary in the Image context
+                #if not self.needed_landmarks_present(results):
+                #    print(f"Not enough landmarks in {image_file}, skipping...")
+                #    continue
+                #if not self.wrists_are_above_hips(results):
+                #    print(f"No hands above the hips in {image_file}, skipping...")
+                #    continue
+                # Draw landmarks and display
+                display_image = self.draw_landmarks(processed_image, results)
+                # Extract the landmarks from both hands and save them in arrays
+                keypoints: np.ndarray = self.keypoint_extraction(results)
+                frame_path = os.path.join(
+                    path,
+                    self.get_label_name(image_file),
+                    f"{self.get_file_index(image_file)}.npy",
+                )
+                save_dir = os.path.dirname(frame_path)
+                os.makedirs(save_dir, exist_ok=True)
+                print(f"Saving keypoints shape {keypoints.shape} to {frame_path}")
+                if os.path.exists(frame_path):
+                    loaded = np.load(frame_path)
+                    print(f"Verified save: loaded shape {loaded.shape}")
+                np.save(frame_path, keypoints)
+                resized_frame = cv.resize(display_image, (960, 540))
+                cv.imshow("Image", resized_frame)
+                if cv.waitKey(1) & 0xFF == ord("q"):
+                    self.stop()
+                    break
                 cap.release()
 
     def train(self, dataset_path: str, model_path: str = "models/model.keras") -> None:
@@ -183,13 +182,12 @@ class ImageHandler(GestureHandler):
         model.add(
             Dense(
                 32,
-                return_sequences=True,
                 activation="relu",
                 input_shape=(126,),
             )
         )
-        model.add(Dense(64, return_sequences=True, activation="relu"))
-        model.add(Dense(32, return_sequences=False, activation="relu"))
+        model.add(Dense(64, activation="relu"))
+        model.add(Dense(32, activation="relu"))
         model.add(Dense(32, activation="relu"))
         model.add(Dense(signs.shape[0], activation="softmax"))
 
