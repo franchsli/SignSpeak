@@ -60,6 +60,13 @@ class MediaPipeProcessor:
         left_hip, left_wrist = pose[mp_holistic.PoseLandmark.LEFT_HIP].y, pose[mp_holistic.PoseLandmark.LEFT_WRIST].y
         right_hip, right_wrist = pose[mp_holistic.PoseLandmark.RIGHT_HIP].y, pose[mp_holistic.PoseLandmark.RIGHT_WRIST].y
         return (left_hip > 0.1 + left_wrist) or (right_hip > 0.1 + right_wrist)
+    
+    def are_results_valid(self, results) -> bool:
+        if self.mode == ProcessorMode.HOLISTIC:
+            return self.needed_landmarks_present(results) and self.wrists_are_above_hips(results)
+        
+        elif self.mode == ProcessorMode.HANDS:
+            return self.needed_landmarks_present(results)
 
 
     def draw_landmarks(self, image: np.ndarray, results) -> np.ndarray:
