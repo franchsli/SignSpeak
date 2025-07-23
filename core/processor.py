@@ -36,10 +36,14 @@ class MediaPipeProcessor:
         Returns:
             bool: If a pose and at least a hand are present.
         """
-        pose = results.pose_landmarks
-        left_hand = results.left_hand_landmarks
-        right_hand = results.right_hand_landmarks
-        return (pose and left_hand) or (pose and right_hand)
+        if self.mode == ProcessorMode.HOLISTIC:
+            pose = results.pose_landmarks
+            left_hand = results.left_hand_landmarks
+            right_hand = results.right_hand_landmarks
+            return (pose and left_hand) or (pose and right_hand)
+        
+        elif self.mode == ProcessorMode.HANDS:
+            return results.multi_hand_landmarks is not None and len(results.multi_hand_landmarks) > 0
     
     def wrists_are_above_hips(self, results) -> bool:
         """Returns True if at least one wrist is above
