@@ -150,7 +150,7 @@ class MediaPipeProcessor:
             return self._extract_holistic_keypoints(results)
         
         elif self.mode == ProcessorMode.HANDS:
-            raise NotImplementedError("NEED TO CODE A FUNCTION TO RETURN THE HANDS-ONLY KEYPOINTS")
+            return self._extract_hands_keypoints(results)
     
     def _extract_holistic_keypoints(self, results) -> np.ndarray:
         # Extract the keypoints for the left hand if present, otherwise set to zeros
@@ -170,4 +170,20 @@ class MediaPipeProcessor:
             else np.zeros(63)
         )
         # Concatenate the keypoints for both hands
+        return np.concatenate([left_hand, right_hand])
+
+    def _extract_hands_keypoints(self, results) -> np.ndarray:
+        left_hand = []
+        right_hand = []
+        
+        if results.multi_hand_landmarks and results.multi_handedness:
+            for hand_landmarks, handedness in zip(results.multi_hand_landmarks, results.multi_handedness):
+                hand_points = np.array([[landmark.x, landmark.y, landmark.z] for landmark in hand_landmarks.landmark]).flatten()
+                
+                # Check if it's left or right hand
+                if handedness.classification[0].label == "Left":
+                    left_hand = hand_points
+                else:
+                    right_hand = hand_points
+                    
         return np.concatenate([left_hand, right_hand])
