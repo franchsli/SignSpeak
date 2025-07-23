@@ -181,6 +181,14 @@ class MediaPipeProcessor:
         return np.concatenate([left_hand, right_hand])
 
     def _extract_hands_keypoints(self, results) -> np.ndarray:
+        """Extract the keypoints from the sign hands model landmarks.
+
+        Args:
+            results (NamedTuple): The processed results containing sign landmarks (The hands landmarker results).
+
+        Returns:
+            np.ndarray: The extracted hands keypoints.
+        """
         left_hand = []
         right_hand = []
         
