@@ -98,6 +98,12 @@ class MediaPipeProcessor:
                     results.right_hand_landmarks,
                     mp.solutions.holistic.HAND_CONNECTIONS,
                 )
+        
+        elif self.mode == ProcessorMode.HANDS:
+            if results.multi_hand_landmarks:
+                for hand_landmarks in results.multi_hand_landmarks:
+                    mp.solutions.drawing_utils.draw_landmarks(
+                        image, hand_landmarks, mp.solutions.hands.HAND_CONNECTIONS)
 
         return image
 
