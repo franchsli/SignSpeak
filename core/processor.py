@@ -26,15 +26,15 @@ class MediaPipeProcessor:
             )
 
     def needed_landmarks_present(self, results) -> bool:
-        """Returns True if the pose landmarks
-        and at least one hand's landmarks are present,
+        """Returns True if the needed landmarks in the class mode are present. In the 'holistic' mode it means that the pose landmarks
+        and at least one hand's landmarks are present. In the 'hands' mode, it means that at least one hand is present, returns
         False otherwise.
 
         Args:
-            results: The holistic landmarker results.
+            results: Either the holistic or hands model landmarks processing results.
 
         Returns:
-            bool: If a pose and at least a hand are present.
+            bool: If a pose and at least a hand are present (holistic mode) or at least a hand is present (hands mode).
         """
         if self.mode == ProcessorMode.HOLISTIC:
             pose = results.pose_landmarks
