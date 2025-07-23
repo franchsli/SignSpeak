@@ -146,6 +146,13 @@ class MediaPipeProcessor:
         Returns:
             numpy.ndarray: The extracted keypoints.
         """
+        if self.mode == ProcessorMode.HOLISTIC:
+            return self._extract_holistic_keypoints(results)
+        
+        elif self.mode == ProcessorMode.HANDS:
+            raise NotImplementedError("NEED TO CODE A FUNCTION TO RETURN THE HANDS-ONLY KEYPOINTS")
+    
+    def _extract_holistic_keypoints(self, results) -> np.ndarray:
         # Extract the keypoints for the left hand if present, otherwise set to zeros
         left_hand = (
             np.array(
