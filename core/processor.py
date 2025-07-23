@@ -141,7 +141,7 @@ class MediaPipeProcessor:
         Extract the keypoints from the sign landmarks.
 
         Args:
-            results: The processed results containing sign landmarks (The holistic landmarker results).
+            results: The processed results containing sign landmarks (The holistic or hand landmarker results).
 
         Returns:
             numpy.ndarray: The extracted keypoints.
