@@ -189,8 +189,8 @@ class MediaPipeProcessor:
         Returns:
             np.ndarray: The extracted hands keypoints.
         """
-        left_hand = []
-        right_hand = []
+        left_hand = np.zeros(63)
+        right_hand = np.zeros(63)
         
         if results.multi_hand_landmarks and results.multi_handedness:
             for hand_landmarks, handedness in zip(results.multi_hand_landmarks, results.multi_handedness):
