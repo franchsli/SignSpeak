@@ -76,27 +76,28 @@ class MediaPipeProcessor:
         # Make a copy of the image to ensure it's writable
         image = image.copy()
 
-        # Draw pose landmarks
-        if results.pose_landmarks:
-            mp.solutions.drawing_utils.draw_landmarks(
-                image, results.pose_landmarks, mp.solutions.holistic.POSE_CONNECTIONS
-            )
+        if self.mode == ProcessorMode.HOLISTIC:
+            # Draw pose landmarks
+            if results.pose_landmarks:
+                mp.solutions.drawing_utils.draw_landmarks(
+                    image, results.pose_landmarks, mp.solutions.holistic.POSE_CONNECTIONS
+                )
 
-        # Draw landmarks for left hand if present
-        if results.left_hand_landmarks:
-            mp.solutions.drawing_utils.draw_landmarks(
-                image,
-                results.left_hand_landmarks,
-                mp.solutions.holistic.HAND_CONNECTIONS,
-            )
+            # Draw landmarks for left hand if present
+            if results.left_hand_landmarks:
+                mp.solutions.drawing_utils.draw_landmarks(
+                    image,
+                    results.left_hand_landmarks,
+                    mp.solutions.holistic.HAND_CONNECTIONS,
+                )
 
-        # Draw landmarks for right hand if present
-        if results.right_hand_landmarks:
-            mp.solutions.drawing_utils.draw_landmarks(
-                image,
-                results.right_hand_landmarks,
-                mp.solutions.holistic.HAND_CONNECTIONS,
-            )
+            # Draw landmarks for right hand if present
+            if results.right_hand_landmarks:
+                mp.solutions.drawing_utils.draw_landmarks(
+                    image,
+                    results.right_hand_landmarks,
+                    mp.solutions.holistic.HAND_CONNECTIONS,
+                )
 
         return image
 
