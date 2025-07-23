@@ -6,9 +6,8 @@ A sign language translator.
 
 ## High priority
 
-- Extend MediaPipeProcessor methods to handle Hands results, only hands, etc. Depending on the processor mode.
-  - **IMPORTANT** Add a valid_results() method that calls both needed_landmarks_present and wrists_are_above_hips if the class mode is
-  holistic, only call needed_landmarks_present otherwise.
+- Replace all wrists_are_above_hips() and needed_landmarks_present() methods apparitions with are_results_valid() method.
+- Check if draw_landmarks method works (hands mode).
 
 ### Low priority
 
