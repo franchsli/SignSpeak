@@ -62,6 +62,14 @@ class MediaPipeProcessor:
         return (left_hip > 0.1 + left_wrist) or (right_hip > 0.1 + right_wrist)
     
     def are_results_valid(self, results) -> bool:
+        """Returns if model processing results are valid meeting the standard criteria.
+
+        Args:
+            results (NamedTuple): Either the holistic or hands model landmarks processing results.
+
+        Returns:
+            bool: If the results are valid.
+        """
         if self.mode == ProcessorMode.HOLISTIC:
             return self.needed_landmarks_present(results) and self.wrists_are_above_hips(results)
         
