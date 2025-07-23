@@ -153,6 +153,14 @@ class MediaPipeProcessor:
             return self._extract_hands_keypoints(results)
     
     def _extract_holistic_keypoints(self, results) -> np.ndarray:
+        """Extract the keypoints from the sign holistic model landmarks.
+
+        Args:
+            results (NamedTuple): The processed results containing sign landmarks (The holistic landmarker results).
+
+        Returns:
+            np.ndarray: The extracted holistic keypoints.
+        """
         # Extract the keypoints for the left hand if present, otherwise set to zeros
         left_hand = (
             np.array(
