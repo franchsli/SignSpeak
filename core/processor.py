@@ -68,7 +68,7 @@ class MediaPipeProcessor:
             results (NamedTuple): Either the holistic or hands model landmarks processing results.
 
         Returns:
-            bool: If the results are valid.
+            bool: If the results are valid or not.
         """
         if self.mode == ProcessorMode.HOLISTIC:
             return self.needed_landmarks_present(results) and self.wrists_are_above_hips(results)
