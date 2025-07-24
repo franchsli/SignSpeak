@@ -6,7 +6,6 @@ A sign language translator.
 
 ## High priority
 
-- Replace all wrists_are_above_hips() and needed_landmarks_present() methods apparitions with are_results_valid() method.
 - Check if draw_landmarks method works (hands mode).
 
 ### Low priority

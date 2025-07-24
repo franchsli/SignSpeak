@@ -273,12 +273,8 @@ class VideoHandler(GestureHandler):
                     results, processed_image = self.image_process(
                         resized_frame
                     )
-                    if not self.needed_landmarks_present(results):
-                        print(f"Not enough landmarks in {frame_index}, skipping...")
-                        frame_index += 1
-                        continue
-                    if not self.wrists_are_above_hips(results):
-                        print(f"No hands above the hips in {frame_index}, skipping...")
+                    if not self.are_results_valid(results):
+                        print(f"No valid landmarks given the criteria of {self.mode} model")
                         frame_index += 1
                         continue
                     # Draw landmarks and display

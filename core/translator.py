@@ -72,11 +72,8 @@ class SignLanguageTranslator:
             resized_frame = cv.resize(image, (DESIRED_FRAME_WIDTH, DESIRED_FRAME_HEIGHT))
             # Process the image and obtain sign landmarks using image_process
             results, processed_image = self.processor.image_process(resized_frame)
-            if not self.processor.needed_landmarks_present(results):
-                print("Not enough landmarks present in the frame, skipping...")
-                continue
-            if not self.processor.wrists_are_above_hips(results):
-                print("No wrist in the frame is above its closest hip, skipping...")
+            if not self.are_results_valid(results):
+                print(f"No valid landmarks given the criteria of {self.mode} model")
                 continue
             # Draw the sign landmarks on the image using draw_landmarks
             frame_with_landmarks = self.processor.draw_landmarks(processed_image, results)
