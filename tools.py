@@ -127,14 +127,9 @@ class ImageHandler(GestureHandler):
                 results, processed_image = self.image_process(
                     resized_frame
                 )
-                # TODO: think abut these statements
-                # as they might not be necesary in the Image context
-                #if not self.needed_landmarks_present(results):
-                #    print(f"Not enough landmarks in {image_file}, skipping...")
-                #    continue
-                #if not self.wrists_are_above_hips(results):
-                #    print(f"No hands above the hips in {image_file}, skipping...")
-                #    continue
+                if not self.are_results_valid(results):
+                    print(f"No valid landmarks given the criteria of {self.mode} model")
+                    continue
                 # Draw landmarks and display
                 display_image = self.draw_landmarks(processed_image, results)
                 # Extract the landmarks from both hands and save them in arrays
