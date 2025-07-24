@@ -116,14 +116,11 @@ class ImageHandler(GestureHandler):
             for image_file in image_folder_path_dirs:
                 image_path: str = os.path.join(self.data_parent_folder, image_folder, image_file)
                 print(f"Processing image: {image_file}")
-                cap = cv.VideoCapture(image_path)
-                if not cap.isOpened():
-                    print(f"Failed to open image: {image_file}")
-                    continue
-                success, frame = cap.read()
-                if not success or frame is None:
-                    break
                 print("PROCESSING FRAME:", image_file)
+                frame = cv.imread(image_path)
+                if frame is None:
+                    print(f"Couldn't open {image_file}")
+                    continue
                 resized_frame = cv.resize(frame, (640, 480))
                 # Process image and get results
                 results, processed_image = self.image_process(
