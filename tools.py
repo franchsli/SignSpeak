@@ -11,7 +11,7 @@ from core.processor import MediaPipeProcessor
 
 
 class GestureHandler(MediaPipeProcessor):
-    def __init__(self, confidence: float = 0.75, data_parent_folder: str = None):
+    def __init__(self, confidence: float = 0.75, mode: str = "holistic", data_parent_folder: str = None):
         """The Base Class for Sign Language data creation.
 
             Args:
@@ -23,7 +23,7 @@ class GestureHandler(MediaPipeProcessor):
             VideoHandler use.
         """
         self.data_parent_folder = data_parent_folder
-        super().__init__(confidence)
+        super().__init__(confidence, mode)
     
 
     def get_file_index(self, file_name: str) -> str:
@@ -89,7 +89,7 @@ class GestureHandler(MediaPipeProcessor):
         cv.destroyAllWindows()
 
 class ImageHandler(GestureHandler):
-    def __init__(self, confidence: float = 0.75, data_parent_folder: str = None):
+    def __init__(self, confidence: float = 0.75, mode: str = "holistic", data_parent_folder: str = None):
         """Sign Language data pipeline for images.
         
             Args:
@@ -97,7 +97,7 @@ class ImageHandler(GestureHandler):
                 data_parent_folder (str): The folder that contains all the data
                 that will be used in the dataset creation.
         """
-        super().__init__(confidence, data_parent_folder)
+        super().__init__(confidence, mode, data_parent_folder)
 
     def create_dataset(self, path: str) -> None:
         """
@@ -231,7 +231,7 @@ class ImageHandler(GestureHandler):
         
 
 class VideoHandler(GestureHandler):
-    def __init__(self, confidence: float = 0.75, data_parent_folder: str = None):
+    def __init__(self, confidence: float = 0.75, mode: str = "holistic", data_parent_folder: str = None):
         """Sign Language data pipeline for videos.
         
             Args:
@@ -239,7 +239,7 @@ class VideoHandler(GestureHandler):
                 data_parent_folder (str): The folder that contains all the data
                 that will be used in the dataset creation.
         """
-        super().__init__(confidence, data_parent_folder)
+        super().__init__(confidence, mode, data_parent_folder)
 
     def create_dataset(self, path: str) -> None:
         """
