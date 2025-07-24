@@ -116,7 +116,6 @@ class ImageHandler(GestureHandler):
             for image_file in image_folder_path_dirs:
                 image_path: str = os.path.join(self.data_parent_folder, image_folder, image_file)
                 print(f"Processing image: {image_file}")
-                print("PROCESSING FRAME:", image_file)
                 frame = cv.imread(image_path)
                 if frame is None:
                     print(f"Couldn't open {image_file}")
