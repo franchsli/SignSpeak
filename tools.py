@@ -150,7 +150,6 @@ class ImageHandler(GestureHandler):
                 if cv.waitKey(1) & 0xFF == ord("q"):
                     self.stop()
                     break
-                cap.release()
 
     def train(self, dataset_path: str, model_path: str = "models/model.keras") -> None:
         """Creates a trained model using the dataset inside the dataset path.
