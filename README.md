@@ -39,6 +39,8 @@ A sign language translator.
 
 [Very good dataset](https://bivl2ab.uis.edu.co/dataset-info)
 
+[ASL Dataset](https://how2sign.github.io/)
+
 ***IMPORTANT***
 
 - Performance:
