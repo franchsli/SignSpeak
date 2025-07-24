@@ -89,7 +89,7 @@ class GestureHandler(MediaPipeProcessor):
         cv.destroyAllWindows()
 
 class ImageHandler(GestureHandler):
-    def __init__(self, confidence: float = 0.75, mode: str = "holistic", data_parent_folder: str = None):
+    def __init__(self, confidence: float = 0.75, mode: str = "hands", data_parent_folder: str = None):
         """Sign Language data pipeline for images.
         
             Args:
