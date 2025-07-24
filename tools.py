@@ -15,7 +15,8 @@ class GestureHandler(MediaPipeProcessor):
         """The Base Class for Sign Language data creation.
 
             Args:
-                confidence (float) 
+                confidence (float): The desired confidence of the MediaPipeProcessor model. Defaults to 0.75.
+                mode (str): The desired Mediapipe model. Defaults to 'holistic'. 
                 data_parent_folder (str): The folder that contains all the data
                 that will be used in the dataset creation.
             
@@ -93,7 +94,8 @@ class ImageHandler(GestureHandler):
         """Sign Language data pipeline for images.
         
             Args:
-                confidence (float) 
+                confidence (float): The desired confidence of the MediaPipeProcessor model. Defaults to 0.75.
+                mode (str): The desired Mediapipe model. Defaults to 'hands'. 
                 data_parent_folder (str): The folder that contains all the data
                 that will be used in the dataset creation.
         """
@@ -235,7 +237,8 @@ class VideoHandler(GestureHandler):
         """Sign Language data pipeline for videos.
         
             Args:
-                confidence (float) 
+                confidence (float): The desired confidence of the MediaPipeProcessor model. Defaults to 0.75.
+                mode (str): The desired Mediapipe model. Defaults to 'holistic'. 
                 data_parent_folder (str): The folder that contains all the data
                 that will be used in the dataset creation.
         """
