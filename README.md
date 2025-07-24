@@ -6,13 +6,15 @@ A sign language translator.
 
 ## High priority
 
-- Implement some of the suggestions from Claude and maybe convert the core folder classes to dataclasses.
+- Implement translate_image in SignLanguageTranlator.
 - Add logging: Replace print statements.
 
 ### Low priority
 
 - Use tdqm to implement a load bar  in dataset creation and other methods if needed.
 - Remove "DEBUG" variable in translate_video() method.
+- Set model_path to "models/word_model.keras in VideoHandler and "models/letter_model.keras"
+  in ImageHandler (think about this).
 - Collect more sentences to train the VideoHandler with.
 - Collect letters to train the ImageHandler with.
 - Implement frame division (think about this).
