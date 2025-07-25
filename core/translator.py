@@ -45,6 +45,8 @@ class SignLanguageTranslator:
         # set development variable to avoid unnecesary, excesive calls to the LanguageTool API
         DEBUG = True
         # Initialize the variables neeeded
+        prediction_model = self.predictor.loaded_models[model_name]
+        prediction_model_actions = self.predictor.loaded_models_actions[model_name]
         keypoints, last_prediction = [], ""
         prediction_history = []
         sentence = ""
@@ -83,12 +85,12 @@ class SignLanguageTranslator:
                 # Convert keypoints list to a numpy array
                 keypoints = array(keypoints)
                 # Make a prediction on the keypoints using the loaded model
-                prediction = self.predictor.model.predict(keypoints[newaxis, :, :])
+                prediction = prediction_model.predict(keypoints[newaxis, :, :])
                 # Clear the keypoints list for the next set of frames
                 keypoints = []
                 # Check if the maximum prediction value is above 0.7
                 if amax(prediction) > CONFIDENCE_THRESHOLD:
-                    predicted_class = self.actions[argmax(prediction)]
+                    predicted_class = prediction_model_actions[argmax(prediction)]
                     if predicted_class != last_prediction:
                         prediction_history.append(predicted_class)
                         last_prediction = predicted_class
