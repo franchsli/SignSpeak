@@ -15,5 +15,10 @@ class GesturePredictor:
     def load_model(self, actions: list[str], model_name: str, model_path: str = "models/model.keras"):
         self.loaded_models[model_name] = load_model(model_path)
         self.loaded_models_actions[model_name] = actions
-        
+    
+    def predict(self, keypoints: ndarray, model_name: str):
+        prediction_model: Model = self.loaded_models[model_name]
+        return prediction_model.predict(keypoints)
+
+
 
