@@ -17,8 +17,11 @@ class GesturePredictor:
         self.loaded_models_actions[model_name] = actions
     
     def predict(self, keypoints: ndarray, model_name: str):
-        prediction_model: Model = self.loaded_models[model_name]
-        return prediction_model.predict(keypoints)
+        if model_name in self.loaded_models:
+            prediction_model: Model = self.loaded_models[model_name]
+            return prediction_model.predict(keypoints)
+        else:
+            raise ValueError(f"Model {model_name} isn't loaded.")
 
 
 
