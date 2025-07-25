@@ -6,7 +6,7 @@ A sign language translator.
 
 ## High priority
 
-- Implement translate_image in SignLanguageTranlator.
+- Implement a way to handle word and letter prediction in SignLanguageTranslator.
 - Add logging: Replace print statements.
 
 ### Low priority
