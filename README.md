@@ -7,6 +7,8 @@ A sign language translator.
 ## High priority
 
 - Implement a way to handle word and letter prediction in SignLanguageTranslator.
+  - Implement get_model() method in GesturePredictor return a model by its name or raise a ValueError otherwise
+  and use it instead of getting it normally.
 - Add logging: Replace print statements.
 
 ### Low priority
