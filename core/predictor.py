@@ -1,4 +1,4 @@
-from numpy import ndarray
+from numpy import ndarray, newaxis, argmax
 from keras.models import load_model, Model
 class GesturePredictor:
     def __init__(self):
@@ -19,7 +19,10 @@ class GesturePredictor:
     def predict(self, keypoints: ndarray, model_name: str):
         if model_name in self.loaded_models:
             prediction_model: Model = self.loaded_models[model_name]
-            return prediction_model.predict(keypoints)
+            prediction_model_actions: list[str] = self.loaded_models_actions[model_name]
+            prediction = prediction_model.predict(keypoints[newaxis, :, :])
+            prediction_class = prediction_model_actions[argmax(prediction)]
+            return prediction, prediction_class
         else:
             raise ValueError(f"Model {model_name} isn't loaded.")
 
