@@ -3,11 +3,6 @@ from keras.models import load_model, Model
 class GesturePredictor:
     def __init__(self):
         """Class to predict gestures.
-
-        Args:
-            actions (ndarray): A numpy array containing the model's known
-            words.
-            model_path (str, optional): Where the keras model is.
         """
         self.loaded_models = {}
         self.loaded_models_actions = {}
