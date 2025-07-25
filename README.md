@@ -12,6 +12,8 @@ A sign language translator.
   - Update the GesturePredictor's init method docstring.
   - Add docstrings to get_model() and load_model() methods.
   - Load the models (or at least the video model) in core main.py file (right down the comment that says so).
+  - Pass the predictor as an argument to the SignLanguageTranslator class in core main.py.
+- Test if SignLanguageTranslator still can translate videos (run main.py).
 - Add logging: Replace print statements.
 
 ### Low priority
