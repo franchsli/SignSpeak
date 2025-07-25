@@ -123,11 +123,12 @@ class SignLanguageTranslator:
             sentence = corrected_sentence if corrected_sentence else sentence
         return sentence
     
-    def translate_image(self, image_path: str) -> str:
+    def translate_image(self, image_path: str, model_name: str = "letters") -> str:
         """Translates the image in the given path from CSL to spanish (currently).
 
         Args:
             image_path (str): The path of the image file to be translated.
+            model_name (str, optional): The name of the model loaded in the predictor to be used. Defaults to 'letters'.
         
         Returns:
             str: The resulting translation.
@@ -135,6 +136,8 @@ class SignLanguageTranslator:
         NOTE: This method only translates to letters given that no static signs mean words or concepts.
         """
         CONFIDENCE_THRESHOLD = 0.7
+        prediction_model = self.predictor.loaded_models[model_name]
+        prediction_model_actions = self.predictor.loaded_models_actions[model_name]
         print(f"Processing image in: {image_path}")
         frame = cv.imread(image_path)
         if frame is None:
@@ -150,9 +153,9 @@ class SignLanguageTranslator:
             return
         # Extract the landmarks from both hands and save them in arrays
         keypoints = self.processor.keypoint_extraction(results)
-        prediction = self.predictor.model.predict(keypoints[newaxis, :, :])
+        prediction = prediction_model.predict(keypoints[newaxis, :, :])
         if amax(prediction) > CONFIDENCE_THRESHOLD:
-            predicted_class = self.actions[argmax(prediction)]
+            predicted_class = prediction_model_actions[argmax(prediction)]
             return predicted_class
         else:
             return "The model is not confident enought about the translation."
