@@ -9,6 +9,9 @@ A sign language translator.
 - Implement a way to handle word and letter prediction in SignLanguageTranslator.
   - Implement get_model() method in GesturePredictor return a model by its name or raise a ValueError otherwise
   and use it instead of getting it normally.
+  - Update the GesturePredictor's init method docstring.
+  - Add docstrings to get_model() and load_model() methods.
+  - Load the models (or at least the video model) in core main.py file (right down the comment that says so).
 - Add logging: Replace print statements.
 
 ### Low priority
