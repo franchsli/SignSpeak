@@ -25,13 +25,14 @@ class SignLanguageTranslator:
         self.text_processor = TextProcessor(language)
         
 
-    def translate_video(self, video_input: str | int = 0, in_real_time: bool = True) -> str:
+    def translate_video(self, video_input: str | int = 0, in_real_time: bool = True, model_name: str = "words") -> str:
         """Translates the given video from CSL to spanish (currently).
 
         Args:
             video_input (str | int, optional): The path of the video file to be translated or 0 for the webcam. Defaults to 0.
             in_real_time (bool, optional): Whether if the translation should be displayed as it's translated or after the video is processed entirely.
             Defaults to True. Note that this variable will be True if the video_input is the webcam.
+            model_name (str, optional): The name of the model loaded in the predictor to be used. Defaults to 'words'.
         
         Returns:
             str: The corrected translation if it was corrected successfully, the raw translation if not.
