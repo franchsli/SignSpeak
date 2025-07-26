@@ -72,7 +72,7 @@ class SignLanguageTranslator:
             resized_frame = cv.resize(image, (DESIRED_FRAME_WIDTH, DESIRED_FRAME_HEIGHT))
             # Process the image and obtain sign landmarks using image_process
             results, processed_image = self.processor.image_process(resized_frame)
-            if not self.are_results_valid(results):
+            if not self.processor.are_results_valid(results):
                 print(f"No valid landmarks given the criteria of {self.mode} model")
                 continue
             # Draw the sign landmarks on the image using draw_landmarks
@@ -146,7 +146,7 @@ class SignLanguageTranslator:
         results, _ = self.image_process(
             resized_frame
         )
-        if not self.are_results_valid(results):
+        if not self.processor.are_results_valid(results):
             print(f"No valid landmarks given the criteria of {self.mode} model")
             return
         # Extract the landmarks from both hands and save them in arrays
