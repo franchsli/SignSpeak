@@ -10,9 +10,9 @@ PATH = path.abspath('data')
 actions = array(listdir(PATH))
 predictor = GesturePredictor()
 # load the models down here
-
-
-translator = SignLanguageTranslator(actions)
+predictor.load_model(actions, "words")
+# load the predictor instance in the translator
+translator = SignLanguageTranslator(predictor)
 translation = translator.translate_video(path.abspath("data/ADIOS/ADIOS1.mp4"), True)
 print(translation)
 end = time()
