@@ -311,7 +311,7 @@ class VideoHandler(GestureHandler):
             tuple: The overlapping sequences and the labels integers.
         """
         landmarks, labels_integers = [], []
-        # Create a label map to map each action label to a numeric value
+        # Create a label map to map each sign label to a numeric value
         label_map = {label: num for num, label in enumerate(labels)}
         
         for label in os.listdir(dataset_path):
