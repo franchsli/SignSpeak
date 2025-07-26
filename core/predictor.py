@@ -19,6 +19,18 @@ class GesturePredictor:
         self.loaded_models_actions[model_name] = actions
     
     def get_model(self, model_name: str) -> tuple[Model, str]:
+        """Returns the model stored in the class with the given name
+        and its actions if found.
+
+        Args:
+            model_name (str): How the model was called when loaded.
+
+        Raises:
+            ValueError: Raised if no model with the given name is found.
+
+        Returns:
+            tuple[Model, str]: The found Model and its actions.
+        """
         if model_name in self.loaded_models:
             return self.loaded_models[model_name], self.loaded_models_actions[model_name]
         else:
