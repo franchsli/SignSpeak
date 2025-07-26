@@ -1,8 +1,8 @@
 from numpy import ndarray
 from keras.models import load_model, Model
-class GesturePredictor:
+class SignPredictor:
     def __init__(self):
-        """Gesture prediction class.
+        """Sign prediction class.
         """
         self.loaded_models = {}
         self.loaded_models_actions = {}

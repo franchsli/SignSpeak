@@ -2,13 +2,13 @@ from time import time
 from os import listdir, path
 from numpy import array
 from translator import SignLanguageTranslator
-from predictor import GesturePredictor
+from predictor import SignPredictor
 start = time()
 # Set the path to the data directory
 PATH = path.abspath('data')
 # Create an array of action labels by listing the contents of the data directory
 actions = array(listdir(PATH))
-predictor = GesturePredictor()
+predictor = SignPredictor()
 # load the models down here
 predictor.load_model(actions, "words")
 # load the predictor instance in the translator

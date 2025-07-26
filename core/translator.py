@@ -4,17 +4,17 @@ from numpy import array, amax, argmax, newaxis, ndarray
 from PIL import ImageDraw, ImageFont, Image
 from string import ascii_lowercase, ascii_uppercase
 from keyboard import is_pressed
-from predictor import GesturePredictor
+from predictor import SignPredictor
 from processor import MediaPipeProcessor
 from text_processor import TextProcessor
 
 
 class SignLanguageTranslator:
-    def __init__(self, predictor: GesturePredictor,  mediapipe_confidence: float = 0.75, language = "es"):
+    def __init__(self, predictor: SignPredictor,  mediapipe_confidence: float = 0.75, language = "es"):
         """The generic class for a sign language translator
 
         Args:
-            predictor (GesturePredictor)
+            predictor (SignPredictor)
             mediapipe_confidence (float, optional): The confidence of the mediapipe landmark detection. Defaults to 0.75.
             language (str, optional): The language's code that will be checked to correct
             the text. Defaults to "es".
