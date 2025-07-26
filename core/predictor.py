@@ -2,7 +2,7 @@ from numpy import ndarray
 from keras.models import load_model, Model
 class GesturePredictor:
     def __init__(self):
-        """Class to predict gestures.
+        """Gesture prediction class.
         """
         self.loaded_models = {}
         self.loaded_models_actions = {}
