@@ -45,8 +45,7 @@ class SignLanguageTranslator:
         # set development variable to avoid unnecesary, excesive calls to the LanguageTool API
         DEBUG = True
         # Initialize the variables neeeded
-        prediction_model = self.predictor.loaded_models[model_name]
-        prediction_model_actions = self.predictor.loaded_models_actions[model_name]
+        prediction_model, prediction_model_actions = self.predictor.get_model(model_name)
         keypoints, last_prediction = [], ""
         prediction_history = []
         sentence = ""
@@ -136,8 +135,7 @@ class SignLanguageTranslator:
         NOTE: This method only translates to letters given that no static signs mean words or concepts.
         """
         CONFIDENCE_THRESHOLD = 0.7
-        prediction_model = self.predictor.loaded_models[model_name]
-        prediction_model_actions = self.predictor.loaded_models_actions[model_name]
+        prediction_model, prediction_model_actions = self.predictor.get_model(model_name)
         print(f"Processing image in: {image_path}")
         frame = cv.imread(image_path)
         if frame is None:
