@@ -220,7 +220,7 @@ class SignLanguageTranslator:
         # Check if the last element of the prediction_history belongs to the alphabet (lower or upper cases)
         if prediction_history[-1] in ascii_lowercase or prediction_history[-1] in ascii_uppercase:
             # Check if the penultimate element of prediction_history belongs to the alphabet or is a new word
-            if prediction_history[-2] in ascii_lowercase or prediction_history[-2] in ascii_uppercase or (prediction_history[-2] not in self.signs and prediction_history[-2] not in list(x.capitalize() for x in self.signs)):
+            if prediction_history[-2] in ascii_lowercase or prediction_history[-2] in ascii_uppercase or (prediction_history[-2] not in self.predictor.loaded_models_signs and prediction_history[-2] not in list(x.capitalize() for x in self.predictor.loaded_models_signs.keys())):
                 # Combine last two elements
                 prediction_history[-1] = prediction_history[-2] + prediction_history[-1]
                 prediction_history.pop(len(prediction_history) - 2)
