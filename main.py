@@ -20,7 +20,7 @@ DEBUG = True
 PATH = os.path.abspath('data')
 
 # Create an array of action labels by listing the contents of the data directory
-actions = np.array(os.listdir(PATH))
+signs = np.array(os.listdir(PATH))
 
 # Load the trained model
 model: Model = load_model('models/model.keras')
@@ -89,7 +89,7 @@ with mp.solutions.holistic.Holistic(min_detection_confidence=0.75, min_tracking_
 
                 # Check if the maximum prediction value is above 0.7
                 if np.amax(prediction) > 0.7:
-                    predicted_class = actions[np.argmax(prediction)]
+                    predicted_class = signs[np.argmax(prediction)]
                     
                     # Add prediction smoothing
                     prediction_history.append(predicted_class)
@@ -120,7 +120,7 @@ with mp.solutions.holistic.Holistic(min_detection_confidence=0.75, min_tracking_
                 # Check if the last element of the sentence belongs to the alphabet (lower or upper cases)
                 if sentence[-1] in string.ascii_lowercase or sentence[-1] in string.ascii_uppercase:
                     # Check if the second last element of sentence belongs to the alphabet or is a new word
-                    if sentence[-2] in string.ascii_lowercase or sentence[-2] in string.ascii_uppercase or (sentence[-2] not in actions and sentence[-2] not in list(x.capitalize() for x in actions)):
+                    if sentence[-2] in string.ascii_lowercase or sentence[-2] in string.ascii_uppercase or (sentence[-2] not in signs and sentence[-2] not in list(x.capitalize() for x in signs)):
                         # Combine last two elements
                         sentence[-1] = sentence[-2] + sentence[-1]
                         sentence.pop(len(sentence) - 2)
