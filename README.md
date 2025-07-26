@@ -7,6 +7,8 @@ A sign language translator.
 ## High priority
 
 - Use tdqm to implement a load bar in dataset creation and other methods if needed (think about this).
+  - **NOTE** The print() statements when turned into tqdm.write() make the bar look awful so maybe those need to be
+  deleted ? (think about this as well).
 
 ### Low priority
 
