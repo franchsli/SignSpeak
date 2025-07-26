@@ -73,7 +73,7 @@ class SignLanguageTranslator:
             # Process the image and obtain sign landmarks using image_process
             results, processed_image = self.processor.image_process(resized_frame)
             if not self.processor.are_results_valid(results):
-                print(f"No valid landmarks given the criteria of {self.mode} model")
+                print(f"No valid landmarks given the criteria of {self.processor.mode} model")
                 continue
             # Draw the sign landmarks on the image using draw_landmarks
             frame_with_landmarks = self.processor.draw_landmarks(processed_image, results)
@@ -147,7 +147,7 @@ class SignLanguageTranslator:
             resized_frame
         )
         if not self.processor.are_results_valid(results):
-            print(f"No valid landmarks given the criteria of {self.mode} model")
+            print(f"No valid landmarks given the criteria of {self.processor.mode} model")
             return
         # Extract the landmarks from both hands and save them in arrays
         keypoints = self.processor.keypoint_extraction(results)
