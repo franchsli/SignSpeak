@@ -6,7 +6,7 @@ A sign language translator.
 
 ## High priority
 
-- Use tdqm to implement a load bar  in dataset creation and other methods if needed.
+- Use tdqm to implement a load bar in dataset creation and other methods if needed (think about this).
 
 ### Low priority
 
