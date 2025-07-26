@@ -6,7 +6,6 @@ A sign language translator.
 
 ## High priority
 
-- Rename GesturePredictor to SignPredictor.
 - Add logging: Replace print statements.
 
 ### Low priority
