@@ -45,7 +45,7 @@ class SignLanguageTranslator:
         # set development variable to avoid unnecesary, excesive calls to the LanguageTool API
         DEBUG = True
         # Initialize the variables neeeded
-        prediction_model, prediction_model_actions = self.predictor.get_model(model_name)
+        prediction_model, prediction_model_signs = self.predictor.get_model(model_name)
         keypoints, last_prediction = [], ""
         prediction_history = []
         sentence = ""
@@ -89,7 +89,7 @@ class SignLanguageTranslator:
                 keypoints = []
                 # Check if the maximum prediction value is above 0.7
                 if amax(prediction) > CONFIDENCE_THRESHOLD:
-                    predicted_class = prediction_model_actions[argmax(prediction)]
+                    predicted_class = prediction_model_signs[argmax(prediction)]
                     if predicted_class != last_prediction:
                         prediction_history.append(predicted_class)
                         last_prediction = predicted_class
@@ -135,7 +135,7 @@ class SignLanguageTranslator:
         NOTE: This method only translates to letters given that no static signs mean words or concepts.
         """
         CONFIDENCE_THRESHOLD = 0.7
-        prediction_model, prediction_model_actions = self.predictor.get_model(model_name)
+        prediction_model, prediction_model_signs = self.predictor.get_model(model_name)
         print(f"Processing image in: {image_path}")
         frame = cv.imread(image_path)
         if frame is None:
@@ -153,7 +153,7 @@ class SignLanguageTranslator:
         keypoints = self.processor.keypoint_extraction(results)
         prediction = prediction_model.predict(keypoints[newaxis, :, :])
         if amax(prediction) > CONFIDENCE_THRESHOLD:
-            predicted_class = prediction_model_actions[argmax(prediction)]
+            predicted_class = prediction_model_signs[argmax(prediction)]
             return predicted_class
         else:
             return "The model is not confident enought about the translation."
@@ -220,7 +220,7 @@ class SignLanguageTranslator:
         # Check if the last element of the prediction_history belongs to the alphabet (lower or upper cases)
         if prediction_history[-1] in ascii_lowercase or prediction_history[-1] in ascii_uppercase:
             # Check if the penultimate element of prediction_history belongs to the alphabet or is a new word
-            if prediction_history[-2] in ascii_lowercase or prediction_history[-2] in ascii_uppercase or (prediction_history[-2] not in self.actions and prediction_history[-2] not in list(x.capitalize() for x in self.actions)):
+            if prediction_history[-2] in ascii_lowercase or prediction_history[-2] in ascii_uppercase or (prediction_history[-2] not in self.signs and prediction_history[-2] not in list(x.capitalize() for x in self.signs)):
                 # Combine last two elements
                 prediction_history[-1] = prediction_history[-2] + prediction_history[-1]
                 prediction_history.pop(len(prediction_history) - 2)
