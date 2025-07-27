@@ -12,6 +12,14 @@ class ProcessorMode(StrEnum):
 
 class MediaPipeProcessor:
     def __init__(self, confidence: float = 0.75, mode: str = "holistic"):
+        """Handles MediaPipe models (holistic or hands) processing.
+
+        Args:
+            confidence (float, optional): The minimun detection and tracking confidence
+            that the MediaPipe model will have. Defaults to 0.75.
+            mode (str, optional): The desired mode to be initialized withing the class, 
+            the mode affects the MediaPipe model used and logic whithin class methods. Defaults to "holistic".
+        """
         self.mode = mode
         if self.mode == ProcessorMode.HOLISTIC:
             self.model = Holistic(
