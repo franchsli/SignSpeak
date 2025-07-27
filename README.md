@@ -6,15 +6,15 @@ A sign language translator.
 
 ## High priority
 
-- Use tdqm to implement a load bar in dataset creation and other methods if needed (think about this).
-  - **NOTE** The print() statements when turned into tqdm.write() make the bar look awful so maybe those need to be
-  deleted ? (think about this as well).
-
-### Low priority
-
 - Remove "DEBUG" variable in translate_video() method.
 - Set model_path to "models/word_model.keras in VideoHandler and "models/letter_model.keras"
   in ImageHandler (think about this).
+
+### Low priority
+
+- Use tdqm to implement a load bar in dataset creation and other methods if needed (think about this).
+  - **NOTE** The print() statements when turned into tqdm.write() make the bar look awful so maybe those need to be
+  deleted and only the needed ones will stay.
 - Add logging: Replace print statements. (or maybe not? or later?)
 - Collect more sentences to train the VideoHandler with.
 - Collect letters to train the ImageHandler with.
