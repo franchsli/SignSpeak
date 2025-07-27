@@ -150,7 +150,7 @@ class ImageHandler(GestureHandler):
                     self.stop()
                     break
 
-    def train(self, dataset_path: str, model_path: str = "models/model.keras") -> None:
+    def train(self, dataset_path: str, model_path: str = "models/letters_model.keras") -> None:
         """Creates a trained model using the dataset inside the dataset path.
 
         Args:
@@ -332,7 +332,7 @@ class VideoHandler(GestureHandler):
         
         return np.array(landmarks), to_categorical(labels_integers).astype(int)
 
-    def train(self, dataset_path: str, model_path: str = "models/model.keras") -> None:
+    def train(self, dataset_path: str, model_path: str = "models/words_model.keras") -> None:
         """Creates a trained model using the dataset inside the dataset path.
 
         Args:
