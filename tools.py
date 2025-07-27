@@ -160,7 +160,7 @@ class ImageHandler(GestureHandler):
         labels = os.listdir(self.data_parent_folder)
         signs = np.array(labels)
 
-        landmarks, labels_integers = self.load_single_frames(dataset_path, labels)
+        landmarks, labels_integers = self.load_frame(dataset_path, labels)
 
         # X, Y = landmarks, labels_integers
 
@@ -204,8 +204,8 @@ class ImageHandler(GestureHandler):
         accuracy = metrics.accuracy_score(test_labels, predictions)
         print(accuracy)
     
-    def load_single_frames(self, dataset_path: str, labels: list[str]):
-        """Loads the frames data into an numpy array for model training.
+    def load_frame(self, dataset_path: str, labels: list[str]):
+        """Loads the frame's data into an numpy array for model training.
 
         Args:
             dataset_path (str): Where the dataset is.
