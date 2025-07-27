@@ -6,10 +6,6 @@ A sign language translator.
 
 ## High priority
 
-- Remove "DEBUG" variable in translate_video() method.
-- Set model_path to "models/word_model.keras in VideoHandler and "models/letter_model.keras"
-  in ImageHandler (think about this).
-
 ### Low priority
 
 - Use tdqm to implement a load bar in dataset creation and other methods if needed (think about this).
