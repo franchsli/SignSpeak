@@ -43,8 +43,6 @@ class SignLanguageTranslator:
         """
         # set the parameter to true if the webcam is being translated
         in_real_time = True if video_input == 0 else in_real_time
-        # set development variable to avoid unnecesary, excesive calls to the LanguageTool API
-        DEBUG = True
         # Initialize the variables neeeded
         prediction_model, prediction_model_signs = self.predictor.get_model(model_name)
         keypoints, last_prediction = [], ""
@@ -118,7 +116,7 @@ class SignLanguageTranslator:
         
         self._close_video_translation(cap, in_real_time)
         sentence = sentence.capitalize()
-        if self.text_processor.language_tool and not DEBUG:
+        if self.text_processor.language_tool:
             corrected_sentence = self.text_processor.correct_sentence(sentence)
             sentence = corrected_sentence if corrected_sentence else sentence
         return sentence
