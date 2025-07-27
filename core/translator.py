@@ -15,7 +15,8 @@ class SignLanguageTranslator:
 
         Args:
             predictor (SignPredictor)
-            mediapipe_confidence (float, optional): The confidence of the mediapipe landmark detection. Defaults to 0.75.
+            mediapipe_confidence (float, optional): The minimun detection and tracking confidence
+            that the MediaPipe model will have. Defaults to 0.75.
             language (str, optional): The language's code that will be checked to correct
             the text. Defaults to "es".
         """
