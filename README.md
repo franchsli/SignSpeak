@@ -6,6 +6,12 @@ A sign language translator.
 
 ## High priority
 
+- Think about this model naming:
+  1. model's target prediction
+  2. language
+  3. "model"
+  Where 1 is "words" or "letters", 2 is "CSL" or "ASL", etc...
+
 ### Low priority
 
 - Use tdqm to implement a load bar in dataset creation and other methods if needed (think about this).
