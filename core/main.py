@@ -3,9 +3,10 @@ from os import listdir, path
 from numpy import array
 from translator import SignLanguageTranslator
 from predictor import SignPredictor
+
 start = time()
 # Set the path to the data directory
-PATH = path.abspath('data')
+PATH = path.abspath("data")
 # Create an array of sign labels by listing the contents of the data directory
 signs = array(listdir(PATH))
 predictor = SignPredictor()
