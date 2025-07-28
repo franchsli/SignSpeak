@@ -6,6 +6,7 @@ A sign language translator.
 
 ## High priority
 
+- Check frame_path variable in ImageHandler dataset creation, it may be calling functions unnecesarily.
 - Think about model switching in translations
   (whether if letters or words model should be used in the current video translation).
 - Collect more sentences to train the VideoHandler with.
