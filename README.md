@@ -60,3 +60,25 @@ A sign language translator.
   2. language
   3. "model"
   Where 1 is "words" or "letters", 2 is "CSL" or "ASL", etc...
+
+Your data folder (where you store videos or images to train the models) should look like this:
+.
+└── data/
+    ├── LABEL/
+    │   ├── LABEL1
+    │   ├── LABEL2
+    │   ├── LABEL3
+    │   └── ...
+    ├── ANOTHER_LABEL/
+    │   ├── ANOTHER_LABEL1
+    │   ├── ANOTHER_LABEL2
+    │   ├── ANOTHER_LABEL3
+    │   └── ...
+    └── ...
+Where "LABEL" is the uppercase word or letter corresponding to the signs showed in the files.
+The files must be named after the label AND a unique number inside the folder.
+The dataset creation depends on this structure.
+
+After using your data to create a dataset, the resulting dataset would look like this:
+
+
