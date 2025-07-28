@@ -1,13 +1,16 @@
 from numpy import ndarray
 from keras.models import load_model, Model
+
+
 class SignPredictor:
     def __init__(self):
-        """Sign prediction class.
-        """
+        """Sign prediction class."""
         self.loaded_models = {}
         self.loaded_models_signs = {}
-    
-    def load_model(self, signs: ndarray, model_name: str, model_path: str = "models/model.keras"):
+
+    def load_model(
+        self, signs: ndarray, model_name: str, model_path: str = "models/model.keras"
+    ):
         """Loads the model in the given path in the class' memory for later use.
 
         Args:
@@ -17,7 +20,7 @@ class SignPredictor:
         """
         self.loaded_models[model_name] = load_model(model_path)
         self.loaded_models_signs[model_name] = signs
-    
+
     def get_model(self, model_name: str) -> tuple[Model, str]:
         """Returns the model stored in the class with the given name
         and its signs if found.
@@ -34,8 +37,6 @@ class SignPredictor:
         if model_name in self.loaded_models:
             return self.loaded_models[model_name], self.loaded_models_signs[model_name]
         else:
-            raise ValueError(f"Model '{model_name}' isn't loaded. Load it first and try again.")
-
-
-
-
+            raise ValueError(
+                f"Model '{model_name}' isn't loaded. Load it first and try again."
+            )
