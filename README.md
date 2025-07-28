@@ -7,6 +7,7 @@ A sign language translator.
 ## High priority
 
 - Check frame_path variable in ImageHandler dataset creation, it may be calling functions unnecesarily.
+- Organize the folders look's at the end of this readme, they look ugly.
 - Think about model switching in translations
   (whether if letters or words model should be used in the current video translation).
 - Collect more sentences to train the VideoHandler with.
@@ -94,5 +95,6 @@ After using your data to create a dataset, the resulting dataset would look like
 It uses the same labels inside your data folder to name the folders there and
 obviously adds the numpy data from the files in data/.
 The numpy files are named this way (if the dataset is created with VideoHandler):
-  {source_file_index}_frame_{source_frame_index}.npy
+  {source_file_index}frame{source_frame_index}.npy
+  (with underscores between the "variables")
 If the dataset is created with ImageHandler the {source_frame_index} will be ommited.
