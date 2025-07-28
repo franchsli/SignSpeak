@@ -11,21 +11,25 @@ from core.processor import MediaPipeProcessor
 
 
 class GestureHandler(MediaPipeProcessor):
-    def __init__(self, confidence: float = 0.75, mode: str = "holistic", data_parent_folder: str = None):
+    def __init__(
+        self,
+        confidence: float = 0.75,
+        mode: str = "holistic",
+        data_parent_folder: str = None,
+    ):
         """The Base Class for Sign Language data creation.
 
-            Args:
-                confidence (float): The minimun tracking and detection confidence of the MediaPipeProcessor model. Defaults to 0.75.
-                mode (str): The desired Mediapipe model. Defaults to 'holistic'. 
-                data_parent_folder (str): The folder that contains all the data
-                that will be used in the dataset creation.
-            
-            **NOTE** This class is ONLY a collection of methods that both ImageHandler and
-            VideoHandler use.
+        Args:
+            confidence (float): The minimun tracking and detection confidence of the MediaPipeProcessor model. Defaults to 0.75.
+            mode (str): The desired Mediapipe model. Defaults to 'holistic'.
+            data_parent_folder (str): The folder that contains all the data
+            that will be used in the dataset creation.
+
+        **NOTE** This class is ONLY a collection of methods that both ImageHandler and
+        VideoHandler use.
         """
         self.data_parent_folder = data_parent_folder
         super().__init__(confidence, mode)
-    
 
     def get_file_index(self, file_name: str) -> str:
         """Returns the numeric value in the given file name.
@@ -64,7 +68,7 @@ class GestureHandler(MediaPipeProcessor):
             elif character.isalpha() or character == "_":
                 label += character
         return label
-    
+
     def create_dataset_directories(self, path: str) -> None:
         """Creates all the needed directories for the dataset inside the given path.
 
@@ -73,7 +77,7 @@ class GestureHandler(MediaPipeProcessor):
         """
         for label in os.listdir(self.data_parent_folder):
             os.makedirs(os.path.join(path, label), exist_ok=True)
-    
+
     def dataset_directories_already_created(self, path: str) -> bool:
         """Return True if the dataset's needed directories are already created
         inside the given path, False otherwise.
@@ -89,15 +93,21 @@ class GestureHandler(MediaPipeProcessor):
     def stop(self) -> None:
         cv.destroyAllWindows()
 
+
 class ImageHandler(GestureHandler):
-    def __init__(self, confidence: float = 0.75, mode: str = "hands", data_parent_folder: str = None):
+    def __init__(
+        self,
+        confidence: float = 0.75,
+        mode: str = "hands",
+        data_parent_folder: str = None,
+    ):
         """Sign Language data pipeline for images.
-        
-            Args:
-                confidence (float): The desired confidence of the MediaPipeProcessor model. Defaults to 0.75.
-                mode (str): The desired Mediapipe model. Defaults to 'hands'. 
-                data_parent_folder (str): The folder that contains all the data
-                that will be used in the dataset creation.
+
+        Args:
+            confidence (float): The desired confidence of the MediaPipeProcessor model. Defaults to 0.75.
+            mode (str): The desired Mediapipe model. Defaults to 'hands'.
+            data_parent_folder (str): The folder that contains all the data
+            that will be used in the dataset creation.
         """
         super().__init__(confidence, mode, data_parent_folder)
 
@@ -110,11 +120,15 @@ class ImageHandler(GestureHandler):
         """
         if not self.dataset_directories_already_created(path):
             self.create_dataset_directories(path)
-        
+
         for image_folder in os.listdir(self.data_parent_folder):
-            image_folder_path_dirs = os.listdir(os.path.join(self.data_parent_folder, image_folder))
+            image_folder_path_dirs = os.listdir(
+                os.path.join(self.data_parent_folder, image_folder)
+            )
             for image_file in image_folder_path_dirs:
-                image_path: str = os.path.join(self.data_parent_folder, image_folder, image_file)
+                image_path: str = os.path.join(
+                    self.data_parent_folder, image_folder, image_file
+                )
                 print(f"Processing image: {image_file}")
                 frame = cv.imread(image_path)
                 if frame is None:
@@ -122,9 +136,7 @@ class ImageHandler(GestureHandler):
                     continue
                 resized_frame = cv.resize(frame, (640, 480))
                 # Process image and get results
-                results, processed_image = self.image_process(
-                    resized_frame
-                )
+                results, processed_image = self.image_process(resized_frame)
                 if not self.are_results_valid(results):
                     print(f"No valid landmarks given the criteria of {self.mode} model")
                     continue
@@ -150,7 +162,9 @@ class ImageHandler(GestureHandler):
                     self.stop()
                     break
 
-    def train(self, dataset_path: str, model_path: str = "models/letters_model.keras") -> None:
+    def train(
+        self, dataset_path: str, model_path: str = "models/letters_model.keras"
+    ) -> None:
         """Creates a trained model using the dataset inside the dataset path.
 
         Args:
@@ -165,7 +179,12 @@ class ImageHandler(GestureHandler):
         # X, Y = landmarks, labels_integers
 
         # Split the data into training and testing sets
-        training_landmarks, testing_landmarks, training_labels_integers, testing_labels_integers = train_test_split(
+        (
+            training_landmarks,
+            testing_landmarks,
+            training_labels_integers,
+            testing_labels_integers,
+        ) = train_test_split(
             landmarks, labels_integers, test_size=0.10, random_state=34
         )
 
@@ -203,7 +222,7 @@ class ImageHandler(GestureHandler):
         # Calculate the accuracy of the predictions
         accuracy = metrics.accuracy_score(test_labels, predictions)
         print(accuracy)
-    
+
     def load_frame(self, dataset_path: str, labels: list[str]):
         """Loads the frame's data into an numpy array for model training.
 
@@ -216,26 +235,31 @@ class ImageHandler(GestureHandler):
         """
         landmarks, labels_integers = [], []
         label_map = {label: num for num, label in enumerate(labels)}
-        
+
         for label in os.listdir(dataset_path):
             for file in os.listdir(os.path.join(dataset_path, label)):
-                if file.endswith('.npy'):
+                if file.endswith(".npy"):
                     frame_data = np.load(os.path.join(dataset_path, label, file))
                     landmarks.append(frame_data)
                     labels_integers.append(label_map[label])
-        
+
         return np.array(landmarks), to_categorical(labels_integers).astype(int)
-        
+
 
 class VideoHandler(GestureHandler):
-    def __init__(self, confidence: float = 0.75, mode: str = "holistic", data_parent_folder: str = None):
+    def __init__(
+        self,
+        confidence: float = 0.75,
+        mode: str = "holistic",
+        data_parent_folder: str = None,
+    ):
         """Sign Language data pipeline for videos.
-        
-            Args:
-                confidence (float): The desired confidence of the MediaPipeProcessor model. Defaults to 0.75.
-                mode (str): The desired Mediapipe model. Defaults to 'holistic'. 
-                data_parent_folder (str): The folder that contains all the data
-                that will be used in the dataset creation.
+
+        Args:
+            confidence (float): The desired confidence of the MediaPipeProcessor model. Defaults to 0.75.
+            mode (str): The desired Mediapipe model. Defaults to 'holistic'.
+            data_parent_folder (str): The folder that contains all the data
+            that will be used in the dataset creation.
         """
         super().__init__(confidence, mode, data_parent_folder)
 
@@ -248,11 +272,15 @@ class VideoHandler(GestureHandler):
         """
         if not self.dataset_directories_already_created(path):
             self.create_dataset_directories(path)
-        
+
         for video_folder in os.listdir(self.data_parent_folder):
-            video_folder_path_dirs = os.listdir(os.path.join(self.data_parent_folder, video_folder))
+            video_folder_path_dirs = os.listdir(
+                os.path.join(self.data_parent_folder, video_folder)
+            )
             for video_file in video_folder_path_dirs:
-                video_path: str = os.path.join(self.data_parent_folder, video_folder, video_file)
+                video_path: str = os.path.join(
+                    self.data_parent_folder, video_folder, video_file
+                )
                 if not video_file.endswith((".mp4", ".avi", ".mov")):
                     continue
                 print(f"Processing video: {video_file}")
@@ -268,11 +296,11 @@ class VideoHandler(GestureHandler):
                     print("PROCESSING FRAME:", frame_index)
                     resized_frame = cv.resize(frame, (640, 480))
                     # Process image and get results
-                    results, processed_image = self.image_process(
-                        resized_frame
-                    )
+                    results, processed_image = self.image_process(resized_frame)
                     if not self.are_results_valid(results):
-                        print(f"No valid landmarks given the criteria of {self.mode} model")
+                        print(
+                            f"No valid landmarks given the criteria of {self.mode} model"
+                        )
                         frame_index += 1
                         continue
                     # Draw landmarks and display
@@ -298,8 +326,10 @@ class VideoHandler(GestureHandler):
                         self.stop()
                         break
                 cap.release()
-    
-    def create_sequences(self, dataset_path: str, labels: list[str], sequence_length: int = 10):
+
+    def create_sequences(
+        self, dataset_path: str, labels: list[str], sequence_length: int = 10
+    ):
         """Creates overlapping sequences from frame data and the labels integers for training.
 
         Args:
@@ -313,26 +343,34 @@ class VideoHandler(GestureHandler):
         landmarks, labels_integers = [], []
         # Create a label map to map each sign label to a numeric value
         label_map = {label: num for num, label in enumerate(labels)}
-        
+
         for label in os.listdir(dataset_path):
             # Sort files to maintain temporal order
             # TODO: Check if this sorting is necesary, remove if so
-            files = sorted([file for file in os.listdir(os.path.join(dataset_path, label)) if file.endswith('.npy')])
-            
+            files = sorted(
+                [
+                    file
+                    for file in os.listdir(os.path.join(dataset_path, label))
+                    if file.endswith(".npy")
+                ]
+            )
+
             all_frames = []
             for file in files:
                 frame_data = np.load(os.path.join(dataset_path, label, file))
                 all_frames.append(frame_data)
-            
+
             # Create sliding window sequences
             for i in range(len(all_frames) - sequence_length + 1):
-                sequence = all_frames[i:i + sequence_length]
+                sequence = all_frames[i : i + sequence_length]
                 landmarks.append(sequence)
                 labels_integers.append(label_map[label])
-        
+
         return np.array(landmarks), to_categorical(labels_integers).astype(int)
 
-    def train(self, dataset_path: str, model_path: str = "models/words_model.keras") -> None:
+    def train(
+        self, dataset_path: str, model_path: str = "models/words_model.keras"
+    ) -> None:
         """Creates a trained model using the dataset inside the dataset path.
 
         Args:
@@ -343,12 +381,19 @@ class VideoHandler(GestureHandler):
         signs = np.array(labels)
         SEQUENCE_LENGTH = 10  # Must match model's expected input
 
-        landmarks, labels_integers = self.create_sequences(dataset_path, labels, SEQUENCE_LENGTH)
+        landmarks, labels_integers = self.create_sequences(
+            dataset_path, labels, SEQUENCE_LENGTH
+        )
 
         # X, Y = landmarks, labels_integers
 
         # Split the data into training and testing sets
-        training_landmarks, testing_landmarks, training_labels_integers, testing_labels_integers = train_test_split(
+        (
+            training_landmarks,
+            testing_landmarks,
+            training_labels_integers,
+            testing_labels_integers,
+        ) = train_test_split(
             landmarks, labels_integers, test_size=0.10, random_state=34
         )
 
@@ -387,4 +432,3 @@ class VideoHandler(GestureHandler):
         # Calculate the accuracy of the predictions
         accuracy = metrics.accuracy_score(test_labels, predictions)
         print(accuracy)
-
