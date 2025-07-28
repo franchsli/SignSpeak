@@ -81,4 +81,17 @@ The dataset creation depends on this structure.
 
 After using your data to create a dataset, the resulting dataset would look like this:
 
-
+.
+└── dataset/
+    ├── LABEL/
+    │   ├── 1_frame_1.npy
+    │   ├── 1_frame_15.npy
+    │   ├── ...
+    │   ├── 2_frame_73.npy
+    │   └── ...
+    └── ...
+It uses the same labels inside your data folder to name the folders there and
+obviously adds the numpy data from the files in data/.
+The numpy files are named this way (if the dataset is created with VideoHandler):
+  {source_file_index}_frame_{source_frame_index}.npy
+If the dataset is created with ImageHandler the {source_frame_index} will be ommited.
