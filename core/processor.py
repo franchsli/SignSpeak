@@ -5,6 +5,7 @@ from enum import StrEnum
 from mediapipe.python.solutions.holistic import Holistic
 from mediapipe.python.solutions.hands import Hands
 
+
 class ProcessorMode(StrEnum):
     HANDS = "hands"
     HOLISTIC = "holistic"
@@ -17,20 +18,19 @@ class MediaPipeProcessor:
         Args:
             confidence (float, optional): The minimun detection and tracking confidence
             that the MediaPipe model will have. Defaults to 0.75.
-            mode (str, optional): The desired mode to be initialized withing the class, 
+            mode (str, optional): The desired mode to be initialized withing the class,
             the mode affects the MediaPipe model used and logic whithin class methods. Defaults to "holistic".
         """
         self.mode = mode
         if self.mode == ProcessorMode.HOLISTIC:
             self.model = Holistic(
-                min_detection_confidence=confidence,
-                min_tracking_confidence=confidence
+                min_detection_confidence=confidence, min_tracking_confidence=confidence
             )
         elif self.mode == ProcessorMode.HANDS:
             self.model = Hands(
                 static_image_mode=True,
                 min_detection_confidence=confidence,
-                min_tracking_confidence=confidence
+                min_tracking_confidence=confidence,
             )
 
     def needed_landmarks_present(self, results) -> bool:
@@ -49,10 +49,13 @@ class MediaPipeProcessor:
             left_hand = results.left_hand_landmarks
             right_hand = results.right_hand_landmarks
             return (pose and left_hand) or (pose and right_hand)
-        
+
         elif self.mode == ProcessorMode.HANDS:
-            return results.multi_hand_landmarks is not None and len(results.multi_hand_landmarks) > 0
-    
+            return (
+                results.multi_hand_landmarks is not None
+                and len(results.multi_hand_landmarks) > 0
+            )
+
     def wrists_are_above_hips(self, results) -> bool:
         """Returns True if at least one wrist is above
         its closest hip, False otherwise.
@@ -65,10 +68,16 @@ class MediaPipeProcessor:
         """
         mp_holistic = mp.solutions.holistic
         pose = results.pose_landmarks.landmark
-        left_hip, left_wrist = pose[mp_holistic.PoseLandmark.LEFT_HIP].y, pose[mp_holistic.PoseLandmark.LEFT_WRIST].y
-        right_hip, right_wrist = pose[mp_holistic.PoseLandmark.RIGHT_HIP].y, pose[mp_holistic.PoseLandmark.RIGHT_WRIST].y
+        left_hip, left_wrist = (
+            pose[mp_holistic.PoseLandmark.LEFT_HIP].y,
+            pose[mp_holistic.PoseLandmark.LEFT_WRIST].y,
+        )
+        right_hip, right_wrist = (
+            pose[mp_holistic.PoseLandmark.RIGHT_HIP].y,
+            pose[mp_holistic.PoseLandmark.RIGHT_WRIST].y,
+        )
         return (left_hip > 0.1 + left_wrist) or (right_hip > 0.1 + right_wrist)
-    
+
     def are_results_valid(self, results) -> bool:
         """Returns if model processing results are valid meeting the standard criteria.
 
@@ -79,11 +88,12 @@ class MediaPipeProcessor:
             bool: If the results are valid or not.
         """
         if self.mode == ProcessorMode.HOLISTIC:
-            return self.needed_landmarks_present(results) and self.wrists_are_above_hips(results)
-        
+            return self.needed_landmarks_present(
+                results
+            ) and self.wrists_are_above_hips(results)
+
         elif self.mode == ProcessorMode.HANDS:
             return self.needed_landmarks_present(results)
-
 
     def draw_landmarks(self, image: np.ndarray, results) -> np.ndarray:
         """
@@ -103,7 +113,9 @@ class MediaPipeProcessor:
             # Draw pose landmarks
             if results.pose_landmarks:
                 mp.solutions.drawing_utils.draw_landmarks(
-                    image, results.pose_landmarks, mp.solutions.holistic.POSE_CONNECTIONS
+                    image,
+                    results.pose_landmarks,
+                    mp.solutions.holistic.POSE_CONNECTIONS,
                 )
 
             # Draw landmarks for left hand if present
@@ -121,12 +133,13 @@ class MediaPipeProcessor:
                     results.right_hand_landmarks,
                     mp.solutions.holistic.HAND_CONNECTIONS,
                 )
-        
+
         elif self.mode == ProcessorMode.HANDS:
             if results.multi_hand_landmarks:
                 for hand_landmarks in results.multi_hand_landmarks:
                     mp.solutions.drawing_utils.draw_landmarks(
-                        image, hand_landmarks, mp.solutions.hands.HAND_CONNECTIONS)
+                        image, hand_landmarks, mp.solutions.hands.HAND_CONNECTIONS
+                    )
 
         return image
 
@@ -171,10 +184,10 @@ class MediaPipeProcessor:
         """
         if self.mode == ProcessorMode.HOLISTIC:
             return self._extract_holistic_keypoints(results)
-        
+
         elif self.mode == ProcessorMode.HANDS:
             return self._extract_hands_keypoints(results)
-    
+
     def _extract_holistic_keypoints(self, results) -> np.ndarray:
         """Extract the keypoints from the sign holistic model landmarks.
 
@@ -214,15 +227,22 @@ class MediaPipeProcessor:
         """
         left_hand = np.zeros(63)
         right_hand = np.zeros(63)
-        
+
         if results.multi_hand_landmarks and results.multi_handedness:
-            for hand_landmarks, handedness in zip(results.multi_hand_landmarks, results.multi_handedness):
-                hand_points = np.array([[landmark.x, landmark.y, landmark.z] for landmark in hand_landmarks.landmark]).flatten()
-                
+            for hand_landmarks, handedness in zip(
+                results.multi_hand_landmarks, results.multi_handedness
+            ):
+                hand_points = np.array(
+                    [
+                        [landmark.x, landmark.y, landmark.z]
+                        for landmark in hand_landmarks.landmark
+                    ]
+                ).flatten()
+
                 # Check if it's left or right hand
                 if handedness.classification[0].label == "Left":
                     left_hand = hand_points
                 else:
                     right_hand = hand_points
-                    
+
         return np.concatenate([left_hand, right_hand])
