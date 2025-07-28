@@ -10,8 +10,13 @@ from text_processor import TextProcessor
 
 
 class SignLanguageTranslator:
-    def __init__(self, predictor: SignPredictor,  mediapipe_confidence: float = 0.75, language = "es"):
-        """The generic class for a sign language translator
+    def __init__(
+        self,
+        predictor: SignPredictor,
+        mediapipe_confidence: float = 0.75,
+        language="es",
+    ):
+        """Sign language translation class.
 
         Args:
             predictor (SignPredictor)
@@ -20,13 +25,17 @@ class SignLanguageTranslator:
             language (str, optional): The language's code that will be checked to correct
             the text. Defaults to "es".
         """
-        
+
         self.processor = MediaPipeProcessor(mediapipe_confidence)
         self.predictor = predictor
         self.text_processor = TextProcessor(language)
-        
 
-    def translate_video(self, video_input: str | int = 0, in_real_time: bool = True, model_name: str = "words") -> str:
+    def translate_video(
+        self,
+        video_input: str | int = 0,
+        in_real_time: bool = True,
+        model_name: str = "words",
+    ) -> str:
         """Translates the given video from CSL to spanish (currently).
 
         Args:
@@ -34,10 +43,10 @@ class SignLanguageTranslator:
             in_real_time (bool, optional): Whether if the translation should be displayed as it's translated or after the video is processed entirely.
             Defaults to True. Note that this variable will be True if the video_input is the webcam.
             model_name (str, optional): The name of the model loaded in the predictor to be used. Defaults to 'words'.
-        
+
         Returns:
             str: The corrected translation if it was corrected successfully, the raw translation if not.
-            
+
         NOTE: The real-time display shows uncorrected translation for immediate feedback.
                 For grammatically corrected text, use the returned translation.
         """
@@ -68,14 +77,20 @@ class SignLanguageTranslator:
             success, image = cap.read()
             if not success or image is None:
                 break
-            resized_frame = cv.resize(image, (DESIRED_FRAME_WIDTH, DESIRED_FRAME_HEIGHT))
+            resized_frame = cv.resize(
+                image, (DESIRED_FRAME_WIDTH, DESIRED_FRAME_HEIGHT)
+            )
             # Process the image and obtain sign landmarks using image_process
             results, processed_image = self.processor.image_process(resized_frame)
             if not self.processor.are_results_valid(results):
-                print(f"No valid landmarks given the criteria of {self.processor.mode} model")
+                print(
+                    f"No valid landmarks given the criteria of {self.processor.mode} model"
+                )
                 continue
             # Draw the sign landmarks on the image using draw_landmarks
-            frame_with_landmarks = self.processor.draw_landmarks(processed_image, results)
+            frame_with_landmarks = self.processor.draw_landmarks(
+                processed_image, results
+            )
             # Extract keypoints from the pose landmarks using keypoint_extraction
             keypoints.append(self.processor.keypoint_extraction(results))
             # Check if 10 frames have been accumulated
@@ -105,7 +120,15 @@ class SignLanguageTranslator:
                 prediction_history = prediction_history[-7:]
             # Reset if the "Spacebar" is pressed
             if is_pressed(" "):
-                sentence, keypoints, last_prediction,  = "", [], ""
+                (
+                    sentence,
+                    keypoints,
+                    last_prediction,
+                ) = (
+                    "",
+                    [],
+                    "",
+                )
                 prediction_history = []
             # display the translation if the user wants to
             if in_real_time:
@@ -113,24 +136,24 @@ class SignLanguageTranslator:
                 # Check if the "Translation" window was closed and break the loop
                 if cv.getWindowProperty("Translation", cv.WND_PROP_VISIBLE) < 1:
                     break
-        
+
         self._close_video_translation(cap, in_real_time)
         sentence = sentence.capitalize()
         if self.text_processor.language_tool:
             corrected_sentence = self.text_processor.correct_sentence(sentence)
             sentence = corrected_sentence if corrected_sentence else sentence
         return sentence
-    
+
     def translate_image(self, image_path: str, model_name: str = "letters") -> str:
         """Translates the image in the given path from CSL to spanish (currently).
 
         Args:
             image_path (str): The path of the image file to be translated.
             model_name (str, optional): The name of the model loaded in the predictor to be used. Defaults to 'letters'.
-        
+
         Returns:
             str: The resulting translation.
-            
+
         NOTE: This method only translates to letters given that no static signs mean words or concepts.
         """
         CONFIDENCE_THRESHOLD = 0.7
@@ -142,11 +165,11 @@ class SignLanguageTranslator:
             return
         resized_frame = cv.resize(frame, (640, 480))
         # Process image and get results
-        results, _ = self.image_process(
-            resized_frame
-        )
+        results, _ = self.image_process(resized_frame)
         if not self.processor.are_results_valid(results):
-            print(f"No valid landmarks given the criteria of {self.processor.mode} model")
+            print(
+                f"No valid landmarks given the criteria of {self.processor.mode} model"
+            )
             return
         # Extract the landmarks from both hands and save them in arrays
         keypoints = self.processor.keypoint_extraction(results)
@@ -156,8 +179,7 @@ class SignLanguageTranslator:
             return predicted_class
         else:
             return "The model is not confident enought about the translation."
-        
-    
+
     def _display_translation(self, frame: ndarray, translation: str):
         """Shows the current frame with the given translation.
 
@@ -169,8 +191,10 @@ class SignLanguageTranslator:
         # Show the image on the display
         cv.imshow("Translation", cv_image)
         cv.waitKey(1)
-    
-    def _overwrite_frame_with_text(self, frame: ndarray, text: str, text_size: int = 40) -> ndarray:
+
+    def _overwrite_frame_with_text(
+        self, frame: ndarray, text: str, text_size: int = 40
+    ) -> ndarray:
         """Overwrites the desired text in the given frame.
 
         Args:
@@ -187,15 +211,18 @@ class SignLanguageTranslator:
         # convert the pillow Image to a drawable object
         draw_object = ImageDraw.Draw(pillow_image)
         font = ImageFont.truetype("arial.ttf", text_size)
-        text_X_coord = self._get_translation_x_coordinate(frame, text, draw_object, font)
+        text_X_coord = self._get_translation_x_coordinate(
+            frame, text, draw_object, font
+        )
         draw_object.text((text_X_coord, 470), text, (86, 24, 201), font)
         # Convert PIL image (RGB) back to OpenCV image (BGR) and return it
         return cv.cvtColor(array(pillow_image), cv.COLOR_RGB2BGR)
-        
-    
-    def _get_translation_x_coordinate(self, frame: ndarray, translation: str, draw_object: ImageDraw, font: ImageFont) -> int:
+
+    def _get_translation_x_coordinate(
+        self, frame: ndarray, translation: str, draw_object: ImageDraw, font: ImageFont
+    ) -> int:
         """Uses the boundings of the given translation to calculate where it should be placed in the frame in the x axis (horizontally)
-        to be centered. 
+        to be centered.
 
         Args:
             frame (ndarray): The opencv frame.
@@ -210,22 +237,38 @@ class SignLanguageTranslator:
         bounding_box = draw_object.textbbox((0, 0), translation, font=font)
         text_width = bounding_box[2] - bounding_box[0]
         return (frame.shape[1] - text_width) // 2
-    
+
     def _correct_current_letter_predictions(self):
         """Corrects the current letter predictions by checking if the predictions are letter and combine them.
         (e.g. ['H', 'O', 'L', 'A'] -> 'Hola').
         """
         global prediction_history
         # Check if the last element of the prediction_history belongs to the alphabet (lower or upper cases)
-        if prediction_history[-1] in ascii_lowercase or prediction_history[-1] in ascii_uppercase:
+        if (
+            prediction_history[-1] in ascii_lowercase
+            or prediction_history[-1] in ascii_uppercase
+        ):
             # Check if the penultimate element of prediction_history belongs to the alphabet or is a new word
-            if prediction_history[-2] in ascii_lowercase or prediction_history[-2] in ascii_uppercase or (prediction_history[-2] not in self.predictor.loaded_models_signs and prediction_history[-2] not in list(x.capitalize() for x in self.predictor.loaded_models_signs.keys())):
+            if (
+                prediction_history[-2] in ascii_lowercase
+                or prediction_history[-2] in ascii_uppercase
+                or (
+                    prediction_history[-2] not in self.predictor.loaded_models_signs
+                    and prediction_history[-2]
+                    not in list(
+                        x.capitalize()
+                        for x in self.predictor.loaded_models_signs.keys()
+                    )
+                )
+            ):
                 # Combine last two elements
                 prediction_history[-1] = prediction_history[-2] + prediction_history[-1]
                 prediction_history.pop(len(prediction_history) - 2)
                 prediction_history[-1] = prediction_history[-1].capitalize()
-    
-    def _close_video_translation(self, video_capture: cv.VideoCapture, in_real_time: bool):
+
+    def _close_video_translation(
+        self, video_capture: cv.VideoCapture, in_real_time: bool
+    ):
         """Closes given video capture and destroys all the opencv windows.
 
         Args:
