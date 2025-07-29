@@ -81,7 +81,7 @@ Where "LABEL" is the uppercase word or letter corresponding to the signs showed 
 The files must be named after the label AND a unique number inside the folder.
 The dataset creation depends on this structure.
 
-After using your data to create a dataset, the resulting dataset would look like this:
+After using your data to create a dataset (via VideHandler), the resulting dataset would look like this:
 
 .
 └── dataset/
@@ -97,4 +97,19 @@ obviously adds the numpy data from the files in data/.
 The numpy files are named this way (if the dataset is created with VideoHandler):
   {source_file_index}frame{source_frame_index}.npy
   (with underscores between the "variables")
-If the dataset is created with ImageHandler the {source_frame_index} will be ommited.
+This is called like this for debugging purposes, as you can know which is the first usable frame in a video.
+If the dataset is created with ImageHandler dataset would look like this:
+
+.
+└── dataset/
+    ├── LABEL/
+    │   ├── LABEL1.npy
+    │   ├── LABEL2.npy
+    │   └── ...
+    ├── ANOTHER_LABEL/
+    │   ├── ANOTHER_LABEL1.npy
+    │   ├── ANOTHER_LABEL2.npy
+    │   └── ...
+    └── ...
+
+The .npy files use the origin image file name.
