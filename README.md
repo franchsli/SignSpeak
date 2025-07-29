@@ -6,7 +6,6 @@ A sign language translator.
 
 ## High priority
 
-- Check frame_path variable in ImageHandler dataset creation, it may be calling functions unnecesarily.
 - Organize the folders look's at the end of this readme, they look ugly.
 - Think about model switching in translations
   (whether if letters or words model should be used in the current video translation).
@@ -103,13 +102,11 @@ If the dataset is created with ImageHandler dataset would look like this:
 .
 └── dataset/
     ├── LABEL/
-    │   ├── LABEL1.npy
-    │   ├── LABEL2.npy
+    │   ├── 1.npy
+    │   ├── 2.npy
     │   └── ...
     ├── ANOTHER_LABEL/
-    │   ├── ANOTHER_LABEL1.npy
-    │   ├── ANOTHER_LABEL2.npy
+    │   ├── 1.npy
+    │   ├── 2.npy
     │   └── ...
     └── ...
-
-The .npy files use the origin image file name.
