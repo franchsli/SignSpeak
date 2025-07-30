@@ -6,7 +6,6 @@ A sign language translator.
 
 ## High priority
 
-- Organize the folders look's at the end of this readme, they look ugly.
 - Think about model switching in translations
   (whether if letters or words model should be used in the current video translation).
 - Collect more sentences to train the VideoHandler with.
@@ -14,7 +13,7 @@ A sign language translator.
 
 ### Low priority
 
-- Use tdqm to implement a load bar in dataset creation and other methods if needed (think about this).
+- Use tqdm to implement a load bar in dataset creation and other methods if needed (think about this).
   - **NOTE** The print() statements when turned into tqdm.write() make the bar look awful so maybe those need to be
   deleted and only the needed ones will stay.
 - Add logging: Replace print statements. (or maybe not? or later?)
