@@ -63,6 +63,8 @@ A sign language translator.
   Where 1 is "words" or "letters", 2 is "CSL" or "ASL", etc...
 
 Your data folder (where you store videos or images to train the models) should look like this:
+
+``` ASCII
 .
 └── data/
     ├── LABEL/
@@ -76,12 +78,15 @@ Your data folder (where you store videos or images to train the models) should l
     │   ├── ANOTHER_LABEL3
     │   └── ...
     └── ...
+```
+
 Where "LABEL" is the uppercase word or letter corresponding to the signs showed in the files.
 The files must be named after the label AND a unique number inside the folder.
 The dataset creation depends on this structure.
 
 After using your data to create a dataset (via VideHandler), the resulting dataset would look like this:
 
+``` ASCII
 .
 └── dataset/
     ├── LABEL/
@@ -91,6 +96,8 @@ After using your data to create a dataset (via VideHandler), the resulting datas
     │   ├── 2_frame_73.npy
     │   └── ...
     └── ...
+```
+
 It uses the same labels inside your data folder to name the folders there and
 obviously adds the numpy data from the files in data/.
 The numpy files are named this way (if the dataset is created with VideoHandler):
@@ -99,6 +106,7 @@ The numpy files are named this way (if the dataset is created with VideoHandler)
 This is called like this for debugging purposes, as you can know which is the first usable frame in a video.
 If the dataset is created with ImageHandler dataset would look like this:
 
+``` ASCII
 .
 └── dataset/
     ├── LABEL/
@@ -110,3 +118,4 @@ If the dataset is created with ImageHandler dataset would look like this:
     │   ├── 2.npy
     │   └── ...
     └── ...
+```
