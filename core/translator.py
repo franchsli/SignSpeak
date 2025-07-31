@@ -62,7 +62,7 @@ class SignLanguageTranslator:
         DESIRED_FRAME_WIDTH = 960
         DESIRED_FRAME_HEIGHT = 540
         EXPECTED_MODEL_KEYPOINTS_COUNT = 10
-        # Access the camera and check if the camera is opened successfully
+        # Access the video input and check if it's opened successfully
         cap = cv.VideoCapture(video_input)
         if not cap.isOpened():
             if video_input:
@@ -71,27 +71,25 @@ class SignLanguageTranslator:
                 print("Cannot access the camera.")
             return
 
-        # Run the loop while the camera is open
         while cap.isOpened():
-            # Read a frame from the camera
             success, image = cap.read()
             if not success or image is None:
                 break
             resized_frame = cv.resize(
                 image, (DESIRED_FRAME_WIDTH, DESIRED_FRAME_HEIGHT)
             )
-            # Process the image and obtain sign landmarks using image_process
+            # Process the image and obtain sign landmarks
             results, processed_image = self.processor.image_process(resized_frame)
             if not self.processor.are_results_valid(results):
                 print(
                     f"No valid landmarks given the criteria of {self.processor.mode} model"
                 )
                 continue
-            # Draw the sign landmarks on the image using draw_landmarks
+            # Draw the sign landmarks on the image
             frame_with_landmarks = self.processor.draw_landmarks(
                 processed_image, results
             )
-            # Extract keypoints from the pose landmarks using keypoint_extraction
+            # Extract keypoints from the pose landmarks
             keypoints.append(self.processor.keypoint_extraction(results))
             # Check if 10 frames have been accumulated
             if len(keypoints) == EXPECTED_MODEL_KEYPOINTS_COUNT:
@@ -264,7 +262,7 @@ class SignLanguageTranslator:
             video_capture (cv.VideoCapture)
             in_real_time (bool): If the translation is being shown in real time or not.
         """
-        # Release the camera and close all windows
+        # Release the video capture and close all windows
         if in_real_time:
             video_capture.release()
         cv.destroyAllWindows()
