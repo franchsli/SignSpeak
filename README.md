@@ -6,7 +6,7 @@ A sign language translator.
 
 ## High priority
 
-- Think about reset the prediction history when pressing "space" (I think no one will ever want this).
+- Implement multiline text in video_translation
 - Delete main.py and my_functions.py files as are not needed anymore.
 - Think about model switching in translations
   (whether if letters or words model should be used in the current video translation).
