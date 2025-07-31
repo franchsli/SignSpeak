@@ -7,6 +7,8 @@ A sign language translator.
 ## High priority
 
 - Implement multiline text in video_translation
+- Implement a variable to display short text (the latest words in the prediction_history)
+  to improve UX without affecting the translation's integrity.
 - Delete main.py and my_functions.py files as are not needed anymore.
 - Think about model switching in translations
   (whether if letters or words model should be used in the current video translation).
