@@ -225,6 +225,25 @@ class SignLanguageTranslator:
         text_width = bounding_box[2] - bounding_box[0]
         return (frame.shape[1] - text_width) // 2
 
+    def _is_text_overflowing(
+        self, frame: ndarray, text: str, draw_object: ImageDraw, font: ImageFont
+    ) -> int:
+        """Returns if the text is overflowing the frame.
+
+        Args:
+            frame (ndarray): The opencv frame.
+            text (str): The text that will be written in the frame.
+            draw_object (ImageDraw): The object that will write the text.
+            font (ImageFont): The font object that will be used to write the text.
+
+        Returns:
+            bool: True if the text is overflowing the frame, False otherwise.
+        """
+        bounding_box = draw_object.textbbox((0, 0), text, font=font)
+        text_width = bounding_box[2] - bounding_box[0]
+        horizontal_space_left = frame.shape[1] - text_width
+        return horizontal_space_left <= 140
+
     def _correct_current_letter_predictions(self):
         """Corrects the current letter predictions by checking if the predictions are letter and combine them.
         (e.g. ['H', 'O', 'L', 'A'] -> 'Hola').
