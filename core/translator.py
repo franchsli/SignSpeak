@@ -118,18 +118,7 @@ class SignLanguageTranslator:
             if len(prediction_history) > 7:
                 print("CUTTING THE prediction_history...")
                 prediction_history = prediction_history[-7:]
-            # Reset if the "Spacebar" is pressed
-            if is_pressed(" "):
-                (
-                    sentence,
-                    keypoints,
-                    last_prediction,
-                ) = (
-                    "",
-                    [],
-                    "",
-                )
-                prediction_history = []
+
             # display the translation if the user wants to
             if in_real_time:
                 self._display_translation(frame_with_landmarks, sentence)
