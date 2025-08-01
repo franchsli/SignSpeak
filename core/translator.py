@@ -262,8 +262,8 @@ class SignLanguageTranslator:
                     prediction_history[-2] not in self.predictor.loaded_models_signs
                     and prediction_history[-2]
                     not in list(
-                        x.capitalize()
-                        for x in self.predictor.loaded_models_signs.keys()
+                        sign.capitalize()
+                        for sign in self.predictor.loaded_models_signs.keys()
                     )
                 )
             ):
