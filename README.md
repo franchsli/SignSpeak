@@ -6,10 +6,9 @@ A sign language translator.
 
 ## High priority
 
-- Implement a variable to display short text (the latest words in the prediction_history)
-  to improve UX without affecting the translation's integrity.
 - Implement multiline text in video_translation.
-  - A line break should be added to the current last word of the display variable.
+  - A line break should be added to the current last word of the display variable if the text is overflowing.
+- **Don't** forget deleting the testing data in translator.py (60 - 62).
 - Think about model switching in translations
   (whether if letters or words model should be used in the current video translation).
 - Collect more sentences to train the VideoHandler with.

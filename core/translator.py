@@ -57,7 +57,7 @@ class SignLanguageTranslator:
         keypoints, last_prediction = [], ""
         prediction_history = []
         sentence = ""
-        
+        # TODO: Delete this testing data after the logic is implemented
         display_history = ["apple", "river", "shadow", "mountain", "whisper", "quartz", "laptop", "dragon", "meadow", "candle", "jungle", "forest", "mirror", "comet", "breeze"]
         display_sentence = " ".join(display_history)
         # Initialize constant variables
