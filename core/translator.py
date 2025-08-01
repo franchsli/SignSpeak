@@ -261,10 +261,10 @@ class SignLanguageTranslator:
                 or (
                     prediction_history[-2] not in self.predictor.loaded_models_signs
                     and prediction_history[-2]
-                    not in list(
+                    not in [
                         sign.capitalize()
                         for sign in self.predictor.loaded_models_signs.keys()
-                    )
+                    ]
                 )
             ):
                 # Combine last two elements
