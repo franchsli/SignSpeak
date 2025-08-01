@@ -6,7 +6,6 @@ A sign language translator.
 
 ## High priority
 
-- **IMPORTANT** Check if the text overflowing recognition really depends on the frame size.
 - Implement a variable to display short text (the latest words in the prediction_history)
   to improve UX without affecting the translation's integrity.
 - Implement multiline text in video_translation.
