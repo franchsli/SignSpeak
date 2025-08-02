@@ -186,18 +186,20 @@ class SignLanguageTranslator:
         cv.waitKey(1)
 
     def _overwrite_frame_with_text(
-        self, frame: ndarray, text: str, text_size: int = 40
+        self, frame: ndarray, text: str = "", text_size: int = 40
     ) -> ndarray:
         """Overwrites the desired text in the given frame.
 
         Args:
             frame (ndarray): The opencv frame to overwrite.
-            text (str): The desired text.
+            text (str): The desired text. Defaults to "". If no text is given self.display_sentence will be used instead.
             text_size (int, optional): The desired size in which the text will be written. Defaults to 40.
 
         Returns:
             ndarray: The overwritten frame.
         """
+        if not text:
+            text = self.display_sentence
         # Convert BGR to RGB for PIL
         rgb_frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
         pillow_image = Image.fromarray(rgb_frame)
