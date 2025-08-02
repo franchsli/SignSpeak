@@ -58,8 +58,8 @@ class SignLanguageTranslator:
         prediction_history = []
         sentence = ""
         # TODO: Delete this testing data after the logic is implemented
-        display_history = ["apple", "river", "shadow", "mountain", "whisper", "quartz", "laptop", "dragon", "meadow", "candle", "jungle", "forest", "mirror", "comet", "breeze"]
-        display_sentence = " ".join(display_history)
+        self.display_history = ["apple", "river", "shadow", "mountain", "whisper", "quartz", "laptop", "dragon", "meadow", "candle", "jungle", "forest", "mirror", "comet", "breeze"]
+        self.display_sentence = " ".join(self.display_history)
         # Initialize constant variables
         CONFIDENCE_THRESHOLD = 0.7
         DESIRED_FRAME_WIDTH = 960
@@ -107,25 +107,25 @@ class SignLanguageTranslator:
                     predicted_class = prediction_model_signs[argmax(prediction)]
                     if predicted_class != last_prediction:
                         prediction_history.append(predicted_class)
-                        display_history.append(predicted_class)
+                        self.display_history.append(predicted_class)
                         last_prediction = predicted_class
                         # update the sentence with a space if it's not the first one
                         if sentence:
                             sentence += f" {predicted_class}"
-                            display_sentence += f" {predicted_class}"
+                            self.display_sentence += f" {predicted_class}"
                         else:
                             sentence += predicted_class
-                            display_sentence += predicted_class
+                            self.display_sentence += predicted_class
                     print(sentence)
             # Limit the prediction_history length to 7 elements to make sure it fits on the screen
             # TODO: REWORK THIS LOGIC, TO IMPLEMENT MULTILINE TEXT (Check Pillow multiline_text)
-            #if len(display_history) > 7 and in_real_time:
-            #    print("CUTTING THE display_history...")
-            #    display_history = display_history[-7:]
+            #if len(self.display_history) > 7 and in_real_time:
+            #    print("CUTTING THE self.display_history...")
+            #    self.display_history = self.display_history[-7:]
 
             # display the translation if the user wants to
             if in_real_time:
-                self._display_translation(frame_with_landmarks, display_sentence)
+                self._display_translation(frame_with_landmarks, self.display_sentence)
                 # Check if the "Translation" window was closed and break the loop
                 if cv.getWindowProperty("Translation", cv.WND_PROP_VISIBLE) < 1:
                     break
