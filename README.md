@@ -7,7 +7,7 @@ A sign language translator.
 ## High priority
 
 - Implement multiline text in video_translation.
-  - A line break should be added to the current last word of the display variable if the text is overflowing.
+  - Check why new line characters have no effect in translation displaying (line 215 in translator.py).
 - **Don't** forget deleting the testing data in translator.py (60 - 62).
 - Think about model switching in translations
   (whether if letters or words model should be used in the current video translation).
