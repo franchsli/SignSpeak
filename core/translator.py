@@ -236,7 +236,7 @@ class SignLanguageTranslator:
 
     def _is_text_overflowing(
         self, frame: ndarray, text: str, draw_object: ImageDraw, font: ImageFont
-    ) -> int:
+    ) -> bool:
         """Returns if the text is overflowing the frame.
 
         Args:
