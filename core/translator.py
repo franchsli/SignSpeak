@@ -249,6 +249,14 @@ class SignLanguageTranslator:
         text_width = bounding_box[2] - bounding_box[0]
         horizontal_space_left = frame.shape[1] - text_width
         return horizontal_space_left <= 140
+    
+    def _add_break_line_character(self):
+        """Adds a break line character at the end of the display history's 
+        last word and at the end of display sentence. This method is only used
+        for displaying purposes.
+        """
+        self.display_history[-1] = f"{self.display_history[-1]}\n"
+        self.display_sentence += "\n"
 
     def _correct_current_letter_predictions(self):
         """Corrects the current letter predictions by checking if the predictions are letter and combine them.
