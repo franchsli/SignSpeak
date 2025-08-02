@@ -6,6 +6,7 @@ A sign language translator.
 
 ## High priority
 
+- **IMPORTANT** add a default value for text in _overwrite_frame_with_text.
 - Implement multiline text in video_translation.
   - A line break should be added to the current last word of the display variable if the text is overflowing.
 - **Don't** forget deleting the testing data in translator.py (60 - 62).
