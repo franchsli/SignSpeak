@@ -207,7 +207,7 @@ class SignLanguageTranslator:
         draw_object = ImageDraw.Draw(pillow_image)
         font = ImageFont.truetype("arial.ttf", text_size)
         if self._is_text_overflowing(frame, text, draw_object, font):
-            self._add_break_line_character()
+            self._add_new_line_character()
             text = self.display_sentence
         text_X_coord = self._get_translation_x_coordinate(
             frame, text, draw_object, font
@@ -255,8 +255,8 @@ class SignLanguageTranslator:
         horizontal_space_left = frame.shape[1] - text_width
         return horizontal_space_left <= 140
     
-    def _add_break_line_character(self):
-        """Adds a break line character at the end of the display history's 
+    def _add_new_line_character(self):
+        """Adds a new line character at the end of the display history's 
         last word and at the end of display sentence. This method is only used
         for displaying purposes.
         """
