@@ -204,6 +204,9 @@ class SignLanguageTranslator:
         # convert the pillow Image to a drawable object
         draw_object = ImageDraw.Draw(pillow_image)
         font = ImageFont.truetype("arial.ttf", text_size)
+        if self._is_text_overflowing(frame, text, draw_object, font):
+            self._add_break_line_character()
+            text = self.display_sentence
         text_X_coord = self._get_translation_x_coordinate(
             frame, text, draw_object, font
         )
