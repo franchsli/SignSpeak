@@ -7,7 +7,8 @@ A sign language translator.
 ## High priority
 
 - Implement multiline text in video_translation.
-  - Check why new line characters have no effect in translation displaying (line 215 in translator.py).
+  - Implement a method to return the coordinates for the Y axis for the given text
+  (just like the _get_translation_x_coordinate method)
 - **Don't** forget deleting the testing data in translator.py (60 - 62).
 - Think about model switching in translations
   (whether if letters or words model should be used in the current video translation).
