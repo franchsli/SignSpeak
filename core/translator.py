@@ -58,7 +58,7 @@ class SignLanguageTranslator:
         prediction_history = []
         sentence = ""
         # TODO: Delete this testing data after the logic is implemented
-        self.display_history = ["apple", "river", "shadow", "mountain", "whisper", "quartz", "laptop", "dragon", "meadow", "candle", "jungle", "forest", "mirror", "comet", "breeze"]
+        self.display_history = ["apple\n", "river", "shadow", "mountain", "whisper", "quartz", "laptop", "dragon", "meadow", "candle", "jungle", "forest", "mirror", "comet", "breeze"]
         self.display_sentence = " ".join(self.display_history)
         # Initialize constant variables
         CONFIDENCE_THRESHOLD = 0.7
@@ -212,7 +212,7 @@ class SignLanguageTranslator:
         text_X_coord = self._get_translation_x_coordinate(
             frame, text, draw_object, font
         )
-        draw_object.text((text_X_coord, 470), text, (86, 24, 201), font)
+        draw_object.multiline_text((text_X_coord, 470), text, (86, 24, 201), font, align="center")
         # Convert PIL image (RGB) back to OpenCV image (BGR) and return it
         return cv.cvtColor(array(pillow_image), cv.COLOR_RGB2BGR)
 
@@ -232,7 +232,7 @@ class SignLanguageTranslator:
             int: The x axis value where the text should be to be centered.
         """
         # Calculate the size of the text to be displayed and the X coordinate for centering the text on the image
-        bounding_box = draw_object.textbbox((0, 0), translation, font=font)
+        bounding_box = draw_object.multiline_textbbox((0, 0), translation, font=font)
         text_width = bounding_box[2] - bounding_box[0]
         return (frame.shape[1] - text_width) // 2
 
