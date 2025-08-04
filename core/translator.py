@@ -217,7 +217,7 @@ class SignLanguageTranslator:
         return cv.cvtColor(array(pillow_image), cv.COLOR_RGB2BGR)
 
     def _get_translation_x_coordinate(
-        self, frame: ndarray, translation: str, draw_object: ImageDraw, font: ImageFont
+        self, frame: ndarray, translation: str, draw_object: ImageDraw.ImageDraw, font: ImageFont.ImageFont
     ) -> int:
         """Uses the boundings of the given translation to calculate where it should be placed in the frame in the x axis (horizontally)
         to be centered.
