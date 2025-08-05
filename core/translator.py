@@ -58,7 +58,23 @@ class SignLanguageTranslator:
         prediction_history = []
         sentence = ""
         # TODO: Delete this testing data after the logic is implemented
-        self.display_history = ["apple\n", "river", "shadow", "mountain", "whisper", "quartz", "laptop", "dragon", "meadow", "candle", "jungle", "forest", "mirror", "comet", "breeze"]
+        self.display_history = [
+            "apple\n",
+            "river",
+            "shadow",
+            "mountain",
+            "whisper",
+            "quartz",
+            "laptop",
+            "dragon",
+            "meadow",
+            "candle",
+            "jungle",
+            "forest",
+            "mirror",
+            "comet",
+            "breeze",
+        ]
         self.display_sentence = " ".join(self.display_history)
         # Initialize constant variables
         CONFIDENCE_THRESHOLD = 0.7
@@ -119,7 +135,7 @@ class SignLanguageTranslator:
                     print(sentence)
             # Limit the prediction_history length to 7 elements to make sure it fits on the screen
             # TODO: REWORK THIS LOGIC, TO IMPLEMENT MULTILINE TEXT (Check Pillow multiline_text)
-            #if len(self.display_history) > 7 and in_real_time:
+            # if len(self.display_history) > 7 and in_real_time:
             #    print("CUTTING THE self.display_history...")
             #    self.display_history = self.display_history[-7:]
 
@@ -212,12 +228,18 @@ class SignLanguageTranslator:
         text_X_coord = self._get_translation_x_coordinate(
             frame, text, draw_object, font
         )
-        draw_object.multiline_text((text_X_coord, 470), text, (86, 24, 201), font, align="center")
+        draw_object.multiline_text(
+            (text_X_coord, 470), text, (86, 24, 201), font, align="center"
+        )
         # Convert PIL image (RGB) back to OpenCV image (BGR) and return it
         return cv.cvtColor(array(pillow_image), cv.COLOR_RGB2BGR)
 
     def _get_translation_x_coordinate(
-        self, frame: ndarray, translation: str, draw_object: ImageDraw.ImageDraw, font: ImageFont.ImageFont
+        self,
+        frame: ndarray,
+        translation: str,
+        draw_object: ImageDraw.ImageDraw,
+        font: ImageFont.ImageFont,
     ) -> int:
         """Uses the boundings of the given translation to calculate where it should be placed in the frame in the x axis (horizontally)
         to be centered.
@@ -254,9 +276,9 @@ class SignLanguageTranslator:
         text_width = bounding_box[2] - bounding_box[0]
         horizontal_space_left = frame.shape[1] - text_width
         return horizontal_space_left <= 140
-    
+
     def _add_new_line_character(self):
-        """Adds a new line character at the end of the display history's 
+        """Adds a new line character at the end of the display history's
         last word and at the end of display sentence. This method is only used
         for displaying purposes.
         """
