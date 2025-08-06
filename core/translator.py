@@ -258,6 +258,30 @@ class SignLanguageTranslator:
         text_width = bounding_box[2] - bounding_box[0]
         return (frame.shape[1] - text_width) // 2
 
+    def _get_translation_y_coordinate(
+        self,
+        frame: ndarray,
+        translation: str,
+        draw_object: ImageDraw.ImageDraw,
+        font: ImageFont.ImageFont,
+    ) -> int:
+        """Uses the boundings of the given translation to calculate where it should be placed in the frame in the y axis (vertically)
+        to be centered.
+
+        Args:
+            frame (ndarray): The opencv frame.
+            translation (str): The translation that will be written in the frame.
+            draw_object (ImageDraw): The object that will write the translation.
+            font (ImageFont): The font object that will be used to write the translation.
+
+        Returns:
+            int: The y axis value where the text should be to be centered.
+        """
+        # Calculate the size of the text to be displayed and the y coordinate for centering the text on the image
+        bounding_box = draw_object.multiline_textbbox((0, 0), translation, font=font)
+        text_height = bounding_box[3] - bounding_box[1]
+        return (frame.shape[0] - text_height) // 2
+
     def _is_text_overflowing(
         self, frame: ndarray, text: str, draw_object: ImageDraw, font: ImageFont
     ) -> bool:
