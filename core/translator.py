@@ -280,7 +280,7 @@ class SignLanguageTranslator:
         # Calculate the size of the text to be displayed and the y coordinate for centering the text on the image
         bounding_box = draw_object.multiline_textbbox((0, 0), translation, font=font)
         text_height = bounding_box[3] - bounding_box[1]
-        return (frame.shape[0] - text_height) // 2
+        return frame.shape[0] - text_height - 20
 
     def _is_text_overflowing(
         self, frame: ndarray, text: str, draw_object: ImageDraw, font: ImageFont
