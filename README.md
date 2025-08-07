@@ -10,6 +10,9 @@ A sign language translator.
   - Check that _get_translation_y_coordinate works and rework it if needed.
   - Implement a method to return the coordinates (x, y) that uses both _get_translation_x_coordinate
   and _get_translation_y_coordinate.
+  - **FIX** Add \n if the text is overflowing (inside if in_real_time statement) to avoid
+  adding and adding \n to the end.
+  - **BUG** If the text is overflowing and the text a new \n will be added ALWAYS no matter if it already has it.
 - **Don't** forget deleting the testing data in translator.py (60 - 62).
 - Think about model switching in translations
   (whether if letters or words model should be used in the current video translation).
