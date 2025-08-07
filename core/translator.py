@@ -228,8 +228,11 @@ class SignLanguageTranslator:
         text_X_coord = self._get_translation_x_coordinate(
             frame, text, draw_object, font
         )
+        text_y_coord = self._get_translation_y_coordinate(
+            frame, text, draw_object, font
+        )
         draw_object.multiline_text(
-            (text_X_coord, 470), text, (86, 24, 201), font, align="center"
+            (text_X_coord, text_y_coord), text, (86, 24, 201), font, align="center"
         )
         # Convert PIL image (RGB) back to OpenCV image (BGR) and return it
         return cv.cvtColor(array(pillow_image), cv.COLOR_RGB2BGR)
