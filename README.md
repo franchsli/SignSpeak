@@ -7,7 +7,7 @@ A sign language translator.
 ## High priority
 
 - Implement multiline text in video_translation.
-  - Check that _get_translation_y_coordinate works and rework it if needed.
+  - Play with the padding value in _get_translation_y_coordinate (current is 20).
   - Implement a method to return the coordinates (x, y) that uses both _get_translation_x_coordinate
   and _get_translation_y_coordinate.
   - **FIX** Add \n if the text is overflowing (inside if in_real_time statement) to avoid
