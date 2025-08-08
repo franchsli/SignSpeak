@@ -305,7 +305,7 @@ class SignLanguageTranslator:
         return x_coordinate, y_coordinate
 
     def _is_text_overflowing(
-        self, frame: ndarray, text: str, draw_object: ImageDraw, font: ImageFont
+        self, frame: ndarray, text: str, draw_object: ImageDraw.ImageDraw, font: ImageFont.ImageFont
     ) -> bool:
         """Returns if the text is overflowing the frame.
 
