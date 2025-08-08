@@ -8,10 +8,8 @@ A sign language translator.
 
 - Implement multiline text in video_translation.
   - Play with the padding value in _get_translation_y_coordinate (current is 20).
-  - Implement a method to return the coordinates (x, y) that uses both _get_translation_x_coordinate
-  and _get_translation_y_coordinate.
-  - **FIX** Add \n if the text is overflowing (inside if in_real_time statement) to avoid
-  adding and adding \n to the end.
+  - **FIX** Add \n if the text is overflowing (inside if in_real_time statement) to avoid the4 bug
+  adding and adding \n to the end when text is written.
   - **BUG** If the text is overflowing and the text a new \n will be added ALWAYS no matter if it already has it.
 - **Don't** forget deleting the testing data in translator.py (60 - 62).
 - Think about model switching in translations
