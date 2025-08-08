@@ -284,6 +284,28 @@ class SignLanguageTranslator:
         bounding_box = draw_object.multiline_textbbox((0, 0), translation, font=font)
         text_height = bounding_box[3] - bounding_box[1]
         return frame.shape[0] - text_height - 20
+    
+    def _get_translation_coordinates(
+        self,
+        frame: ndarray,
+        translation: str,
+        draw_object: ImageDraw.ImageDraw,
+        font: ImageFont.ImageFont,
+    ) -> tuple[int, int]:
+        """Uses the boundings of the given translation to calculate where it should be placed in the frame.
+
+        Args:
+            frame (ndarray): The opencv frame.
+            translation (str): The translation that will be written in the frame.
+            draw_object (ImageDraw): The object that will write the translation.
+            font (ImageFont): The font object that will be used to write the translation.
+
+        Returns:
+            tuple: The (x,y) coordinates for the translation.
+        """
+        x_coordinate = self._get_translation_x_coordinate(frame, translation, draw_object, font)
+        y_coordinate = self._get_translation_y_coordinate(frame, translation, draw_object, font)
+        return x_coordinate, y_coordinate
 
     def _is_text_overflowing(
         self, frame: ndarray, text: str, draw_object: ImageDraw, font: ImageFont
