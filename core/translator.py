@@ -225,10 +225,7 @@ class SignLanguageTranslator:
         if self._is_text_overflowing(frame, text, draw_object, font):
             self._add_new_line_character()
             text = self.display_sentence
-        text_X_coord = self._get_translation_x_coordinate(
-            frame, text, draw_object, font
-        )
-        text_y_coord = self._get_translation_y_coordinate(
+        text_X_coord, text_y_coord = self._get_translation_coordinates(
             frame, text, draw_object, font
         )
         draw_object.multiline_text(
