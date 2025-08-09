@@ -58,24 +58,8 @@ class SignLanguageTranslator:
         prediction_history = []
         sentence = ""
         # TODO: Delete this testing data after the logic is implemented
-        self.display_history = [
-            "apple\n",
-            "river",
-            "shadow",
-            "mountain\n",
-            "whisper",
-            "quartz",
-            "laptop\n",
-            "dragon",
-            "meadow",
-            "candle",
-            "jungle\n",
-            "forest",
-            "mirror",
-            "comet",
-            "breeze",
-        ]
-        self.display_sentence = " ".join(self.display_history)
+        self.display_history = ["HOLISTA", "NO"]
+        self.display_sentence = "HOLISTA NO"
         # Initialize constant variables
         CONFIDENCE_THRESHOLD = 0.7
         DESIRED_FRAME_WIDTH = 960
@@ -121,6 +105,8 @@ class SignLanguageTranslator:
                 # Check if the maximum prediction value is above 0.7
                 if amax(prediction) > CONFIDENCE_THRESHOLD:
                     predicted_class = prediction_model_signs[argmax(prediction)]
+                    # TODO: DELTE THIS LINE AFTER IMPLEMENTING MULTILINE TEXT
+                    self.display_sentence += f" HOLITAS"
                     if predicted_class != last_prediction:
                         prediction_history.append(predicted_class)
                         self.display_history.append(predicted_class)
@@ -329,7 +315,7 @@ class SignLanguageTranslator:
         last word and at the end of display sentence. This method is only used
         for displaying purposes.
         """
-        self.display_history[-1] = f"{self.display_history[-1]}\n"
+        self.display_history[-2] = f"{self.display_history[-2]}\n"
         self.display_sentence += "\n"
 
     def _correct_current_letter_predictions(self):
