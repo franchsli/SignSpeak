@@ -265,8 +265,7 @@ class SignLanguageTranslator:
         draw_object: ImageDraw.ImageDraw,
         font: ImageFont.ImageFont,
     ) -> int:
-        """Uses the boundings of the given translation to calculate where it should be placed in the frame in the y axis (vertically)
-        to be centered.
+        """Uses the boundings of the given translation to calculate where it should be placed in the frame in the y axis (vertically).
 
         Args:
             frame (ndarray): The opencv frame.
@@ -275,12 +274,13 @@ class SignLanguageTranslator:
             font (ImageFont): The font object that will be used to write the translation.
 
         Returns:
-            int: The y axis value where the text should be to be centered.
+            int: The y axis value where the text should be.
         """
-        # Calculate the size of the text to be displayed and the y coordinate for centering the text on the image
+        # Calculate the size of the text to be displayed and the y coordinate for putting the text on the image
         bounding_box = draw_object.multiline_textbbox((0, 0), translation, font=font)
         text_height = bounding_box[3] - bounding_box[1]
-        return frame.shape[0] - text_height - 20
+        BOTTOM_MARGIN = 20
+        return frame.shape[0] - text_height - BOTTOM_MARGIN
     
     def _get_translation_coordinates(
         self,
