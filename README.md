@@ -7,13 +7,11 @@ A sign language translator.
 ## High priority
 
 - Implement multiline text in video_translation.
-  - **BUG** If the text is overflowing and the text a new \n will be added ALWAYS no matter if it already has it.
-    - **FIX** Add the \n at the end of the penultimate word instead of the last,
-    to do this, a function to overwrite the display_sentence variable to have it (using a for loop):
-      - Iterate over the sentence from backwards until it hits a space, then overwrite the display_sentence
-      to be = display_sentence[:space_index] + "\n" + display_sentence[space_index:]
+  - **BUG** Sometimes \n will be added to some words in display sentece (dunno why).
 - **Don't** forget deleting the testing data in translator.py (60 - 62, 109).
 - Test the multiline feature by letting the translator draw the same prediction over and over.
+- **Think** the _add_new_line_character method keeps the space, think about removing it
+  (by increasing the index "i")
 - Think about model switching in translations
   (whether if letters or words model should be used in the current video translation).
 - Collect more sentences to train the VideoHandler with.
