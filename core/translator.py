@@ -319,6 +319,7 @@ class SignLanguageTranslator:
         for i in range(len(self.display_sentence) - 1, 0, -1):
             if self.display_sentence[i] == " ":
                 self.display_sentence = self.display_sentence[:i] + "\n" + self.display_sentence[i:]
+                break
 
     def _correct_current_letter_predictions(self):
         """Corrects the current letter predictions by checking if the predictions are letter and combine them.
