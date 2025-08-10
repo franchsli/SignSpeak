@@ -312,11 +312,13 @@ class SignLanguageTranslator:
 
     def _add_new_line_character(self):
         """Adds a new line character at the end of the display history's
-        last word and at the end of display sentence. This method is only used
+        and display sentence's penultimate word. This method is only used
         for displaying purposes.
         """
         self.display_history[-2] = f"{self.display_history[-2]}\n"
-        self.display_sentence += "\n"
+        for i in range(len(self.display_sentence) - 1, 0, -1):
+            if self.display_sentence[i] == " ":
+                self.display_sentence = self.display_sentence[:i] + "\n" + self.display_sentence[i:]
 
     def _correct_current_letter_predictions(self):
         """Corrects the current letter predictions by checking if the predictions are letter and combine them.
