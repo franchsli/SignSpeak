@@ -7,9 +7,8 @@ A sign language translator.
 ## High priority
 
 - Implement multiline text in video_translation.
-- Remove the space left by _add_new_line_character method increasing the index "i" by one.
-- **Don't** forget deleting the testing data in translator.py (60 - 62, 109).
-- Test the multiline feature by letting the translator draw the same prediction over and over.
+  - Test the multiline feature by letting the translator draw the same prediction over and over.
+  - **Don't** forget deleting the testing data in translator.py (60 - 62, 109).
 - Think about model switching in translations
   (whether if letters or words model should be used in the current video translation).
 - Collect more sentences to train the VideoHandler with.

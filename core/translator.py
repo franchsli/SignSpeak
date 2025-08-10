@@ -318,7 +318,7 @@ class SignLanguageTranslator:
         self.display_history[-2] = f"{self.display_history[-2]}\n"
         for i in range(len(self.display_sentence) - 1, 0, -1):
             if self.display_sentence[i] == " ":
-                self.display_sentence = self.display_sentence[:i] + "\n" + self.display_sentence[i:]
+                self.display_sentence = self.display_sentence[:i] + "\n" + self.display_sentence[i+1:]
                 break
 
     def _correct_current_letter_predictions(self):
