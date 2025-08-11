@@ -58,8 +58,8 @@ class SignLanguageTranslator:
         prediction_history = []
         sentence = ""
         # TODO: Delete this testing data after the logic is implemented
-        self.display_history = ["HOLISTA", "NO"]
-        self.display_sentence = "HOLISTA NO"
+        self.display_history = []
+        self.display_sentence = ""
         # Initialize constant variables
         CONFIDENCE_THRESHOLD = 0.7
         DESIRED_FRAME_WIDTH = 960
@@ -106,7 +106,8 @@ class SignLanguageTranslator:
                 if amax(prediction) > CONFIDENCE_THRESHOLD:
                     predicted_class = prediction_model_signs[argmax(prediction)]
                     # TODO: DELTE THIS LINE AFTER IMPLEMENTING MULTILINE TEXT
-                    self.display_sentence += f" HOLITAS"
+                    self.display_sentence += "ADIOS" if not self.display_sentence else " ADIOS"
+                    self.display_history.append("ADIOS")
                     if predicted_class != last_prediction:
                         prediction_history.append(predicted_class)
                         self.display_history.append(predicted_class)
