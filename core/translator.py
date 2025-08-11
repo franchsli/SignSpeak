@@ -105,7 +105,7 @@ class SignLanguageTranslator:
                 # Check if the maximum prediction value is above 0.7
                 if amax(prediction) > CONFIDENCE_THRESHOLD:
                     predicted_class = prediction_model_signs[argmax(prediction)]
-                    # TODO: DELTE THIS LINE AFTER IMPLEMENTING MULTILINE TEXT
+                    # TODO: DELETE THIS LINE AFTER IMPLEMENTING MULTILINE TEXT
                     self.display_sentence += "ADIOS" if not self.display_sentence else " ADIOS"
                     self.display_history.append("ADIOS")
                     if predicted_class != last_prediction:
