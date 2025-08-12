@@ -60,6 +60,7 @@ class SignLanguageTranslator:
         # TODO: Delete this testing data after the logic is implemented
         self.display_history = []
         self.display_sentence = ""
+        self.lines_counter = 1
         # Initialize constant variables
         CONFIDENCE_THRESHOLD = 0.7
         DESIRED_FRAME_WIDTH = 960
@@ -106,7 +107,10 @@ class SignLanguageTranslator:
                 if amax(prediction) > CONFIDENCE_THRESHOLD:
                     predicted_class = prediction_model_signs[argmax(prediction)]
                     # TODO: DELETE THIS LINE AFTER IMPLEMENTING MULTILINE TEXT
-                    self.display_sentence += "ADIOS" if not self.display_sentence else " ADIOS"
+                    self.display_sentence += "ADIOS ADIOS ADIOS ADIOS" if not self.display_sentence else " ADIOS ADIOS ADIOS ADIOS"
+                    self.display_history.append("ADIOS")
+                    self.display_history.append("ADIOS")
+                    self.display_history.append("ADIOS")
                     self.display_history.append("ADIOS")
                     if predicted_class != last_prediction:
                         prediction_history.append(predicted_class)
@@ -316,11 +320,16 @@ class SignLanguageTranslator:
         and display sentence's penultimate word. This method is only used
         for displaying purposes.
         """
-        self.display_history[-2] = f"{self.display_history[-2]}\n"
-        for i in range(len(self.display_sentence) - 1, 0, -1):
-            if self.display_sentence[i] == " ":
-                self.display_sentence = self.display_sentence[:i] + "\n" + self.display_sentence[i+1:]
-                break
+        if self.lines_counter < 4:
+            self.display_history[-2] = f"{self.display_history[-2]}\n"
+            for i in range(len(self.display_sentence) - 1, 0, -1):
+                if self.display_sentence[i] == " ":
+                    self.display_sentence = self.display_sentence[:i] + "\n" + self.display_sentence[i+1:]
+                    break
+            self.lines_counter += 1
+        else:
+            self.display_history = [self.display_history[-1]]
+            self.display_sentence = self.display_history[-1]
 
     def _correct_current_letter_predictions(self):
         """Corrects the current letter predictions by checking if the predictions are letter and combine them.
