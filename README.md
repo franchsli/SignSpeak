@@ -7,9 +7,7 @@ A sign language translator.
 ## High priority
 
 - Implement multiline text in video_translation.
-  - Add a \n char limitation, if there are four \n characters already and
-  a new one needs to be added, reset the display sentence and history to only have the last prediction.
-  This is to prevent multiline Y axis overflowing.
+  - **FIX BUG** Sometimes one-word lines will be displayed between lines that contain multiple words.
   - Test the multiline feature by letting the translator draw the same prediction over and over.
   - **Don't** forget deleting the testing data in translator.py (60 - 62, 109).
 - Think about model switching in translations
