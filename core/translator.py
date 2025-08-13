@@ -107,7 +107,11 @@ class SignLanguageTranslator:
                 if amax(prediction) > CONFIDENCE_THRESHOLD:
                     predicted_class = prediction_model_signs[argmax(prediction)]
                     # TODO: DELETE THIS LINE AFTER IMPLEMENTING MULTILINE TEXT
-                    self.display_sentence += "ADIOS ADIOS ADIOS ADIOS" if not self.display_sentence else " ADIOS ADIOS ADIOS ADIOS"
+                    self.display_sentence += (
+                        "ADIOS ADIOS ADIOS ADIOS"
+                        if not self.display_sentence
+                        else " ADIOS ADIOS ADIOS ADIOS"
+                    )
                     self.display_history.append("ADIOS")
                     self.display_history.append("ADIOS")
                     self.display_history.append("ADIOS")
@@ -273,7 +277,7 @@ class SignLanguageTranslator:
         text_height = bounding_box[3] - bounding_box[1]
         BOTTOM_MARGIN = 20
         return frame.shape[0] - text_height - BOTTOM_MARGIN
-    
+
     def _get_translation_coordinates(
         self,
         frame: ndarray,
@@ -292,12 +296,20 @@ class SignLanguageTranslator:
         Returns:
             tuple: The (x,y) coordinates for the translation.
         """
-        x_coordinate = self._get_translation_x_coordinate(frame, translation, draw_object, font)
-        y_coordinate = self._get_translation_y_coordinate(frame, translation, draw_object, font)
+        x_coordinate = self._get_translation_x_coordinate(
+            frame, translation, draw_object, font
+        )
+        y_coordinate = self._get_translation_y_coordinate(
+            frame, translation, draw_object, font
+        )
         return x_coordinate, y_coordinate
 
     def _is_text_overflowing(
-        self, frame: ndarray, text: str, draw_object: ImageDraw.ImageDraw, font: ImageFont.ImageFont
+        self,
+        frame: ndarray,
+        text: str,
+        draw_object: ImageDraw.ImageDraw,
+        font: ImageFont.ImageFont,
     ) -> bool:
         """Returns if the text is overflowing the frame.
 
@@ -324,7 +336,11 @@ class SignLanguageTranslator:
             self.display_history[-2] = f"{self.display_history[-2]}\n"
             for i in range(len(self.display_sentence) - 1, 0, -1):
                 if self.display_sentence[i] == " ":
-                    self.display_sentence = self.display_sentence[:i] + "\n" + self.display_sentence[i+1:]
+                    self.display_sentence = (
+                        self.display_sentence[:i]
+                        + "\n"
+                        + self.display_sentence[i + 1 :]
+                    )
                     break
             self.lines_counter += 1
         else:
