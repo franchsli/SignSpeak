@@ -9,6 +9,7 @@ A sign language translator.
 - Implement multiline text in video_translation.
   - **FIX BUG** Sometimes one-word lines will be displayed between lines that contain multiple words.
   - Test the multiline feature by letting the translator draw the same prediction over and over.
+  *This happens because \n characters work for single word predictions and not quadruple ones in the testing*
   - **Don't** forget deleting the testing data in translator.py (60 - 62, 109).
   - **DELETE** Unused imports all over the codebase.
 - Think about model switching in translations
