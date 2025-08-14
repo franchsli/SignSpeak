@@ -108,13 +108,10 @@ class SignLanguageTranslator:
                     predicted_class = prediction_model_signs[argmax(prediction)]
                     # TODO: DELETE THIS LINE AFTER IMPLEMENTING MULTILINE TEXT
                     self.display_sentence += (
-                        "ADIOS ADIOS ADIOS ADIOS"
+                        "ADIOS"
                         if not self.display_sentence
-                        else " ADIOS ADIOS ADIOS ADIOS"
+                        else " ADIOS"
                     )
-                    self.display_history.append("ADIOS")
-                    self.display_history.append("ADIOS")
-                    self.display_history.append("ADIOS")
                     self.display_history.append("ADIOS")
                     if predicted_class != last_prediction:
                         prediction_history.append(predicted_class)
