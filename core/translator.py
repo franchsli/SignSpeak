@@ -57,7 +57,6 @@ class SignLanguageTranslator:
         keypoints, last_prediction = [], ""
         prediction_history = []
         sentence = ""
-        # TODO: Delete this testing data after the logic is implemented
         self.display_history = []
         self.display_sentence = ""
         self.lines_counter = 1
@@ -106,13 +105,6 @@ class SignLanguageTranslator:
                 # Check if the maximum prediction value is above 0.7
                 if amax(prediction) > CONFIDENCE_THRESHOLD:
                     predicted_class = prediction_model_signs[argmax(prediction)]
-                    # TODO: DELETE THIS LINE AFTER IMPLEMENTING MULTILINE TEXT
-                    self.display_sentence += (
-                        "ADIOS"
-                        if not self.display_sentence
-                        else " ADIOS"
-                    )
-                    self.display_history.append("ADIOS")
                     if predicted_class != last_prediction:
                         prediction_history.append(predicted_class)
                         self.display_history.append(predicted_class)
@@ -125,11 +117,6 @@ class SignLanguageTranslator:
                             sentence += predicted_class
                             self.display_sentence += predicted_class
                     print(sentence)
-            # Limit the prediction_history length to 7 elements to make sure it fits on the screen
-            # TODO: REWORK THIS LOGIC, TO IMPLEMENT MULTILINE TEXT (Check Pillow multiline_text)
-            # if len(self.display_history) > 7 and in_real_time:
-            #    print("CUTTING THE self.display_history...")
-            #    self.display_history = self.display_history[-7:]
 
             # display the translation if the user wants to
             if in_real_time:
