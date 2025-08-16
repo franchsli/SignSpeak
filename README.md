@@ -7,10 +7,10 @@ A sign language translator.
 ## High priority
 
 - **REVIEW** The entire codebase.
-- Think about model switching in translations
-  (whether if letters or words model should be used in the current video translation).
 - Collect more sentences to train the VideoHandler with.
 - Collect letters to train the ImageHandler with.
+- Think about model switching in translations
+  (whether if letters or words model should be used in the current video translation).
 
 ### Low priority
 
