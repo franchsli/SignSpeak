@@ -1,9 +1,7 @@
 import cv2 as cv
-from os import path
 from numpy import array, amax, argmax, newaxis, ndarray
 from PIL import ImageDraw, ImageFont, Image
 from string import ascii_lowercase, ascii_uppercase
-from keyboard import is_pressed
 from predictor import SignPredictor
 from processor import MediaPipeProcessor
 from text_processor import TextProcessor

@@ -1,7 +1,6 @@
 import os
 import cv2 as cv
 import numpy as np
-from dataclasses import dataclass
 from keras.utils import to_categorical
 from keras.models import Sequential
 from keras.layers import LSTM, Dense

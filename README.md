@@ -7,7 +7,6 @@ A sign language translator.
 ## High priority
 
 - Implement multiline text in video_translation.
-  - **DELETE** Unused imports all over the codebase.
 - Think about model switching in translations
   (whether if letters or words model should be used in the current video translation).
 - Collect more sentences to train the VideoHandler with.
