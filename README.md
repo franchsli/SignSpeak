@@ -7,6 +7,7 @@ A sign language translator.
 ## High priority
 
 - **REVIEW** The entire codebase.
+- Think about making the ImageHandler "hands" mode only, deleting the mode parameter in init method.
 - Collect more sentences to train the VideoHandler with.
 - Collect letters to train the ImageHandler with.
 - Think about model switching in translations
