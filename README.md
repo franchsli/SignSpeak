@@ -6,8 +6,12 @@ A sign language translator.
 
 ## High priority
 
-- **REVIEW** The entire codebase.
 - Think about making the ImageHandler "hands" mode only, deleting the mode parameter in init method.
+- Check if the sorting in tools.py 348th line is needed.
+- Check if signs.shape[0] is equal to 10 (VideoHandler)
+  to re assign SEQUENCE_LENGTH to that instead of the hardcoded 10, this way that variable will work in bigger
+  or smaller input sizes.
+- Think about removing train.py file.
 - Collect more sentences to train the VideoHandler with.
 - Collect letters to train the ImageHandler with.
 - Think about model switching in translations
