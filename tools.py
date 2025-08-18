@@ -107,6 +107,9 @@ class ImageHandler(GestureHandler):
             mode (str): The desired Mediapipe model. Defaults to 'hands'.
             data_parent_folder (str): The folder that contains all the data
             that will be used in the dataset creation.
+        
+        NOTE: mode is set to 'hands' because usually only hands are used to sign letters (which do not need spatial
+        nor temporal context)
         """
         super().__init__(confidence, mode, data_parent_folder)
 
@@ -259,6 +262,9 @@ class VideoHandler(GestureHandler):
             mode (str): The desired Mediapipe model. Defaults to 'holistic'.
             data_parent_folder (str): The folder that contains all the data
             that will be used in the dataset creation.
+
+        NOTE: mode is set to 'holistic' because sign language videos normally sign words or concepts,
+        which use things like pose, face and require spatial and temporal context.
         """
         super().__init__(confidence, mode, data_parent_folder)
 
