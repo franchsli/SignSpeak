@@ -10,7 +10,6 @@ A sign language translator.
 - Check if signs.shape[0] is equal to 10 (VideoHandler)
   to re assign SEQUENCE_LENGTH to that instead of the hardcoded 10, this way that variable will work in bigger
   or smaller input sizes.
-- Think about removing train.py file.
 - Collect more sentences to train the VideoHandler with.
 - Collect letters to train the ImageHandler with.
 - Think about model switching in translations
