@@ -6,7 +6,7 @@ A sign language translator.
 
 ## High priority
 
-- Check if the sorting in tools.py 348th line is needed.
+- Check if os.scandir() should be used in the codebase instead of os.listdir().
 - Check if signs.shape[0] is equal to 10 (VideoHandler)
   to re assign SEQUENCE_LENGTH to that instead of the hardcoded 10, this way that variable will work in bigger
   or smaller input sizes.
