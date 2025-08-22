@@ -350,15 +350,11 @@ class VideoHandler(GestureHandler):
         label_map = {label: num for num, label in enumerate(labels)}
 
         for label in os.listdir(dataset_path):
-            # Sort files to maintain temporal order
-            # TODO: Check if this sorting is necesary, remove if so
-            files = sorted(
-                [
-                    file
-                    for file in os.listdir(os.path.join(dataset_path, label))
-                    if file.endswith(".npy")
-                ]
-            )
+            files = [
+                file
+                for file in os.listdir(os.path.join(dataset_path, label))
+                if file.endswith(".npy")
+            ]
 
             all_frames = []
             for file in files:
