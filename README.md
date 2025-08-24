@@ -7,6 +7,7 @@ A sign language translator.
 ## High priority
 
 - Use os.scandir() instead of os.listdir() for better performance.
+  - **IMPORTANT** Try replacing method by method and test it each time.
 - Check if signs.shape[0] is equal to 10 (VideoHandler)
   to re assign SEQUENCE_LENGTH to that instead of the hardcoded 10, this way that variable will work in bigger
   or smaller input sizes.
