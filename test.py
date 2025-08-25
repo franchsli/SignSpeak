@@ -3,7 +3,7 @@ from tools import VideoHandler, ImageHandler
 
 video_folder = os.path.abspath("data/ADIOS/")
 video_folders_path = os.path.abspath("data")
-video_folders = os.listdir(video_folders_path)
+# video_folders = os.listdir(video_folders_path)
 #VideoGesturesRecognizer = VideoHandler(data_parent_folder=video_folders_path)
 # create datasets code
 # VideoGesturesRecognizer.create_dataset(os.path.abspath("testing"))
