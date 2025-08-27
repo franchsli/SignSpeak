@@ -74,8 +74,10 @@ class GestureHandler(MediaPipeProcessor):
         Args:
             path (str): Where the directories should be created.
         """
-        for label in os.listdir(self.data_parent_folder):
-            os.makedirs(os.path.join(path, label), exist_ok=True)
+        with os.scandir(self.data_parent_folder) as entries:
+            for entry in entries:
+                os.makedirs(os.path.join(path, entry.name), exist_ok=True)
+
 
     def dataset_directories_already_created(self, path: str) -> bool:
         """Return True if the dataset's needed directories are already created
