@@ -8,6 +8,8 @@ A sign language translator.
 
 - Use os.scandir() instead of os.listdir() for better performance.
   - **IMPORTANT** Try replacing method by method and test it each time.
+  - **IMPORTANT** Difference between essentials os.listdir and replaceable ones.
+  - **IMPORTANT** Try using .close() on os.scandir() elements instead of a with statement due to indentation.
 - Use os.scandir to check if a video or image is a file on top of checking the extension.
 - Use os.scandir to check if a path is indeed a directory.
 - **IMPORTANT** the two tasks above need to be implemented slowly while being tested.
