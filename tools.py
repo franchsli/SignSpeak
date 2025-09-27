@@ -125,18 +125,18 @@ class ImageHandler(GestureHandler):
         if not self.dataset_directories_already_created(path):
             self.create_dataset_directories(path)
 
-        for image_folder in os.listdir(self.data_parent_folder):
-            image_folder_path_dirs = os.listdir(
-                os.path.join(self.data_parent_folder, image_folder)
+        image_folders = os.scandir(self.data_parent_folder)
+
+        for image_folder in image_folders:
+            image_folder_path_dirs = os.scandir(
+                image_folder.path
             )
             for image_file in image_folder_path_dirs:
-                image_path: str = os.path.join(
-                    self.data_parent_folder, image_folder, image_file
-                )
-                print(f"Processing image: {image_file}")
+                image_path: str = image_file.path
+                print(f"Processing image: {image_file.name}")
                 frame = cv.imread(image_path)
                 if frame is None:
-                    print(f"Couldn't open {image_file}")
+                    print(f"Couldn't open {image_file.name}")
                     continue
                 resized_frame = cv.resize(frame, (640, 480))
                 # Process image and get results
@@ -150,8 +150,8 @@ class ImageHandler(GestureHandler):
                 keypoints: np.ndarray = self.keypoint_extraction(results)
                 frame_path = os.path.join(
                     path,
-                    self.get_label_name(image_file),
-                    f"{self.get_file_index(image_file)}.npy",
+                    self.get_label_name(image_file.name),
+                    f"{self.get_file_index(image_file.name)}.npy",
                 )
                 save_dir = os.path.dirname(frame_path)
                 os.makedirs(save_dir, exist_ok=True)
@@ -165,6 +165,8 @@ class ImageHandler(GestureHandler):
                 if cv.waitKey(1) & 0xFF == ord("q"):
                     self.stop()
                     break
+            image_folder_path_dirs.close()
+        image_folders.close()
 
     def train(
         self, dataset_path: str, model_path: str = "models/letters_model.keras"
