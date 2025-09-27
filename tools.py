@@ -282,20 +282,20 @@ class VideoHandler(GestureHandler):
         if not self.dataset_directories_already_created(path):
             self.create_dataset_directories(path)
 
-        for video_folder in os.listdir(self.data_parent_folder):
-            video_folder_path_dirs = os.listdir(
-                os.path.join(self.data_parent_folder, video_folder)
+        video_folders = os.scandir(self.data_parent_folder)
+
+        for video_folder in video_folders:
+            video_folder_path_dirs = os.scandir(
+                video_folder.path
             )
             for video_file in video_folder_path_dirs:
-                video_path: str = os.path.join(
-                    self.data_parent_folder, video_folder, video_file
-                )
-                if not video_file.endswith((".mp4", ".avi", ".mov")):
+                video_path: str = video_file.path
+                if not video_file.name.endswith((".mp4", ".avi", ".mov")):
                     continue
-                print(f"Processing video: {video_file}")
+                print(f"Processing video: {video_file.name}")
                 cap = cv.VideoCapture(video_path)
                 if not cap.isOpened():
-                    print(f"Failed to open video: {video_file}")
+                    print(f"Failed to open video: {video_file.name}")
                     continue
                 frame_index: int = 0
                 while True:
@@ -318,8 +318,8 @@ class VideoHandler(GestureHandler):
                     keypoints: np.ndarray = self.keypoint_extraction(results)
                     frame_path = os.path.join(
                         path,
-                        self.get_label_name(video_file),
-                        f"{self.get_file_index(video_file)}_frame_{frame_index}.npy",
+                        self.get_label_name(video_file.name),
+                        f"{self.get_file_index(video_file.name)}_frame_{frame_index}.npy",
                     )
                     save_dir = os.path.dirname(frame_path)
                     os.makedirs(save_dir, exist_ok=True)
@@ -335,6 +335,8 @@ class VideoHandler(GestureHandler):
                         self.stop()
                         break
                 cap.release()
+            video_folder_path_dirs.close()
+        video_folders.close()
 
     def create_sequences(
         self, dataset_path: str, labels: list[str], sequence_length: int = 10
