@@ -165,8 +165,6 @@ class ImageHandler(GestureHandler):
                 if cv.waitKey(1) & 0xFF == ord("q"):
                     self.stop()
                     break
-            image_folder_path_dirs.close()
-        image_folders.close()
 
     def train(
         self, dataset_path: str, model_path: str = "models/letters_model.keras"
@@ -335,8 +333,6 @@ class VideoHandler(GestureHandler):
                         self.stop()
                         break
                 cap.release()
-            video_folder_path_dirs.close()
-        video_folders.close()
 
     def create_sequences(
         self, dataset_path: str, labels: list[str], sequence_length: int = 10
