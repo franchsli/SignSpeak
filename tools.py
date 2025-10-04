@@ -129,43 +129,45 @@ class ImageHandler(GestureHandler):
         image_folders = os.scandir(self.data_parent_folder)
 
         for image_folder in image_folders:
-            image_folder_path_dirs = os.scandir(
-                image_folder.path
-            )
-            for image_file in image_folder_path_dirs:
-                image_path: str = image_file.path
-                print(f"Processing image: {image_file.name}")
-                frame = cv.imread(image_path)
-                if frame is None:
-                    print(f"Couldn't open {image_file.name}")
-                    continue
-                resized_frame = cv.resize(frame, (640, 480))
-                # Process image and get results
-                results, processed_image = self.image_process(resized_frame)
-                if not self.are_results_valid(results):
-                    print(f"No valid landmarks given the criteria of {self.mode} model")
-                    continue
-                # Draw landmarks and display
-                display_image = self.draw_landmarks(processed_image, results)
-                # Extract the landmarks from both hands and save them in arrays
-                keypoints: np.ndarray = self.keypoint_extraction(results)
-                frame_path = os.path.join(
-                    path,
-                    self.get_label_name(image_file.name),
-                    f"{self.get_file_index(image_file.name)}.npy",
+            if image_folder.is_dir():
+                image_folder_path_dirs = os.scandir(
+                    image_folder.path
                 )
-                save_dir = os.path.dirname(frame_path)
-                os.makedirs(save_dir, exist_ok=True)
-                print(f"Saving keypoints shape {keypoints.shape} to {frame_path}")
-                if os.path.exists(frame_path):
-                    loaded = np.load(frame_path)
-                    print(f"Verified save: loaded shape {loaded.shape}")
-                np.save(frame_path, keypoints)
-                resized_frame = cv.resize(display_image, (960, 540))
-                cv.imshow("Image", resized_frame)
-                if cv.waitKey(1) & 0xFF == ord("q"):
-                    self.stop()
-                    break
+                for image_file in image_folder_path_dirs:
+                    if image_file.is_file():
+                        image_path: str = image_file.path
+                        print(f"Processing image: {image_file.name}")
+                        frame = cv.imread(image_path)
+                        if frame is None:
+                            print(f"Couldn't open {image_file.name}")
+                            continue
+                        resized_frame = cv.resize(frame, (640, 480))
+                        # Process image and get results
+                        results, processed_image = self.image_process(resized_frame)
+                        if not self.are_results_valid(results):
+                            print(f"No valid landmarks given the criteria of {self.mode} model")
+                            continue
+                        # Draw landmarks and display
+                        display_image = self.draw_landmarks(processed_image, results)
+                        # Extract the landmarks from both hands and save them in arrays
+                        keypoints: np.ndarray = self.keypoint_extraction(results)
+                        frame_path = os.path.join(
+                            path,
+                            self.get_label_name(image_file.name),
+                            f"{self.get_file_index(image_file.name)}.npy",
+                        )
+                        save_dir = os.path.dirname(frame_path)
+                        os.makedirs(save_dir, exist_ok=True)
+                        print(f"Saving keypoints shape {keypoints.shape} to {frame_path}")
+                        if os.path.exists(frame_path):
+                            loaded = np.load(frame_path)
+                            print(f"Verified save: loaded shape {loaded.shape}")
+                        np.save(frame_path, keypoints)
+                        resized_frame = cv.resize(display_image, (960, 540))
+                        cv.imshow("Image", resized_frame)
+                        if cv.waitKey(1) & 0xFF == ord("q"):
+                            self.stop()
+                            break
         self.stop()
                 
 
