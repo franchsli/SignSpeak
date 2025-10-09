@@ -360,16 +360,11 @@ class VideoHandler(GestureHandler):
         label_map = {label: num for num, label in enumerate(labels)}
         
         for label in os.scandir(dataset_path):
-            files = [
-                file
-                for file in os.scandir(label.path)
-                if file.is_file() and file.endswith(".npy")
-            ]
-
             all_frames = []
-            for file in files:
-                frame_data = np.load(file.path)
-                all_frames.append(frame_data)
+            for file in os.scandir(label.path):
+                if file.is_file() and file.endswith(".npy"):
+                    frame_data = np.load(file.path)
+                    all_frames.append(frame_data)
 
             # Create sliding window sequences
             for i in range(len(all_frames) - sequence_length + 1):
