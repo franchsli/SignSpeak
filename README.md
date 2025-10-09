@@ -6,7 +6,6 @@ A sign language translator.
 
 ## High priority
 
-- TODO: Check why dataset_path is used in tools.py 245 and 357 instead of labels arg
 - Use os.scandir() instead of os.listdir() for better performance.
   - **IMPORTANT** Try replacing method by method and test it each time.
   - **IMPORTANT** Difference between essentials os.listdir and replaceable ones.
