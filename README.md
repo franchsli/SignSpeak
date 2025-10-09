@@ -6,15 +6,9 @@ A sign language translator.
 
 ## High priority
 
-- Use os.scandir() instead of os.listdir() for better performance.
-  - **IMPORTANT** Try replacing method by method and test it each time.
-  - **IMPORTANT** Difference between essentials os.listdir and replaceable ones.
-- Use os.scandir to check if a video or image is a file on top of checking the extension.
-- Use os.scandir to check if a path is indeed a directory.
-- **IMPORTANT** the two tasks above need to be implemented slowly while being tested.
 - ***IMPORTANT*** Check that all os.scandir have the needed checks (like checking
   if the DirEntry is a file or a dir, etc) and indented properly.
-  **Try and finally are not mandatory, as .close() calls when the iteration finishes**
+- **IMPORTANT** Check if handlers still work using test.py.
 - Check if signs.shape[0] is equal to 10 (VideoHandler)
   to re assign SEQUENCE_LENGTH to that instead of the hardcoded 10, this way that variable will work in bigger
   or smaller input sizes.
