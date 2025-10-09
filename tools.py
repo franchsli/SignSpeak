@@ -245,12 +245,13 @@ class ImageHandler(GestureHandler):
         landmarks, labels_integers = [], []
         label_map = {label: num for num, label in enumerate(labels)}
         
-        for label in os.listdir(dataset_path):
-            for file in os.listdir(os.path.join(dataset_path, label)):
-                if file.endswith(".npy"):
-                    frame_data = np.load(os.path.join(dataset_path, label, file))
-                    landmarks.append(frame_data)
-                    labels_integers.append(label_map[label])
+        for label in os.scandir(dataset_path):
+            if label.is_dir():
+                for file in os.scandir(label.path):
+                    if file.is_file() and file.endswith(".npy"):
+                        frame_data = np.load(os.path.join(dataset_path, label, file))
+                        landmarks.append(frame_data)
+                        labels_integers.append(label_map[label])
 
         return np.array(landmarks), to_categorical(labels_integers).astype(int)
 
