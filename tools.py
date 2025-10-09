@@ -244,7 +244,7 @@ class ImageHandler(GestureHandler):
         """
         landmarks, labels_integers = [], []
         label_map = {label: num for num, label in enumerate(labels)}
-        # TODO: Check why dataset_path is used here instead of labels arg
+        
         for label in os.listdir(dataset_path):
             for file in os.listdir(os.path.join(dataset_path, label)):
                 if file.endswith(".npy"):
@@ -357,7 +357,7 @@ class VideoHandler(GestureHandler):
         landmarks, labels_integers = [], []
         # Create a label map to map each sign label to a numeric value
         label_map = {label: num for num, label in enumerate(labels)}
-        # TODO: Check why dataset_path is used here instead of labels arg
+        
         for label in os.listdir(dataset_path):
             files = [
                 file
