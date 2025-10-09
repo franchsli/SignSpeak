@@ -359,16 +359,16 @@ class VideoHandler(GestureHandler):
         # Create a label map to map each sign label to a numeric value
         label_map = {label: num for num, label in enumerate(labels)}
         
-        for label in os.listdir(dataset_path):
+        for label in os.scandir(dataset_path):
             files = [
                 file
-                for file in os.listdir(os.path.join(dataset_path, label))
-                if file.endswith(".npy")
+                for file in os.scandir(label.path)
+                if file.is_file() and file.endswith(".npy")
             ]
 
             all_frames = []
             for file in files:
-                frame_data = np.load(os.path.join(dataset_path, label, file))
+                frame_data = np.load(file.path)
                 all_frames.append(frame_data)
 
             # Create sliding window sequences
