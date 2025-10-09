@@ -135,7 +135,7 @@ class ImageHandler(GestureHandler):
                 )
                 for image_file in image_folder_path_dirs:
                     if image_file.is_file():
-                        image_path: str = image_file.path
+                        image_path = image_file.path
                         print(f"Processing image: {image_file.name}")
                         frame = cv.imread(image_path)
                         if frame is None:
@@ -295,7 +295,7 @@ class VideoHandler(GestureHandler):
                 )
                 for video_file in video_folder_path_dirs:
                     if video_file.is_file():
-                        video_path: str = video_file.path
+                        video_path = video_file.path
                         if not video_file.name.endswith((".mp4", ".avi", ".mov")):
                             continue
                         print(f"Processing video: {video_file.name}")
