@@ -9,7 +9,7 @@ VideoGesturesRecognizer = VideoHandler(data_parent_folder=video_folders_path)
 #VideoGesturesRecognizer.create_dataset(os.path.abspath("testing"))
 #VideoGesturesRecognizer.create_dataset_directories(os.path.abspath("testing"))
 # training code (after all the datasets are created)
-VideoGesturesRecognizer.train(os.path.abspath("testing"), "models/wordsss_model.keras")
+VideoGesturesRecognizer.train(os.path.abspath("test2"), "models/wordsss_model.keras")
 
 # Example with ImageHandler
 #ImageSignHandler = ImageHandler(data_parent_folder=os.path.abspath("letters_data"))

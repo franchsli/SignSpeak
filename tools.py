@@ -371,7 +371,7 @@ class VideoHandler(GestureHandler):
             for i in range(len(all_frames) - sequence_length + 1):
                 sequence = all_frames[i : i + sequence_length]
                 landmarks.append(sequence)
-                labels_integers.append(label_map[label])
+                labels_integers.append(label_map[label.name])
 
         return np.array(landmarks), to_categorical(labels_integers).astype(int)
 
