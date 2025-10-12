@@ -248,8 +248,8 @@ class ImageHandler(GestureHandler):
         for label in os.scandir(dataset_path):
             if label.is_dir():
                 for file in os.scandir(label.path):
-                    if file.is_file() and file.endswith(".npy"):
-                        frame_data = np.load(os.path.join(dataset_path, label, file))
+                    if file.is_file() and file.name.endswith(".npy"):
+                        frame_data = np.load(os.path.join(dataset_path, label, file.name))
                         landmarks.append(frame_data)
                         labels_integers.append(label_map[label])
 
@@ -363,7 +363,7 @@ class VideoHandler(GestureHandler):
             all_frames = []
             if label.is_dir():
                 for file in os.scandir(label.path):
-                    if file.is_file() and file.endswith(".npy"):
+                    if file.is_file() and file.name.endswith(".npy"):
                         frame_data = np.load(file.path)
                         all_frames.append(frame_data)
 
