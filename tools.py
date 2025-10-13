@@ -249,9 +249,9 @@ class ImageHandler(GestureHandler):
             if label.is_dir():
                 for file in os.scandir(label.path):
                     if file.is_file() and file.name.endswith(".npy"):
-                        frame_data = np.load(os.path.join(dataset_path, label, file.name))
+                        frame_data = np.load(file.path)
                         landmarks.append(frame_data)
-                        labels_integers.append(label_map[label])
+                        labels_integers.append(label_map[label.name])
 
         return np.array(landmarks), to_categorical(labels_integers).astype(int)
 
