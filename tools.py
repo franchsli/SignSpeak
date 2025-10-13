@@ -230,7 +230,7 @@ class ImageHandler(GestureHandler):
 
         # Calculate the accuracy of the predictions
         accuracy = metrics.accuracy_score(test_labels, predictions)
-        print(accuracy)
+        print(f"Accuracy: {accuracy}")
 
     def load_frame(self, dataset_path: str, labels: list[str]):
         """Loads the frame's data into an numpy array for model training.
@@ -438,4 +438,4 @@ class VideoHandler(GestureHandler):
 
         # Calculate the accuracy of the predictions
         accuracy = metrics.accuracy_score(test_labels, predictions)
-        print(accuracy)
+        print(f"Accuracy: {accuracy}")
