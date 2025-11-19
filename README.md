@@ -6,11 +6,8 @@ A sign language translator.
 
 ## High priority
 
-- Make SEQUENCE_LENGTH constant to a variable.
 - Update readme (add project purpose, functionality, etc).
   - (maybe) separate tasks list in a separate file.
-- Collect more sentences to train the VideoHandler with.
-- Collect letters to train the ImageHandler with.
 - Think about model switching in translations
   (whether if letters or words model should be used in the current video translation).
 
