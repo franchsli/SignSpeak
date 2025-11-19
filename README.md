@@ -6,9 +6,7 @@ A sign language translator.
 
 ## High priority
 
-- Check if signs.shape[0] is equal to 10 (VideoHandler)
-  to re assign SEQUENCE_LENGTH to that instead of the hardcoded 10, this way that variable will work in bigger
-  or smaller input sizes.
+- Make SEQUENCE_LENGTH constant to a variable.
 - Update readme (add project purpose, functionality, etc).
   - (maybe) separate tasks list in a separate file.
 - Collect more sentences to train the VideoHandler with.
