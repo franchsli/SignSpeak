@@ -36,3 +36,6 @@ def test_image_translation_performance():
         print(translation)
     end = time()
     print(f"Time spent translating A1.png 10 thousand times: {end - start} seconds")
+
+if __name__ == "__main__":
+    test_image_translation_performance()
