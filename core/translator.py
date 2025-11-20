@@ -151,7 +151,7 @@ class SignLanguageTranslator:
             return
         resized_frame = cv.resize(frame, (640, 480))
         # Process image and get results
-        results, _ = self.image_process(resized_frame)
+        results, _ = self.processor.image_process(resized_frame)
         if not self.processor.are_results_valid(results):
             print(
                 f"No valid landmarks given the criteria of {self.processor.mode} model"
