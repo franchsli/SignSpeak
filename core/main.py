@@ -31,11 +31,11 @@ def test_image_translation_performance():
     predictor.load_model(signs, "letters", "models/letterss.keras")
     # load the predictor instance in the translator
     translator = SignLanguageTranslator(predictor)
-    for _ in range(10_000):
+    for _ in range(1_000):
         translation = translator.translate_image(path.abspath("letters_data/A/A1.png"))
         print(translation)
     end = time()
-    print(f"Time spent translating A1.png 10 thousand times: {end - start} seconds")
+    print(f"Time spent translating A1.png 1000 times: {end - start} seconds")
 
 if __name__ == "__main__":
     test_image_translation_performance()
