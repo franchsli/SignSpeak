@@ -23,8 +23,7 @@ class SignLanguageTranslator:
             language (str, optional): The language's code that will be checked to correct
             the text. Defaults to "es".
         """
-
-        self.processor = MediaPipeProcessor(mediapipe_confidence)
+        self.mediapipe_confidence = mediapipe_confidence
         self.predictor = predictor
         self.text_processor = TextProcessor(language)
 
@@ -51,6 +50,7 @@ class SignLanguageTranslator:
         # set the parameter to true if the webcam is being translated
         in_real_time = True if video_input == 0 else in_real_time
         # Initialize the variables neeeded
+        self.processor = MediaPipeProcessor(self.mediapipe_confidence)
         prediction_model, prediction_model_signs = self.predictor.get_model(model_name)
         keypoints, last_prediction = [], ""
         prediction_history = []
@@ -143,6 +143,7 @@ class SignLanguageTranslator:
         NOTE: This method only translates to letters given that no static signs mean words or concepts.
         """
         CONFIDENCE_THRESHOLD = 0.7
+        self.processor = MediaPipeProcessor(self.mediapipe_confidence, "hands")
         prediction_model, prediction_model_signs = self.predictor.get_model(model_name)
         print(f"Processing image in: {image_path}")
         frame = cv.imread(image_path)
