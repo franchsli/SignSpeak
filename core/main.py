@@ -16,7 +16,7 @@ def test_video_translation_performance():
     # load the predictor instance in the translator
     translator = SignLanguageTranslator(predictor)
     translation = translator.translate_video(path.abspath("data/ADIOS/ADIOS1.mp4"), True)
-    print(translation)
+    print(f"translation: {translation}")
     end = time()
     print(f"Proccessing 6 seconds long video took {end - start} seconds")
 
@@ -33,7 +33,7 @@ def test_image_translation_performance():
     translator = SignLanguageTranslator(predictor)
     for _ in range(1_000):
         translation = translator.translate_image(path.abspath("letters_data/A/A1.png"))
-        print(translation)
+        print(f"translation: {translation}")
     end = time()
     print(f"Time spent translating A1.png 1000 times: {end - start} seconds")
 
