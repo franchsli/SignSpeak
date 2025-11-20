@@ -160,7 +160,7 @@ class SignLanguageTranslator:
             return
         # Extract the landmarks from both hands and save them in arrays
         keypoints = self.processor.keypoint_extraction(results)
-        prediction = prediction_model.predict(keypoints[newaxis, :, :])
+        prediction = prediction_model.predict(keypoints[newaxis, :])
         if amax(prediction) > CONFIDENCE_THRESHOLD:
             predicted_class = prediction_model_signs[argmax(prediction)]
             return predicted_class
