@@ -14,10 +14,6 @@ A sign language translator.
 
 ### Low priority
 
-- Use tqdm to implement a load bar in dataset creation and other methods if needed (think about this).
-  - **NOTE** The print() statements when turned into tqdm.write() make the bar look awful so maybe those need to be
-  deleted and only the needed ones will stay.
-- Add logging: Replace print statements. (or maybe not? or later?)
 - Implement frame division (think about this).
   Divide the frame by the number of people there and process the signs of everyone.
   - Add person detection (YOLO/MediaPipe Person Segmentation).
