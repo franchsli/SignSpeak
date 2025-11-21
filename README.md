@@ -7,6 +7,7 @@ A sign language translator.
 ## High priority
 
 - Test everything.
+- Write tests.
 - Update readme (add project purpose, functionality, etc).
   - (maybe) separate tasks list in a separate file.
 - Think about model switching in translations
