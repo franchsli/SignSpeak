@@ -342,7 +342,7 @@ class VideoHandler(GestureHandler):
                                 break
                         cap.release()
 
-    def create_sequences(
+    def _create_sequences(
         self, dataset_path: str, labels: list[str], sequence_length: int = 10
     ):
         """Creates overlapping sequences from frame data and the labels integers for training.
@@ -388,7 +388,7 @@ class VideoHandler(GestureHandler):
         signs = np.array(labels)
         SEQUENCE_LENGTH = 10  # Must match model's expected input
 
-        landmarks, labels_integers = self.create_sequences(
+        landmarks, labels_integers = self._create_sequences(
             dataset_path, labels, SEQUENCE_LENGTH
         )
 
