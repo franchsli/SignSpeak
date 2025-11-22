@@ -15,16 +15,14 @@ def test_import_performance():
 def test_video_translation_performance():
     start = time()
     from translator import SignLanguageTranslator
-    from predictor import SignPredictor
     # Set the path to the data directory
     PATH = path.abspath("data")
     # Create an array of sign labels by listing the contents of the data directory
     signs = array(listdir(PATH))
-    predictor = SignPredictor()
-    # load the models down here
-    predictor.load_model(signs, "words")
     # load the predictor instance in the translator
-    translator = SignLanguageTranslator(predictor)
+    translator = SignLanguageTranslator()
+    # load the models down here
+    translator.load_model(signs, "words")
     translation = translator.translate_video(path.abspath("data/ADIOS/ADIOS1.mp4"), True)
     print(f"translation: {translation}")
     end = time()
@@ -33,16 +31,14 @@ def test_video_translation_performance():
 def test_image_translation_performance():
     start = time()
     from translator import SignLanguageTranslator
-    from predictor import SignPredictor
     # Set the path to the data directory
     PATH = path.abspath("letters_data")
     # Create an array of sign labels by listing the contents of the data directory
     signs = array(listdir(PATH))
-    predictor = SignPredictor()
-    # load the models down here
-    predictor.load_model(signs, "letters", "models/letterss.keras")
     # load the predictor instance in the translator
-    translator = SignLanguageTranslator(predictor)
+    translator = SignLanguageTranslator()
+    # load the models down here
+    translator.load_model(signs, "letters", "models/letterss.keras")
     for _ in range(30):
         translation = translator.translate_image(path.abspath("letters_data/A/A1.png"))
         print(f"translation: {translation}")
