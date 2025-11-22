@@ -19,7 +19,6 @@ def test_video_translation_performance():
     PATH = path.abspath("data")
     # Create an array of sign labels by listing the contents of the data directory
     signs = array(listdir(PATH))
-    # load the predictor instance in the translator
     translator = SignLanguageTranslator()
     # load the models down here
     translator.load_model(signs, "words")
@@ -35,7 +34,6 @@ def test_image_translation_performance():
     PATH = path.abspath("letters_data")
     # Create an array of sign labels by listing the contents of the data directory
     signs = array(listdir(PATH))
-    # load the predictor instance in the translator
     translator = SignLanguageTranslator()
     # load the models down here
     translator.load_model(signs, "letters", "models/letterss.keras")
