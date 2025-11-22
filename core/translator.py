@@ -33,7 +33,7 @@ class SignLanguageTranslator:
         in_real_time: bool = True,
         model_name: str = "words",
     ) -> str:
-        """Translates the given video from CSL to spanish (currently).
+        """Translates the sign language found in the given video.
 
         Args:
             video_input (str | int, optional): The path of the video file to be translated or 0 for the webcam. Defaults to 0.
@@ -131,7 +131,7 @@ class SignLanguageTranslator:
         return sentence
 
     def translate_image(self, image_path: str, model_name: str = "letters") -> str:
-        """Translates the image in the given path from CSL to spanish (currently).
+        """Translates the sign language found in the image in the given path.
 
         Args:
             image_path (str): The path of the image file to be translated.
