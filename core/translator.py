@@ -2,7 +2,6 @@ import cv2 as cv
 from numpy import array, amax, argmax, newaxis, ndarray
 from keras.models import load_model, Model
 from PIL import ImageDraw, ImageFont, Image
-from string import ascii_lowercase, ascii_uppercase
 from processor import MediaPipeProcessor
 from text_processor import TextProcessor
 
