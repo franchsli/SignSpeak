@@ -50,7 +50,7 @@ class SignLanguageTranslator:
         in_real_time = True if video_input == 0 else in_real_time
         # Initialize the variables neeeded
         self.processor = MediaPipeProcessor(self.mediapipe_confidence)
-        prediction_model, prediction_model_signs = self.predictor.get_model(model_name)
+        prediction_model, prediction_model_signs = self.get_model(model_name)
         keypoints, last_prediction = [], ""
         prediction_history = []
         sentence = ""
@@ -143,7 +143,7 @@ class SignLanguageTranslator:
         """
         CONFIDENCE_THRESHOLD = 0.7
         self.processor = MediaPipeProcessor(self.mediapipe_confidence, "hands")
-        prediction_model, prediction_model_signs = self.predictor.get_model(model_name)
+        prediction_model, prediction_model_signs = self.get_model(model_name)
         print(f"Processing image in: {image_path}")
         frame = cv.imread(image_path)
         if frame is None:
@@ -344,11 +344,11 @@ class SignLanguageTranslator:
                 prediction_history[-2] in ascii_lowercase
                 or prediction_history[-2] in ascii_uppercase
                 or (
-                    prediction_history[-2] not in self.predictor.loaded_models_signs
+                    prediction_history[-2] not in self.loaded_models_signs
                     and prediction_history[-2]
                     not in [
                         sign.capitalize()
-                        for sign in self.predictor.loaded_models_signs.keys()
+                        for sign in self.loaded_models_signs.keys()
                     ]
                 )
             ):
