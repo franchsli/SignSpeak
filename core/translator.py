@@ -329,34 +329,6 @@ class SignLanguageTranslator:
             self.display_history = [self.display_history[-1]]
             self.display_sentence = self.display_history[-1]
 
-    def _correct_current_letter_predictions(self):
-        """Corrects the current letter predictions by checking if the predictions are letter and combine them.
-        (e.g. ['H', 'O', 'L', 'A'] -> 'Hola').
-        """
-        global prediction_history
-        # Check if the last element of the prediction_history belongs to the alphabet (lower or upper cases)
-        if (
-            prediction_history[-1] in ascii_lowercase
-            or prediction_history[-1] in ascii_uppercase
-        ):
-            # Check if the penultimate element of prediction_history belongs to the alphabet or is a new word
-            if (
-                prediction_history[-2] in ascii_lowercase
-                or prediction_history[-2] in ascii_uppercase
-                or (
-                    prediction_history[-2] not in self.loaded_models_signs
-                    and prediction_history[-2]
-                    not in [
-                        sign.capitalize()
-                        for sign in self.loaded_models_signs.keys()
-                    ]
-                )
-            ):
-                # Combine last two elements
-                prediction_history[-1] = prediction_history[-2] + prediction_history[-1]
-                prediction_history.pop(len(prediction_history) - 2)
-                prediction_history[-1] = prediction_history[-1].capitalize()
-
     def _close_video_translation(
         self, video_capture: cv.VideoCapture, in_real_time: bool
     ):
