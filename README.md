@@ -6,9 +6,7 @@ A sign language translator.
 
 ## High priority
 
-- Ckeck all "Translates the" occurrences and delete them, because the translation depends
-on the user keras model, not the testing one. It means someone could translate from ASL to spanish
-or any other combinations.
+- Refactor all the code.
 - Test everything.
 - Write tests.
 - Update readme (add project purpose, functionality, etc).
