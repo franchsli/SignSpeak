@@ -23,7 +23,6 @@ class SignLanguageTranslator:
         self.mediapipe_confidence = mediapipe_confidence
         self.text_processor = TextProcessor(language)
         self.loaded_models = {}
-        self.loaded_models_signs = {}
 
     def translate_video(
         self,
@@ -355,10 +354,9 @@ class SignLanguageTranslator:
             model_name (str): The name that will be given to the model in memory.
             model_path (str, optional): Where the model is. Defaults to "models/model.keras".
         """
-        self.loaded_models[model_name] = load_model(model_path)
-        self.loaded_models_signs[model_name] = signs
+        self.loaded_models[model_name] = (load_model(model_path), signs)
 
-    def get_model(self, model_name: str) -> tuple[Model, str]:
+    def get_model(self, model_name: str) -> tuple[Model, ndarray]:
         """Returns the model stored in the class with the given name
         and its signs if found.
 
@@ -369,10 +367,10 @@ class SignLanguageTranslator:
             ValueError: Raised if no model with the given name is found.
 
         Returns:
-            tuple[Model, str]: The found Model and its signs.
+            tuple[Model, ndarray]: The found Model and its signs.
         """
         if model_name in self.loaded_models:
-            return self.loaded_models[model_name], self.loaded_models_signs[model_name]
+            return self.loaded_models[model_name][0], self.loaded_models[model_name][1]
         else:
             raise ValueError(
                 f"Model '{model_name}' isn't loaded. Load it first and try again."
