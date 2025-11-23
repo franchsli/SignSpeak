@@ -7,10 +7,25 @@ A sign language translator.
 ## High priority
 
 - Refactor all the code.
+  - Remove "mode" parameter from ImageHandler as it should be ALWAYS "hands".
+  - Add return type hint to _load_frame() in ImageHandler.
+  - Add return type hint to _create_sequences() in VideoHandler.
   - Move common logic in both ImageHandler and VideoHandler create_dataset() methods to
   a method in GestureHandler.
 - Test everything.
-- Write tests.
+  - Test SignLanguageTranslator translate_video() and translate_image().
+  - Test ImageHandler and VideoHandler create_dataset() and train() methods.
+- Write tests for:
+  - GestureHandler:
+    - get_file_index()
+    - get_label_name()
+  - ImageHandler:
+    - _load_frame()
+  - VideoHandler:
+    - _create_sequences()
+  - MediaPipeProcessor:
+    - keypoint_extraction()
+
 - Update readme (add project purpose, functionality, etc).
   - (maybe) separate tasks list in a separate file.
 - Think about model switching in translations
