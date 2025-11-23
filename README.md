@@ -7,6 +7,8 @@ A sign language translator.
 ## High priority
 
 - Refactor all the code.
+  - Move common logic in both ImageHandler and VideoHandler create_dataset() methods to
+  a method in GestureHandler.
 - Test everything.
 - Write tests.
 - Update readme (add project purpose, functionality, etc).
