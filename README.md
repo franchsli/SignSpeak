@@ -10,6 +10,9 @@ A sign language translator.
   - Remove "mode" parameter from ImageHandler as it should be ALWAYS "hands".
   - Add return type hint to _load_frame() in ImageHandler.
   - Add return type hint to _create_sequences() in VideoHandler.
+  - Use NDArray type hint instead of ndarray in ImageHandler and VideoHandler create_dataset() method.
+  - Use NDArray type hint instead of ndarray in MediaPipeProcessor methods.
+  - Use NDArray type hint instead of ndarray in SignLanguageTranslator methods.
   - Move common logic in both ImageHandler and VideoHandler create_dataset() methods to
   a method in GestureHandler.
 - Test everything.
