@@ -163,7 +163,7 @@ class MediaPipeProcessor:
         # Process the image using the model
         # MediaPipe works better with read-only images
         image_rgb.flags.writeable = False
-        # The model processing is usually the heaviest part, a GPU may be needed for a better experience
+        # The model processing is usually the heaviest part, a good CPU may be needed for a better experience
         # when this is used in video_translation
         results = self.model.process(image_rgb)
         image_rgb.flags.writeable = True
