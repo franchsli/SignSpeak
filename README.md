@@ -6,17 +6,6 @@ A sign language translator.
 
 ## High priority
 
-- Write tests for:
-  - GestureHandler:
-    - get_file_index()
-    - get_label_name()
-  - ImageHandler:
-    - _load_frame()
-  - VideoHandler:
-    - _create_sequences()
-  - MediaPipeProcessor:
-    - keypoint_extraction()
-
 - Update readme (add project purpose, functionality, etc).
   - (maybe) separate tasks list in a separate file.
 - Think about model switching in translations
