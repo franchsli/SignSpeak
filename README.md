@@ -2,24 +2,6 @@
 
 A sign language translator.
 
-## TODO
-
-## High priority
-
-- Update readme (add project purpose, functionality, etc).
-  - (maybe) separate tasks list in a separate file.
-- Think about model switching in translations
-  (whether if letters or words model should be used in the current video translation).
-
-### Low priority
-
-- Implement frame division (think about this).
-  Divide the frame by the number of people there and process the signs of everyone.
-  - Add person detection (YOLO/MediaPipe Person Segmentation).
-  - Crop bounding boxes around each person.
-  - Run existing MediaPipe pipeline on each crop.
-  - Merge results with person IDs.
-
 ## General Resources
 
 [Main repo used](https://github.com/dgovor/Sign-Language-Translator)
