@@ -100,21 +100,17 @@ class ImageHandler(GestureHandler):
     def __init__(
         self,
         confidence: float = 0.75,
-        mode: str = "hands",
         data_parent_folder: str = None,
     ):
         """Sign Language data pipeline for images.
 
         Args:
             confidence (float): The desired confidence of the MediaPipeProcessor model. Defaults to 0.75.
-            mode (str): The desired Mediapipe model. Defaults to 'hands'.
             data_parent_folder (str): The folder that contains all the data
             that will be used in the dataset creation.
         
-        NOTE: mode is set to 'hands' because usually only hands are used to sign letters (which do not need spatial
-        nor temporal context)
         """
-        super().__init__(confidence, mode, data_parent_folder)
+        super().__init__(confidence, "hands", data_parent_folder)
 
     def create_dataset(self, path: str) -> None:
         """
