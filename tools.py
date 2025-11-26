@@ -341,7 +341,7 @@ class VideoHandler(GestureHandler):
 
     def _create_sequences(
         self, dataset_path: str, labels: list[str], sequence_length: int = 10
-    ):
+    ) -> tuple[NDArray[np.float64], NDArray[np.int_]]:
         """Creates overlapping sequences from frame data and the labels integers for training.
 
         Args:
@@ -350,7 +350,7 @@ class VideoHandler(GestureHandler):
             sequence_length (int): The length of the overlapping sequences. Defaults to 10.
 
         Returns:
-            tuple: The overlapping sequences and the labels integers.
+            tuple[NDArray[np.float64], NDArray[np.int_]]: The overlapping sequences and the labels integers.
         """
         landmarks, labels_integers = [], []
         # Create a label map to map each sign label to a numeric value
@@ -361,7 +361,7 @@ class VideoHandler(GestureHandler):
             if label.is_dir():
                 for file in os.scandir(label.path):
                     if file.is_file() and file.name.endswith(".npy"):
-                        frame_data = np.load(file.path)
+                        frame_data: NDArray[np.float64] = np.load(file.path)
                         all_frames.append(frame_data)
 
             # Create sliding window sequences
