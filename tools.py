@@ -1,6 +1,7 @@
 import os
 import cv2 as cv
 import numpy as np
+from numpy.typing import NDArray
 from keras.utils import to_categorical
 from keras.models import Sequential
 from keras.layers import LSTM, Dense
@@ -228,7 +229,7 @@ class ImageHandler(GestureHandler):
         accuracy = metrics.accuracy_score(test_labels, predictions)
         print(f"Accuracy: {accuracy}")
 
-    def _load_frame(self, dataset_path: str, labels: list[str]):
+    def _load_frame(self, dataset_path: str, labels: list[str]) -> tuple[NDArray[np.float64], NDArray[np.int_]]:
         """Loads the frame's data into an numpy array for model training.
 
         Args:
@@ -236,7 +237,7 @@ class ImageHandler(GestureHandler):
             labels (list[str]): The words that the model will learn.
 
         Returns:
-            tuple: The frames data and the labels integers.
+            tuple[NDArray[np.float64], NDArray[np.int_]]: The frames data and the labels integers.
         """
         landmarks, labels_integers = [], []
         label_map = {label: num for num, label in enumerate(labels)}
@@ -245,7 +246,7 @@ class ImageHandler(GestureHandler):
             if label.is_dir():
                 for file in os.scandir(label.path):
                     if file.is_file() and file.name.endswith(".npy"):
-                        frame_data = np.load(file.path)
+                        frame_data: NDArray[np.float64] = np.load(file.path)
                         landmarks.append(frame_data)
                         labels_integers.append(label_map[label.name])
 
