@@ -2,6 +2,7 @@ import numpy as np
 import cv2 as cv
 import mediapipe as mp
 from enum import StrEnum
+from numpy.typing import NDArray
 from mediapipe.python.solutions.holistic import Holistic
 from mediapipe.python.solutions.hands import Hands
 
@@ -95,16 +96,16 @@ class MediaPipeProcessor:
         elif self.mode == ProcessorMode.HANDS:
             return self.needed_landmarks_present(results)
 
-    def draw_landmarks(self, image: np.ndarray, results) -> np.ndarray:
+    def draw_landmarks(self, image: NDArray, results) -> NDArray:
         """
         Draw the landmarks on the image.
 
         Args:
-            image (numpy.ndarray): The input image.
+            image (NDArray): The input image.
             results: The landmarks detected by Mediapipe (The holistic landmarker results).
 
         Returns:
-            numpy.ndarray: The image with drawn landmarks
+            NDArray: The image with drawn landmarks
         """
         # Make a copy of the image to ensure it's writable
         image = image.copy()
@@ -143,12 +144,12 @@ class MediaPipeProcessor:
 
         return image
 
-    def image_process(self, image: np.ndarray):
+    def image_process(self, image: NDArray):
         """
         Process the image and obtain sign landmarks.
 
         Args:
-            image (numpy.ndarray): The input image.
+            image (NDArray): The input image.
 
         Returns:
             tuple: (results, processed_image) where results contains the landmarks
@@ -173,7 +174,7 @@ class MediaPipeProcessor:
 
         return results, processed_image
 
-    def keypoint_extraction(self, results) -> np.ndarray:
+    def keypoint_extraction(self, results) -> NDArray[np.float64]:
         """
         Extract the keypoints from the sign landmarks.
 
@@ -181,7 +182,7 @@ class MediaPipeProcessor:
             results: The processed results containing sign landmarks (The holistic or hand landmarker results).
 
         Returns:
-            numpy.ndarray: The extracted keypoints.
+            NDArray[np.float64]: The extracted keypoints.
         """
         if self.mode == ProcessorMode.HOLISTIC:
             return self._extract_holistic_keypoints(results)
@@ -189,14 +190,14 @@ class MediaPipeProcessor:
         elif self.mode == ProcessorMode.HANDS:
             return self._extract_hands_keypoints(results)
 
-    def _extract_holistic_keypoints(self, results) -> np.ndarray:
+    def _extract_holistic_keypoints(self, results) -> NDArray[np.float64]:
         """Extract the keypoints from the sign holistic model landmarks.
 
         Args:
             results (NamedTuple): The processed results containing sign landmarks (The holistic landmarker results).
 
         Returns:
-            np.ndarray: The extracted holistic keypoints.
+            NDArray[np.float64]: The extracted holistic keypoints.
         """
         # Extract the keypoints for the left hand if present, otherwise set to zeros
         left_hand = (
@@ -217,14 +218,14 @@ class MediaPipeProcessor:
         # Concatenate the keypoints for both hands
         return np.concatenate([left_hand, right_hand])
 
-    def _extract_hands_keypoints(self, results) -> np.ndarray:
+    def _extract_hands_keypoints(self, results) -> NDArray[np.float64]:
         """Extract the keypoints from the sign hands model landmarks.
 
         Args:
             results (NamedTuple): The processed results containing sign landmarks (The hands landmarker results).
 
         Returns:
-            np.ndarray: The extracted hands keypoints.
+            NDArray[np.float64]: The extracted hands keypoints.
         """
         left_hand = np.zeros(63)
         right_hand = np.zeros(63)
