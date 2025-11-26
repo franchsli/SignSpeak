@@ -147,7 +147,7 @@ class ImageHandler(GestureHandler):
                         # Draw landmarks and display
                         display_image = self.draw_landmarks(processed_image, results)
                         # Extract the landmarks from both hands and save them in arrays
-                        keypoints: np.ndarray = self.keypoint_extraction(results)
+                        keypoints: NDArray[np.float64] = self.keypoint_extraction(results)
                         frame_path = os.path.join(
                             path,
                             self.get_label_name(image_file.name),
@@ -318,7 +318,7 @@ class VideoHandler(GestureHandler):
                             # Draw landmarks and display
                             display_image = self.draw_landmarks(processed_image, results)
                             # Extract the landmarks from both hands and save them in arrays
-                            keypoints: np.ndarray = self.keypoint_extraction(results)
+                            keypoints: NDArray[np.float64] = self.keypoint_extraction(results)
                             frame_path = os.path.join(
                                 path,
                                 self.get_label_name(video_file.name),
