@@ -174,7 +174,7 @@ class MediaPipeProcessor:
 
         return results, processed_image
 
-    def keypoint_extraction(self, results) -> NDArray[np.float64]:
+    def keypoint_extraction(self, results) -> NDArray:
         """
         Extract the keypoints from the sign landmarks.
 
@@ -182,7 +182,7 @@ class MediaPipeProcessor:
             results: The processed results containing sign landmarks (The holistic or hand landmarker results).
 
         Returns:
-            NDArray[np.float64]: The extracted keypoints.
+            NDArray: The extracted keypoints.
         """
         if self.mode == ProcessorMode.HOLISTIC:
             return self._extract_holistic_keypoints(results)
@@ -190,14 +190,14 @@ class MediaPipeProcessor:
         elif self.mode == ProcessorMode.HANDS:
             return self._extract_hands_keypoints(results)
 
-    def _extract_holistic_keypoints(self, results) -> NDArray[np.float64]:
+    def _extract_holistic_keypoints(self, results) -> NDArray:
         """Extract the keypoints from the sign holistic model landmarks.
 
         Args:
             results (NamedTuple): The processed results containing sign landmarks (The holistic landmarker results).
 
         Returns:
-            NDArray[np.float64]: The extracted holistic keypoints.
+            NDArray: The extracted holistic keypoints.
         """
         # Extract the keypoints for the left hand if present, otherwise set to zeros
         left_hand = (
@@ -218,14 +218,14 @@ class MediaPipeProcessor:
         # Concatenate the keypoints for both hands
         return np.concatenate([left_hand, right_hand])
 
-    def _extract_hands_keypoints(self, results) -> NDArray[np.float64]:
+    def _extract_hands_keypoints(self, results) -> NDArray:
         """Extract the keypoints from the sign hands model landmarks.
 
         Args:
             results (NamedTuple): The processed results containing sign landmarks (The hands landmarker results).
 
         Returns:
-            NDArray[np.float64]: The extracted hands keypoints.
+            NDArray: The extracted hands keypoints.
         """
         left_hand = np.zeros(63)
         right_hand = np.zeros(63)
