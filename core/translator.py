@@ -351,7 +351,7 @@ class SignLanguageTranslator:
         """Loads the model in the given path in the class' memory for later use.
 
         Args:
-            signs (NDArray): An array containing the models known signs (could be words or letters).
+            signs (NDArray): An NDArray containing the models known signs (could be words or letters).
             model_name (str): The name that will be given to the model in memory.
             model_path (str, optional): Where the model is. Defaults to "models/model.keras".
         """
