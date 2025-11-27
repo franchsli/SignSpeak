@@ -1,5 +1,6 @@
 import cv2 as cv
-from numpy import array, amax, argmax, newaxis, ndarray
+from numpy import array, amax, argmax, newaxis
+from numpy.typing import NDArray
 from keras.models import load_model, Model
 from PIL import ImageDraw, ImageFont, Image
 from processor import MediaPipeProcessor
@@ -164,11 +165,11 @@ class SignLanguageTranslator:
         else:
             return "The model is not confident enought about the translation."
 
-    def _display_translation(self, frame: ndarray, translation: str):
+    def _display_translation(self, frame: NDArray, translation: str):
         """Shows the current frame with the given translation.
 
         Args:
-            frame (ndarray): The current opencv frame.
+            frame (NDArray): The current opencv frame.
             translation (str): The curent translation.
         """
         cv_image = self._overwrite_frame_with_text(frame, translation)
@@ -177,17 +178,17 @@ class SignLanguageTranslator:
         cv.waitKey(1)
 
     def _overwrite_frame_with_text(
-        self, frame: ndarray, text: str = "", text_size: int = 40
-    ) -> ndarray:
+        self, frame: NDArray, text: str = "", text_size: int = 40
+    ) -> NDArray:
         """Overwrites the desired text in the given frame.
 
         Args:
-            frame (ndarray): The opencv frame to overwrite.
+            frame (NDArray): The opencv frame to overwrite.
             text (str): The desired text. Defaults to "". If no text is given self.display_sentence will be used instead.
             text_size (int, optional): The desired size in which the text will be written. Defaults to 40.
 
         Returns:
-            ndarray: The overwritten frame.
+            NDArray: The overwritten frame.
         """
         if not text:
             text = self.display_sentence
@@ -212,7 +213,7 @@ class SignLanguageTranslator:
 
     def _get_translation_x_coordinate(
         self,
-        frame: ndarray,
+        frame: NDArray,
         translation: str,
         draw_object: ImageDraw.ImageDraw,
         font: ImageFont.ImageFont,
@@ -221,7 +222,7 @@ class SignLanguageTranslator:
         to be centered.
 
         Args:
-            frame (ndarray): The opencv frame.
+            frame (NDArray): The opencv frame.
             translation (str): The translation that will be written in the frame.
             draw_object (ImageDraw): The object that will write the translation.
             font (ImageFont): The font object that will be used to write the translation.
@@ -236,7 +237,7 @@ class SignLanguageTranslator:
 
     def _get_translation_y_coordinate(
         self,
-        frame: ndarray,
+        frame: NDArray,
         translation: str,
         draw_object: ImageDraw.ImageDraw,
         font: ImageFont.ImageFont,
@@ -244,7 +245,7 @@ class SignLanguageTranslator:
         """Uses the boundings of the given translation to calculate where it should be placed in the frame in the y axis (vertically).
 
         Args:
-            frame (ndarray): The opencv frame.
+            frame (NDArray): The opencv frame.
             translation (str): The translation that will be written in the frame.
             draw_object (ImageDraw): The object that will write the translation.
             font (ImageFont): The font object that will be used to write the translation.
@@ -260,7 +261,7 @@ class SignLanguageTranslator:
 
     def _get_translation_coordinates(
         self,
-        frame: ndarray,
+        frame: NDArray,
         translation: str,
         draw_object: ImageDraw.ImageDraw,
         font: ImageFont.ImageFont,
@@ -268,7 +269,7 @@ class SignLanguageTranslator:
         """Uses the boundings of the given translation to calculate where it should be placed in the frame.
 
         Args:
-            frame (ndarray): The opencv frame.
+            frame (NDArray): The opencv frame.
             translation (str): The translation that will be written in the frame.
             draw_object (ImageDraw): The object that will write the translation.
             font (ImageFont): The font object that will be used to write the translation.
@@ -286,7 +287,7 @@ class SignLanguageTranslator:
 
     def _is_text_overflowing(
         self,
-        frame: ndarray,
+        frame: NDArray,
         text: str,
         draw_object: ImageDraw.ImageDraw,
         font: ImageFont.ImageFont,
@@ -294,7 +295,7 @@ class SignLanguageTranslator:
         """Returns if the text is overflowing the frame.
 
         Args:
-            frame (ndarray): The opencv frame.
+            frame (NDArray): The opencv frame.
             text (str): The text that will be written in the frame.
             draw_object (ImageDraw): The object that will write the text.
             font (ImageFont): The font object that will be used to write the text.
@@ -345,18 +346,18 @@ class SignLanguageTranslator:
             self.text_processor.language_tool.close()
     
     def load_model(
-        self, signs: ndarray, model_name: str, model_path: str = "models/model.keras"
+        self, signs: NDArray, model_name: str, model_path: str = "models/model.keras"
     ):
         """Loads the model in the given path in the class' memory for later use.
 
         Args:
-            signs (ndarray): An array containing the models known signs (could be words or letters).
+            signs (NDArray): An array containing the models known signs (could be words or letters).
             model_name (str): The name that will be given to the model in memory.
             model_path (str, optional): Where the model is. Defaults to "models/model.keras".
         """
         self.loaded_models[model_name] = (load_model(model_path), signs)
 
-    def get_model(self, model_name: str) -> tuple[Model, ndarray]:
+    def get_model(self, model_name: str) -> tuple[Model, NDArray]:
         """Returns the model stored in the class with the given name
         and its signs if found.
 
@@ -367,7 +368,7 @@ class SignLanguageTranslator:
             ValueError: Raised if no model with the given name is found.
 
         Returns:
-            tuple[Model, ndarray]: The found Model and its signs.
+            tuple[Model, NDArray]: The found Model and its signs.
         """
         if model_name in self.loaded_models:
             return self.loaded_models[model_name][0], self.loaded_models[model_name][1]

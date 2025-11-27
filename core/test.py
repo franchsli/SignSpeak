@@ -42,3 +42,5 @@ def test_image_translation_performance():
         print(f"translation: {translation}")
     end = time()
     print(f"Time spent translating A1.png 30 times: {end - start} seconds")
+
+test_video_translation_performance()
