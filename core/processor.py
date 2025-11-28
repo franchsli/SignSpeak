@@ -2,6 +2,7 @@ import numpy as np
 import cv2 as cv
 import mediapipe as mp
 from enum import StrEnum
+from typing import NamedTuple
 from numpy.typing import NDArray
 from mediapipe.python.solutions.holistic import Holistic
 from mediapipe.python.solutions.hands import Hands
@@ -144,7 +145,7 @@ class MediaPipeProcessor:
 
         return image
 
-    def image_process(self, image: NDArray):
+    def image_process(self, image: NDArray) -> tuple[NamedTuple, NDArray]:
         """
         Process the image and obtain sign landmarks.
 
