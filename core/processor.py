@@ -35,13 +35,13 @@ class MediaPipeProcessor:
                 min_tracking_confidence=confidence,
             )
 
-    def needed_landmarks_present(self, results) -> bool:
+    def needed_landmarks_present(self, results: NamedTuple) -> bool:
         """Returns True if the needed landmarks in the class mode are present. In the 'holistic' mode it means that the pose landmarks
         and at least one hand's landmarks are present. In the 'hands' mode, it means that at least one hand is present, returns
         False otherwise.
 
         Args:
-            results: Either the holistic or hands model landmarks processing results.
+            results (NamedTuple): Either the holistic or hands model landmarks processing results.
 
         Returns:
             bool: If a pose and at least a hand are present (holistic mode) or at least a hand is present (hands mode).
@@ -58,12 +58,12 @@ class MediaPipeProcessor:
                 and len(results.multi_hand_landmarks) > 0
             )
 
-    def wrists_are_above_hips(self, results) -> bool:
+    def wrists_are_above_hips(self, results: NamedTuple) -> bool:
         """Returns True if at least one wrist is above
         its closest hip, False otherwise.
 
         Args:
-            results: The holistic landmarker results.
+            results (NamedTuple): The holistic landmarker results.
 
         Returns:
             bool: If at least one wrist is above its closest hip.
@@ -80,7 +80,7 @@ class MediaPipeProcessor:
         )
         return (left_hip > 0.1 + left_wrist) or (right_hip > 0.1 + right_wrist)
 
-    def are_results_valid(self, results) -> bool:
+    def are_results_valid(self, results: NamedTuple) -> bool:
         """Returns if model processing results are valid meeting the standard criteria.
 
         Args:
@@ -97,13 +97,13 @@ class MediaPipeProcessor:
         elif self.mode == ProcessorMode.HANDS:
             return self.needed_landmarks_present(results)
 
-    def draw_landmarks(self, image: NDArray, results) -> NDArray:
+    def draw_landmarks(self, image: NDArray, results: NamedTuple) -> NDArray:
         """
         Draw the landmarks on the image.
 
         Args:
             image (NDArray): The input image.
-            results: The landmarks detected by Mediapipe (The holistic landmarker results).
+            results (NamedTuple): The landmarks detected by Mediapipe (The holistic landmarker results).
 
         Returns:
             NDArray: The image with drawn landmarks
@@ -175,12 +175,12 @@ class MediaPipeProcessor:
 
         return results, processed_image
 
-    def keypoint_extraction(self, results) -> NDArray:
+    def keypoint_extraction(self, results: NamedTuple) -> NDArray:
         """
         Extract the keypoints from the sign landmarks.
 
         Args:
-            results: The processed results containing sign landmarks (The holistic or hand landmarker results).
+            results (NamedTuple): The processed results containing sign landmarks (The holistic or hand landmarker results).
 
         Returns:
             NDArray: The extracted keypoints.
@@ -191,7 +191,7 @@ class MediaPipeProcessor:
         elif self.mode == ProcessorMode.HANDS:
             return self._extract_hands_keypoints(results)
 
-    def _extract_holistic_keypoints(self, results) -> NDArray:
+    def _extract_holistic_keypoints(self, results: NamedTuple) -> NDArray:
         """Extract the keypoints from the sign holistic model landmarks.
 
         Args:
@@ -219,7 +219,7 @@ class MediaPipeProcessor:
         # Concatenate the keypoints for both hands
         return np.concatenate([left_hand, right_hand])
 
-    def _extract_hands_keypoints(self, results) -> NDArray:
+    def _extract_hands_keypoints(self, results: NamedTuple) -> NDArray:
         """Extract the keypoints from the sign hands model landmarks.
 
         Args:
