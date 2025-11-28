@@ -139,7 +139,7 @@ class ImageHandler(GestureHandler):
                             print(f"Couldn't open {image_file.name}")
                             continue
                         resized_frame = cv.resize(frame, (640, 480))
-                        # Process image and get results
+                        # process image and get the resulting landmarks
                         results, processed_image = self.image_process(resized_frame)
                         if not self.are_results_valid(results):
                             print(f"No valid landmarks given the criteria of {self.mode} model")
@@ -307,7 +307,7 @@ class VideoHandler(GestureHandler):
                                 break
                             print("PROCESSING FRAME:", frame_index)
                             resized_frame = cv.resize(frame, (640, 480))
-                            # Process image and get results
+                            # process image and get the resulting landmarks
                             results, processed_image = self.image_process(resized_frame)
                             if not self.are_results_valid(results):
                                 print(

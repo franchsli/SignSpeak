@@ -149,7 +149,7 @@ class SignLanguageTranslator:
             print(f"Couldn't open image in: {image_path}")
             return
         resized_frame = cv.resize(frame, (640, 480))
-        # Process image and get results
+        # process image and get the resulting landmarks
         results, _ = self.processor.image_process(resized_frame)
         if not self.processor.are_results_valid(results):
             print(
