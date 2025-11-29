@@ -58,18 +58,18 @@ class MediaPipeProcessor:
                 and len(found_landmarks.multi_hand_landmarks) > 0
             )
 
-    def wrists_are_above_hips(self, results: NamedTuple) -> bool:
+    def wrists_are_above_hips(self, found_landmarks: NamedTuple) -> bool:
         """Returns True if at least one wrist is above
         its closest hip, False otherwise.
 
         Args:
-            results (NamedTuple): The holistic landmarker results.
+            found_landmarks (NamedTuple): The holistic landmarker found landmarks.
 
         Returns:
             bool: If at least one wrist is above its closest hip.
         """
         mp_holistic = mp.solutions.holistic
-        pose = results.pose_landmarks.landmark
+        pose = found_landmarks.pose_landmarks.landmark
         left_hip, left_wrist = (
             pose[mp_holistic.PoseLandmark.LEFT_HIP].y,
             pose[mp_holistic.PoseLandmark.LEFT_WRIST].y,
