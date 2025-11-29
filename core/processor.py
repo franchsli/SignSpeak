@@ -35,41 +35,41 @@ class MediaPipeProcessor:
                 min_tracking_confidence=confidence,
             )
 
-    def needed_landmarks_present(self, found_landmarks: NamedTuple) -> bool:
+    def needed_landmarks_present(self, results: NamedTuple) -> bool:
         """Returns True if the needed landmarks in the class mode are present. In the 'holistic' mode it means that the pose landmarks
         and at least one hand's landmarks are present. In the 'hands' mode, it means that at least one hand is present, returns
         False otherwise.
 
         Args:
-            found_landmarks (NamedTuple): Either the holistic or hands model found landmarks.
+            results (NamedTuple): Either the holistic or hands model landmarks processing results.
 
         Returns:
             bool: If a pose and at least a hand are present (holistic mode) or at least a hand is present (hands mode).
         """
         if self.mode == ProcessorMode.HOLISTIC:
-            pose = found_landmarks.pose_landmarks
-            left_hand = found_landmarks.left_hand_landmarks
-            right_hand = found_landmarks.right_hand_landmarks
+            pose = results.pose_landmarks
+            left_hand = results.left_hand_landmarks
+            right_hand = results.right_hand_landmarks
             return (pose and left_hand) or (pose and right_hand)
 
         elif self.mode == ProcessorMode.HANDS:
             return (
-                found_landmarks.multi_hand_landmarks is not None
-                and len(found_landmarks.multi_hand_landmarks) > 0
+                results.multi_hand_landmarks is not None
+                and len(results.multi_hand_landmarks) > 0
             )
 
-    def wrists_are_above_hips(self, found_landmarks: NamedTuple) -> bool:
+    def wrists_are_above_hips(self, results: NamedTuple) -> bool:
         """Returns True if at least one wrist is above
         its closest hip, False otherwise.
 
         Args:
-            found_landmarks (NamedTuple): The holistic landmarker found landmarks.
+            results (NamedTuple): The holistic landmarker results.
 
         Returns:
             bool: If at least one wrist is above its closest hip.
         """
         mp_holistic = mp.solutions.holistic
-        pose = found_landmarks.pose_landmarks.landmark
+        pose = results.pose_landmarks.landmark
         left_hip, left_wrist = (
             pose[mp_holistic.PoseLandmark.LEFT_HIP].y,
             pose[mp_holistic.PoseLandmark.LEFT_WRIST].y,
