@@ -145,7 +145,7 @@ class MediaPipeProcessor:
 
         return image
 
-    def image_process(self, image: NDArray) -> tuple[NamedTuple, NDArray]:
+    def process_image(self, image: NDArray) -> tuple[NamedTuple, NDArray]:
         """
         Process the image and obtain sign landmarks.
 
