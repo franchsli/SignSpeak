@@ -2,6 +2,7 @@ import os
 import cv2 as cv
 import numpy as np
 from numpy.typing import NDArray
+from os import DirEntry
 from keras.utils import to_categorical
 from keras.models import Sequential
 from keras.layers import LSTM, Dense
@@ -93,6 +94,35 @@ class GestureHandler(MediaPipeProcessor):
         """
         return len(os.listdir(path)) == len(os.listdir(self.data_parent_folder))
 
+
+    def create_dataset(self, path: str) -> None:
+        """
+        Creates the dataset for the model training in the given path.
+
+        Args:
+            path (str): Where the dataset will be created.
+        """
+        if not self.dataset_directories_already_created(path):
+            self.create_dataset_directories(path)
+
+        data_folders = os.scandir(self.data_parent_folder)
+
+        for data_folder in data_folders:
+            if data_folder.is_dir():
+                data_folder_path_dirs = os.scandir(
+                    data_folder.path
+                )
+                for data_file in data_folder_path_dirs:
+                    if data_file.is_file():
+                        data_path = data_file.path
+                        self._process_file(data_file, data_path)
+                        if cv.waitKey(1) & 0xFF == ord("q"):
+                            self.stop()
+                            break
+
+    def _process_file(self, data_file: DirEntry[str], path: str):
+        raise NotImplementedError
+
     def stop(self) -> None:
         cv.destroyAllWindows()
 
@@ -133,6 +163,7 @@ class ImageHandler(GestureHandler):
                 for image_file in image_folder_path_dirs:
                     if image_file.is_file():
                         image_path = image_file.path
+                        # Here finishes the shared logic
                         print(f"Processing image: {image_file.name}")
                         frame = cv.imread(image_path)
                         if frame is None:
@@ -293,6 +324,7 @@ class VideoHandler(GestureHandler):
                 for video_file in video_folder_path_dirs:
                     if video_file.is_file():
                         video_path = video_file.path
+                        # Here finishes the shared logic
                         if not video_file.name.endswith((".mp4", ".avi", ".mov")):
                             continue
                         print(f"Processing video: {video_file.name}")
@@ -334,6 +366,7 @@ class VideoHandler(GestureHandler):
                             frame_index += 1
                             resized_frame = cv.resize(display_image, (960, 540))
                             cv.imshow("Video", resized_frame)
+                            # these 3 lines down there are shared too
                             if cv.waitKey(1) & 0xFF == ord("q"):
                                 self.stop()
                                 break
