@@ -291,73 +291,62 @@ class VideoHandler(GestureHandler):
         """
         super().__init__(confidence, mode, data_parent_folder)
 
-    def create_dataset(self, path: str) -> None:
+    def _process_file(self, video_file: DirEntry[str], path: str) -> None:
         """
-        Creates the dataset for the model training in the given path.
+        Process the video file and loads its data to the given path
+        for later use in model training.
 
         Args:
+            video_file (DirEntry[str]): The video file DirEntry object.
             path (str): Where the dataset will be created.
         """
-        if not self.dataset_directories_already_created(path):
-            self.create_dataset_directories(path)
 
-        video_folders = os.scandir(self.data_parent_folder)
-
-        for video_folder in video_folders:
-            if video_folder.is_dir():
-                video_folder_path_dirs = os.scandir(
-                    video_folder.path
+        video_path = video_file.path
+        if not video_file.name.endswith((".mp4", ".avi", ".mov")):
+            return
+        print(f"Processing video: {video_file.name}")
+        cap = cv.VideoCapture(video_path)
+        if not cap.isOpened():
+            print(f"Failed to open video: {video_file.name}")
+            return
+        frame_index: int = 0
+        while True:
+            success, frame = cap.read()
+            if not success or frame is None:
+                break
+            print("PROCESSING FRAME:", frame_index)
+            resized_frame = cv.resize(frame, (640, 480))
+            # process image and get the resulting landmarks
+            results, processed_image = self.process_image(resized_frame)
+            if not self.are_results_valid(results):
+                print(
+                    f"No valid landmarks given the criteria of {self.mode} model"
                 )
-                for video_file in video_folder_path_dirs:
-                    if video_file.is_file():
-                        video_path = video_file.path
-                        # Here finishes the shared logic
-                        if not video_file.name.endswith((".mp4", ".avi", ".mov")):
-                            continue
-                        print(f"Processing video: {video_file.name}")
-                        cap = cv.VideoCapture(video_path)
-                        if not cap.isOpened():
-                            print(f"Failed to open video: {video_file.name}")
-                            continue
-                        frame_index: int = 0
-                        while True:
-                            success, frame = cap.read()
-                            if not success or frame is None:
-                                break
-                            print("PROCESSING FRAME:", frame_index)
-                            resized_frame = cv.resize(frame, (640, 480))
-                            # process image and get the resulting landmarks
-                            results, processed_image = self.process_image(resized_frame)
-                            if not self.are_results_valid(results):
-                                print(
-                                    f"No valid landmarks given the criteria of {self.mode} model"
-                                )
-                                frame_index += 1
-                                continue
-                            # Draw landmarks and display
-                            display_image = self.draw_landmarks(processed_image, results)
-                            # Extract the landmarks from both hands and save them in arrays
-                            keypoints = self.keypoint_extraction(results)
-                            frame_path = os.path.join(
-                                path,
-                                self.get_label_name(video_file.name),
-                                f"{self.get_file_index(video_file.name)}_frame_{frame_index}.npy",
-                            )
-                            save_dir = os.path.dirname(frame_path)
-                            os.makedirs(save_dir, exist_ok=True)
-                            print(f"Saving keypoints shape {keypoints.shape} to {frame_path}")
-                            if os.path.exists(frame_path):
-                                loaded = np.load(frame_path)
-                                print(f"Verified save: loaded shape {loaded.shape}")
-                            np.save(frame_path, keypoints)
-                            frame_index += 1
-                            resized_frame = cv.resize(display_image, (960, 540))
-                            cv.imshow("Video", resized_frame)
-                            # these 3 lines down there are shared too
-                            if cv.waitKey(1) & 0xFF == ord("q"):
-                                self.stop()
-                                break
-                        cap.release()
+                frame_index += 1
+                continue
+            # Draw landmarks and display
+            display_image = self.draw_landmarks(processed_image, results)
+            # Extract the landmarks from both hands and save them in arrays
+            keypoints = self.keypoint_extraction(results)
+            frame_path = os.path.join(
+                path,
+                self.get_label_name(video_file.name),
+                f"{self.get_file_index(video_file.name)}_frame_{frame_index}.npy",
+            )
+            save_dir = os.path.dirname(frame_path)
+            os.makedirs(save_dir, exist_ok=True)
+            print(f"Saving keypoints shape {keypoints.shape} to {frame_path}")
+            if os.path.exists(frame_path):
+                loaded = np.load(frame_path)
+                print(f"Verified save: loaded shape {loaded.shape}")
+            np.save(frame_path, keypoints)
+            frame_index += 1
+            resized_frame = cv.resize(display_image, (960, 540))
+            cv.imshow("Video", resized_frame)
+            if cv.waitKey(1) & 0xFF == ord("q"):
+                self.stop()
+                break
+        cap.release()
 
     def _create_sequences(
         self, dataset_path: str, labels: list[str], sequence_length: int = 10
