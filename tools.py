@@ -115,10 +115,11 @@ class GestureHandler(MediaPipeProcessor):
                 for data_file in data_folder_path_dirs:
                     if data_file.is_file():
                         data_path = data_file.path
-                        self._process_file(data_file, data_path)
+                        self._process_file(data_file, path)
                         if cv.waitKey(1) & 0xFF == ord("q"):
                             self.stop()
                             break
+        self.stop()
 
     def _process_file(self, data_file: DirEntry[str], path: str):
         raise NotImplementedError
@@ -143,60 +144,46 @@ class ImageHandler(GestureHandler):
         """
         super().__init__(confidence, "hands", data_parent_folder)
 
-    def create_dataset(self, path: str) -> None:
+    def _process_file(self, image_file: DirEntry[str], path: str) -> None:
         """
-        Creates the dataset for the model training in the given path.
+        Process the image file and loads its data to the given path
+        for later use in model training.
 
         Args:
+            image_file (DirEntry[str]): The image file DirEntry object.
             path (str): Where the dataset will be created.
         """
-        if not self.dataset_directories_already_created(path):
-            self.create_dataset_directories(path)
+        image_path = image_file.path
+        print(f"Processing image: {image_file.name}")
+        frame = cv.imread(image_path)
+        if frame is None:
+            print(f"Couldn't open {image_file.name}")
+            return
+        resized_frame = cv.resize(frame, (640, 480))
+        # process image and get the resulting landmarks
+        results, processed_image = self.process_image(resized_frame)
+        if not self.are_results_valid(results):
+            print(f"No valid landmarks given the criteria of {self.mode} model")
+            return
+        # Draw landmarks and display
+        display_image = self.draw_landmarks(processed_image, results)
+        # Extract the landmarks from both hands and save them in arrays
+        keypoints = self.keypoint_extraction(results)
+        frame_path = os.path.join(
+            path,
+            self.get_label_name(image_file.name),
+            f"{self.get_file_index(image_file.name)}.npy",
+        )
+        save_dir = os.path.dirname(frame_path)
+        os.makedirs(save_dir, exist_ok=True)
+        print(f"Saving keypoints shape {keypoints.shape} to {frame_path}")
+        if os.path.exists(frame_path):
+            loaded = np.load(frame_path)
+            print(f"Verified save: loaded shape {loaded.shape}")
+        np.save(frame_path, keypoints)
+        resized_frame = cv.resize(display_image, (960, 540))
+        cv.imshow("Image", resized_frame)
 
-        image_folders = os.scandir(self.data_parent_folder)
-
-        for image_folder in image_folders:
-            if image_folder.is_dir():
-                image_folder_path_dirs = os.scandir(
-                    image_folder.path
-                )
-                for image_file in image_folder_path_dirs:
-                    if image_file.is_file():
-                        image_path = image_file.path
-                        # Here finishes the shared logic
-                        print(f"Processing image: {image_file.name}")
-                        frame = cv.imread(image_path)
-                        if frame is None:
-                            print(f"Couldn't open {image_file.name}")
-                            continue
-                        resized_frame = cv.resize(frame, (640, 480))
-                        # process image and get the resulting landmarks
-                        results, processed_image = self.process_image(resized_frame)
-                        if not self.are_results_valid(results):
-                            print(f"No valid landmarks given the criteria of {self.mode} model")
-                            continue
-                        # Draw landmarks and display
-                        display_image = self.draw_landmarks(processed_image, results)
-                        # Extract the landmarks from both hands and save them in arrays
-                        keypoints = self.keypoint_extraction(results)
-                        frame_path = os.path.join(
-                            path,
-                            self.get_label_name(image_file.name),
-                            f"{self.get_file_index(image_file.name)}.npy",
-                        )
-                        save_dir = os.path.dirname(frame_path)
-                        os.makedirs(save_dir, exist_ok=True)
-                        print(f"Saving keypoints shape {keypoints.shape} to {frame_path}")
-                        if os.path.exists(frame_path):
-                            loaded = np.load(frame_path)
-                            print(f"Verified save: loaded shape {loaded.shape}")
-                        np.save(frame_path, keypoints)
-                        resized_frame = cv.resize(display_image, (960, 540))
-                        cv.imshow("Image", resized_frame)
-                        if cv.waitKey(1) & 0xFF == ord("q"):
-                            self.stop()
-                            break
-        self.stop()
                 
 
     def train(
