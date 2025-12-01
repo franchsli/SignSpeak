@@ -146,12 +146,12 @@ class ImageHandler(GestureHandler):
 
     def _process_file(self, image_file: DirEntry[str], path: str) -> None:
         """
-        Process the image file and loads its data to the given path
+        Process the image file and loads its data in the dataset inside the given path
         for later use in model training.
 
         Args:
             image_file (DirEntry[str]): The image file DirEntry object.
-            path (str): Where the dataset will be created.
+            path (str): Where the dataset directories are.
         """
         image_path = image_file.path
         print(f"Processing image: {image_file.name}")
@@ -293,12 +293,12 @@ class VideoHandler(GestureHandler):
 
     def _process_file(self, video_file: DirEntry[str], path: str) -> None:
         """
-        Process the video file and loads its data to the given path
+        Process the video file and loads its data in the dataset inside the given path
         for later use in model training.
 
         Args:
             video_file (DirEntry[str]): The video file DirEntry object.
-            path (str): Where the dataset will be created.
+            path (str): Where the dataset directories are.
         """
 
         video_path = video_file.path
