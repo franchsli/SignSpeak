@@ -43,4 +43,19 @@ def test_image_translation_performance():
     end = time()
     print(f"Time spent translating A1.png 30 times: {end - start} seconds")
 
+def test_live_translation_performance():
+    start = time()
+    from translator import SignLanguageTranslator
+    # Set the path to the data directory
+    PATH = path.abspath("data")
+    # Create an array of sign labels by listing the contents of the data directory
+    signs = array(listdir(PATH))
+    translator = SignLanguageTranslator()
+    # load the models down here
+    translator.load_model(signs, "words")
+    translation = translator.translate_video()
+    print(f"translation: {translation}")
+    end = time()
+    print(f"Live translation took {end - start} seconds")
+
 test_video_translation_performance()
