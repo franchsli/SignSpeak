@@ -58,4 +58,6 @@ def test_live_translation_performance():
     end = time()
     print(f"Live translation took {end - start} seconds")
 
-test_video_translation_performance()
+#test_video_translation_performance()
+#test_image_translation_performance()
+test_live_translation_performance()
