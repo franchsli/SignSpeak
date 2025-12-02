@@ -83,6 +83,7 @@ class SignLanguageTranslator:
                 print(
                     f"No valid landmarks given the criteria of {self.processor.mode} model"
                 )
+                cv.waitKey(1)
                 continue
             # Draw the sign landmarks on the image
             frame_with_landmarks = self.processor.draw_landmarks(
