@@ -28,14 +28,14 @@ class SignLanguageTranslator:
     def translate_video(
         self,
         video_input: str | int = 0,
-        in_real_time: bool = True,
+        display_in_real_time: bool = True,
         model_name: str = "words",
     ) -> str:
         """Translates the sign language found in the given video.
 
         Args:
             video_input (str | int, optional): The path of the video file to be translated or 0 for the webcam. Defaults to 0.
-            in_real_time (bool, optional): Whether if the translation should be displayed as it's translated or after the video is processed entirely.
+            display_in_real_time (bool, optional): Whether if the translation should be displayed as it's being translated or not.
             Defaults to True. Note that this variable will be True if the video_input is the webcam.
             model_name (str, optional): The name of the model loaded. Defaults to 'words'.
 
@@ -46,7 +46,7 @@ class SignLanguageTranslator:
                 For grammatically corrected text, use the returned translation.
         """
         # set the parameter to true if the webcam is being translated
-        in_real_time = True if video_input == 0 else in_real_time
+        display_in_real_time = True if video_input == 0 else display_in_real_time
         # Initialize the variables neeeded
         self.processor = MediaPipeProcessor(self.mediapipe_confidence)
         prediction_model, prediction_model_signs = self.get_model(model_name)
@@ -116,13 +116,13 @@ class SignLanguageTranslator:
                     print(sentence)
 
             # display the translation if the user wants to
-            if in_real_time:
+            if display_in_real_time:
                 self._display_translation(frame_with_landmarks, self.display_sentence)
                 # Check if the "Translation" window was closed and break the loop
                 if cv.getWindowProperty("Translation", cv.WND_PROP_VISIBLE) < 1:
                     break
 
-        self._close_video_translation(cap, in_real_time)
+        self._close_video_translation(cap, display_in_real_time)
         sentence = sentence.capitalize()
         if self.text_processor.language_tool:
             corrected_sentence = self.text_processor.correct_sentence(sentence)
@@ -330,16 +330,16 @@ class SignLanguageTranslator:
             self.display_sentence = self.display_history[-1]
 
     def _close_video_translation(
-        self, video_capture: cv.VideoCapture, in_real_time: bool
+        self, video_capture: cv.VideoCapture, display_in_real_time: bool
     ):
         """Closes given video capture and destroys all the opencv windows.
 
         Args:
             video_capture (cv.VideoCapture)
-            in_real_time (bool): If the translation is being shown in real time or not.
+            display_in_real_time (bool): If the translation is being shown in real time or not.
         """
         # Release the video capture and close all windows
-        if in_real_time:
+        if display_in_real_time:
             video_capture.release()
         cv.destroyAllWindows()
         # Shut off the server
