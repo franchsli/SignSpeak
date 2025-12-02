@@ -323,6 +323,7 @@ class VideoHandler(GestureHandler):
                     f"No valid landmarks given the criteria of {self.mode} model"
                 )
                 frame_index += 1
+                cv.waitKey(1)
                 continue
             # Draw landmarks and display
             display_image = self.draw_landmarks(processed_image, results)
