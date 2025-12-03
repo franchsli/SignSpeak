@@ -114,7 +114,6 @@ class GestureHandler(MediaPipeProcessor):
                 )
                 for data_file in data_folder_path_dirs:
                     if data_file.is_file():
-                        data_path = data_file.path
                         self._process_file(data_file, path)
                         if cv.waitKey(1) & 0xFF == ord("q"):
                             self.stop()
