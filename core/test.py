@@ -13,7 +13,6 @@ def test_import_performance():
     print(f"Importing SignLanguageTranslator took {end - start} seconds")
 
 def test_video_translation_performance():
-    start = time()
     from translator import SignLanguageTranslator
     # Set the path to the data directory
     PATH = path.abspath("data")
@@ -22,13 +21,13 @@ def test_video_translation_performance():
     translator = SignLanguageTranslator()
     # load the models down here
     translator.load_model(signs, "words")
+    start = time()
     translation = translator.translate_video(path.abspath("data/ADIOS/ADIOS1.mp4"), True)
-    print(f"translation: {translation}")
     end = time()
+    print(f"translation: {translation}")
     print(f"Proccessing 6 seconds long video took {end - start} seconds")
 
 def test_image_translation_performance():
-    start = time()
     from translator import SignLanguageTranslator
     # Set the path to the data directory
     PATH = path.abspath("letters_data")
@@ -37,6 +36,7 @@ def test_image_translation_performance():
     translator = SignLanguageTranslator()
     # load the models down here
     translator.load_model(signs, "letters", "models/letterss.keras")
+    start = time()
     for _ in range(30):
         translation = translator.translate_image(path.abspath("letters_data/A/A1.png"))
         print(f"translation: {translation}")
@@ -44,7 +44,6 @@ def test_image_translation_performance():
     print(f"Time spent translating A1.png 30 times: {end - start} seconds")
 
 def test_live_translation_performance():
-    start = time()
     from translator import SignLanguageTranslator
     # Set the path to the data directory
     PATH = path.abspath("data")
@@ -53,9 +52,10 @@ def test_live_translation_performance():
     translator = SignLanguageTranslator()
     # load the models down here
     translator.load_model(signs, "words")
+    start = time()
     translation = translator.translate_video()
-    print(f"translation: {translation}")
     end = time()
+    print(f"translation: {translation}")
     print(f"Live translation took {end - start} seconds")
 
 #test_video_translation_performance()
