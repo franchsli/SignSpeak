@@ -164,7 +164,7 @@ class SignLanguageTranslator:
             predicted_class = prediction_model_signs[argmax(prediction)]
             return predicted_class
         else:
-            return "The model is not confident enought about the translation."
+            return "The model is not confident enough about the translation."
 
     def _display_translation(self, frame: NDArray, translation: str):
         """Shows the current frame with the given translation.
