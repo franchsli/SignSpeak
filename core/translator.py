@@ -70,6 +70,8 @@ class SignLanguageTranslator:
                 print("Cannot access the camera.")
             return
 
+        window_created = False
+
         while cap.isOpened():
             success, image = cap.read()
             if not success or image is None:
@@ -83,7 +85,11 @@ class SignLanguageTranslator:
                 print(
                     f"No valid landmarks given the criteria of {self.processor.mode} model"
                 )
-                cv.waitKey(1)
+                key = cv.waitKey(1) & 0xFF
+                if key == ord('q'):
+                    break
+                if window_created and cv.getWindowProperty("Translation", cv.WND_PROP_VISIBLE) < 1:
+                    break
                 continue
             # Draw the sign landmarks on the image
             frame_with_landmarks = self.processor.draw_landmarks(
@@ -118,8 +124,10 @@ class SignLanguageTranslator:
             # display the translation if the user wants to
             if display_in_real_time:
                 self._display_translation(frame_with_landmarks, self.display_sentence)
-                # Check if the "Translation" window was closed and break the loop
-                if cv.getWindowProperty("Translation", cv.WND_PROP_VISIBLE) < 1:
+                window_created = True
+                key = cv.waitKey(1) & 0xFF
+                # Check if "q" key was pressed or the "Translation" window was closed and break the loop
+                if key == ord('q') or cv.getWindowProperty("Translation", cv.WND_PROP_VISIBLE) < 1:
                     break
 
         self._close_video_translation(cap, display_in_real_time)
@@ -176,7 +184,6 @@ class SignLanguageTranslator:
         cv_image = self._overwrite_frame_with_text(frame, translation)
         # Show the image on the display
         cv.imshow("Translation", cv_image)
-        cv.waitKey(1)
 
     def _overwrite_frame_with_text(
         self, frame: NDArray, text: str = "", text_size: int = 40
