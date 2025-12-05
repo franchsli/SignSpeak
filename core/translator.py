@@ -86,9 +86,8 @@ class SignLanguageTranslator:
                     f"No valid landmarks given the criteria of {self.processor.mode} model"
                 )
                 key = cv.waitKey(1) & 0xFF
-                if key == ord('q'):
-                    break
-                if window_created and cv.getWindowProperty("Translation", cv.WND_PROP_VISIBLE) < 1:
+                # Check if "q" key was pressed or the "Translation" window was closed and break the loop
+                if key == ord('q') or (window_created and self._is_translation_window_closed()):
                     break
                 continue
             # Draw the sign landmarks on the image
@@ -127,7 +126,7 @@ class SignLanguageTranslator:
                 window_created = True
                 key = cv.waitKey(1) & 0xFF
                 # Check if "q" key was pressed or the "Translation" window was closed and break the loop
-                if key == ord('q') or cv.getWindowProperty("Translation", cv.WND_PROP_VISIBLE) < 1:
+                if key == ord('q') or self._is_translation_window_closed():
                     break
 
         self._close_video_translation(cap, display_in_real_time)
@@ -184,6 +183,14 @@ class SignLanguageTranslator:
         cv_image = self._overwrite_frame_with_text(frame, translation)
         # Show the image on the display
         cv.imshow("Translation", cv_image)
+    
+    def _is_translation_window_closed(self) -> bool:
+        """Returns wether if the translation window is closed or not.
+
+        Returns:
+            bool: True if the translation window is closed. False otherwise.
+        """
+        return cv.getWindowProperty("Translation", cv.WND_PROP_VISIBLE) < 1
 
     def _overwrite_frame_with_text(
         self, frame: NDArray, text: str = "", text_size: int = 40
