@@ -321,8 +321,11 @@ class VideoHandler(GestureHandler):
                 print(
                     f"No valid landmarks given the criteria of {self.mode} model"
                 )
+                # stop processing the video if "q" is pressed
+                if cv.waitKey(1) & 0xFF == ord("q"):
+                    self.stop()
+                    break
                 frame_index += 1
-                cv.waitKey(1)
                 continue
             # Draw landmarks and display
             display_image = self.draw_landmarks(processed_image, results)
@@ -343,6 +346,7 @@ class VideoHandler(GestureHandler):
             frame_index += 1
             resized_frame = cv.resize(display_image, (960, 540))
             cv.imshow("Video", resized_frame)
+            # stop processing the video if "q" is pressed
             if cv.waitKey(1) & 0xFF == ord("q"):
                 self.stop()
                 break
