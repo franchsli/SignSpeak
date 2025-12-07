@@ -4,8 +4,8 @@ from tools import GestureHandler
 test_handler = GestureHandler()
 
 def test_no_file_index():
-    index = test_handler.get_file_index("ADIOS.mp4")
-    assert index == ""
+    with raises(ValueError, match="File names must have a defined index."):
+        test_handler.get_file_index("ADIOS.mp4")
 
 def test_no_file_name():
     index = test_handler.get_file_index(".mp4")
