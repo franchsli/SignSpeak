@@ -17,6 +17,7 @@ google-pasta==0.2.0
 grpcio==1.70.0
 h5py==3.12.1
 idna==3.10
+iniconfig==2.3.0
 joblib==1.4.2
 keras==2.13.1
 kiwisolver==1.4.8
@@ -34,12 +35,15 @@ opencv-python==4.11.0.86
 opt_einsum==3.4.0
 packaging==24.2
 pillow==11.1.0
+pluggy==1.6.0
 protobuf==4.25.6
 psutil==7.0.0
 pyasn1==0.6.1
 pyasn1_modules==0.4.1
 pycparser==2.22
+Pygments==2.19.2
 pyparsing==3.2.1
+pytest==9.0.2
 python-dateutil==2.9.0.post0
 requests==2.32.3
 requests-oauthlib==2.0.0
