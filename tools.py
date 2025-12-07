@@ -66,7 +66,7 @@ class GestureHandler(MediaPipeProcessor):
         for character in file_name:
             if character == ".":
                 break
-            elif character.isalpha() or character == "_":
+            elif character.isalpha() or character == "_" or character == "-":
                 label += character
         return label
 
