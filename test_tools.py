@@ -8,8 +8,8 @@ def test_no_file_index():
         test_handler.get_file_index("ADIOS.mp4")
 
 def test_no_file_name():
-    index = test_handler.get_file_index(".mp4")
-    assert index == ""
+    with raises(ValueError, match="File name can't start with a period character."):
+        test_handler.get_file_index(".mp4")
 
 def test_file_name_starts_with_index():
     index = test_handler.get_file_index("1ADIOS.mp4")

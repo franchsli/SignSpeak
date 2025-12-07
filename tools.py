@@ -44,6 +44,8 @@ class GestureHandler(MediaPipeProcessor):
         Returns:
             str: The file index.
         """
+        if file_name[0] == ".":
+            raise ValueError("File name can't start with a period character.")
         index = ""
         for character in file_name:
             if character == ".":
