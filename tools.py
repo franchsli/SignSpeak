@@ -50,9 +50,8 @@ class GestureHandler(MediaPipeProcessor):
                 break
             elif character.isnumeric():
                 index += character
-        else:
-            if index == "":
-                raise ValueError(f"File names must have a defined index.")
+        if index == "":
+            raise ValueError(f"File names must have a defined index.")
         return index
 
     def get_label_name(self, file_name: str) -> str:
