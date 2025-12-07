@@ -1,3 +1,4 @@
+from pytest import raises
 from tools import GestureHandler
 
 test_handler = GestureHandler()
@@ -23,5 +24,5 @@ def test_middle_dash_character():
     assert label_name == "BUENOS-DIAS"
 
 def test_starts_with_period():
-    label_name = test_handler.get_label_name(".DIAS.mp4")
-    assert label_name == "DIAS"
+    with raises(ValueError, match="File name can't start with a period character."):
+        test_handler.get_label_name(".DIAS.mp4")
