@@ -3,15 +3,15 @@ from tools import GestureHandler
 test_handler = GestureHandler()
 
 def test_no_file_index():
-    index = test_handler.get_file_index("ADIOS")
+    index = test_handler.get_file_index("ADIOS.mp4")
     assert index == ""
 
 def test_no_file_name():
-    index = test_handler.get_file_index("")
+    index = test_handler.get_file_index(".mp4")
     assert index == ""
 
 def test_file_name_starts_with_index():
-    index = test_handler.get_file_index("1ADIOS")
+    index = test_handler.get_file_index("1ADIOS.mp4")
     assert index == "1"
 
 def test_no_alpha_characters():
