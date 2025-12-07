@@ -60,7 +60,7 @@ class GestureHandler(MediaPipeProcessor):
             file_name (str)
 
         Returns:
-            str:
+            str: The file label name.
         """
         label = ""
         for character in file_name:
