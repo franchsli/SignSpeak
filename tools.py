@@ -139,8 +139,8 @@ class GestureHandler(MediaPipeProcessor):
         Returns:
             bool: True if the filename is valid.
         """
-        if file_name[0] == ".":
-            raise ValueError("File name can't start with a period character.")
+        if not file_name[0].isalpha():
+            raise ValueError(f"File name must start with an alphabetic character.\n'{file_name[0]}' is not alphabetical.")
         else:
             return True
         
