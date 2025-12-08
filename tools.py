@@ -127,7 +127,7 @@ class GestureHandler(MediaPipeProcessor):
     def _process_file(self, data_file: DirEntry[str], path: str):
         raise NotImplementedError
 
-    def _validate_filename(self, file_name: str) -> bool:
+    def _validate_filename(self, file_name: str) -> None:
         """Validates the given filename.
 
         Args:
@@ -135,14 +135,9 @@ class GestureHandler(MediaPipeProcessor):
 
         Raises:
             ValueError: Raised if the filename is invalid.
-
-        Returns:
-            bool: True if the filename is valid.
         """
         if not file_name[0].isalpha():
             raise ValueError(f"File name must start with an alphabetic character.\n'{file_name[0]}' is not alphabetical.")
-        else:
-            return True
         
     def stop(self) -> None:
         cv.destroyAllWindows()
