@@ -44,8 +44,7 @@ class GestureHandler(MediaPipeProcessor):
         Returns:
             str: The file index.
         """
-        if file_name[0] == ".":
-            raise ValueError("File name can't start with a period character.")
+        self._validate_filename(file_name)
         index = ""
         for character in file_name:
             if character == ".":
@@ -66,8 +65,7 @@ class GestureHandler(MediaPipeProcessor):
         Returns:
             str: The file label name.
         """
-        if file_name[0] == ".":
-            raise ValueError("File name can't start with a period character.")
+        self._validate_filename(file_name)
         label = ""
         for character in file_name:
             if character == ".":
