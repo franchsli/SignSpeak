@@ -41,6 +41,9 @@ class GestureHandler(MediaPipeProcessor):
         Args:
             file_name (str)
 
+        Raises:
+            ValueError: Raised if the filename has no index defined.
+
         Returns:
             str: The file index.
         """
