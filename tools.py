@@ -129,6 +129,23 @@ class GestureHandler(MediaPipeProcessor):
     def _process_file(self, data_file: DirEntry[str], path: str):
         raise NotImplementedError
 
+    def _validate_filename(self, file_name: str) -> bool:
+        """Validates the given filename.
+
+        Args:
+            file_name (str)
+
+        Raises:
+            ValueError: Raised if the filename is invalid.
+
+        Returns:
+            bool: True if the filename is valid.
+        """
+        if file_name[0] == ".":
+            raise ValueError("File name can't start with a period character.")
+        else:
+            return True
+        
     def stop(self) -> None:
         cv.destroyAllWindows()
 
