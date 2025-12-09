@@ -1,5 +1,5 @@
 from pytest import raises
-from tools import GestureHandler, ImageHandler
+from tools import GestureHandler, ImageHandler, VideoHandler
 
 test_handler = GestureHandler()
 
@@ -40,4 +40,4 @@ def test_load_frame_correct_shape():
     signs = ["A", "C", "F"]
     landmarks, labels = handler._load_frame("letters_test", signs)
     assert landmarks.shape[1] == 126
-    assert labels.shape[1] == len(signs) 
+    assert labels.shape[1] == len(signs)
