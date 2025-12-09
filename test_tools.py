@@ -41,3 +41,14 @@ def test_load_frame_correct_shape():
     landmarks, labels = handler._load_frame("letters_test", signs)
     assert landmarks.shape[1] == 126
     assert labels.shape[1] == len(signs)
+
+def test_create_sequences_length():
+    handler = VideoHandler(data_parent_folder="data")
+    SEQUENCE_LENGTH = 10
+    signs = ['ADIOS', 'BONITO', 'BUENAS_NOCHES', 
+             'BUENAS_TARDES', 'BUENOS_DIAS', 
+             'GRACIAS', 'HOLA', 'NOMBRE', 
+             'POR_FAVOR', 'TRABAJO', 'UNIVALLE']
+    sequences, _ = handler._create_sequences("test2", signs, SEQUENCE_LENGTH)
+    assert sequences.shape[1] == SEQUENCE_LENGTH
+    assert sequences.shape[2] == 126
