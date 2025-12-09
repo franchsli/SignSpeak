@@ -1,5 +1,5 @@
 from pytest import raises
-from tools import GestureHandler
+from tools import GestureHandler, ImageHandler
 
 test_handler = GestureHandler()
 
@@ -34,3 +34,10 @@ def test_middle_dash_character():
 def test_starts_with_period():
     with raises(ValueError, match="File name must start with an alphabetic character."):
         test_handler.get_label_name(".DIAS.mp4")
+
+def test_load_frame_correct_shape():
+    handler = ImageHandler(data_parent_folder="letters_data")
+    signs = ["A", "C", "F"]
+    landmarks, labels = handler._load_frame("letters_test", signs)
+    assert landmarks.shape[1] == 126
+    assert labels.shape[1] == len(signs) 
