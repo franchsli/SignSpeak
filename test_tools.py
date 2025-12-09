@@ -1,5 +1,8 @@
 from pytest import raises
+from cv2 import imread
+from numpy import all
 from tools import GestureHandler, ImageHandler, VideoHandler
+from core.processor import MediaPipeProcessor
 
 test_handler = GestureHandler()
 
@@ -52,3 +55,25 @@ def test_create_sequences_length():
     sequences, _ = handler._create_sequences("test2", signs, SEQUENCE_LENGTH)
     assert sequences.shape[1] == SEQUENCE_LENGTH
     assert sequences.shape[2] == 126
+
+def test_holistic_keypoint_extraction():
+    processor = MediaPipeProcessor()
+    frame = imread("letters_data/A/A1.png")
+    results, _ = processor.process_image(frame)
+    keypoints = processor.keypoint_extraction(results)
+    assert keypoints.shape == (126,)
+
+def test_hands_keypoint_extraction():
+    processor = MediaPipeProcessor(mode="hands")
+    frame = imread("letters_data/A/A1.png")
+    results, _ = processor.process_image(frame)
+    keypoints = processor.keypoint_extraction(results)
+    assert keypoints.shape == (126,)
+
+def test_keypoint_shape_no_hands():
+    processor = MediaPipeProcessor(mode="hands")
+    frame = imread("letters_data/C/C3.jpg")
+    results, _ = processor.process_image(frame)
+    keypoints = processor.keypoint_extraction(results)
+    assert keypoints.shape == (126,)
+    assert all(keypoints == 0)
