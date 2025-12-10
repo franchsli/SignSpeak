@@ -32,12 +32,15 @@ A sign language translator.
 
 - Performance:
   current import time = around 5 seconds.
-  current translation time = around 6.3 times slower.
+  current video translation time = around 6.3 times slower.
+  around 4 times slower if it isn't displayed and uses "hands" mode.
+  (this is not viable)
 - Think about this model naming:
   1. model's target prediction
   2. language
   3. "model"
   Where 1 is "words" or "letters", 2 is "CSL" or "ASL", etc...
+  Example: "wordsCSLmodel.keras" or "words_CSL_model.keras"
 
 Your data folder (where you store videos or images to train the models) should look like this:
 
