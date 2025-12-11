@@ -39,40 +39,37 @@ def test_starts_with_period():
         test_handler.get_label_name(".DIAS.mp4")
 
 def test_load_frame_correct_shape():
-    handler = ImageHandler(data_parent_folder="letters_data")
+    handler = ImageHandler(data_parent_folder="testing/letters_signs")
     signs = ["A", "C", "F"]
-    landmarks, labels = handler._load_frame("letters_test", signs)
+    landmarks, labels = handler._load_frame("testing/letters_dataset", signs)
     assert landmarks.shape[1] == 126
     assert labels.shape[1] == len(signs)
 
 def test_create_sequences_length():
-    handler = VideoHandler(data_parent_folder="data")
+    handler = VideoHandler(data_parent_folder="testing/words_signs")
     SEQUENCE_LENGTH = 10
-    signs = ['ADIOS', 'BONITO', 'BUENAS_NOCHES', 
-             'BUENAS_TARDES', 'BUENOS_DIAS', 
-             'GRACIAS', 'HOLA', 'NOMBRE', 
-             'POR_FAVOR', 'TRABAJO', 'UNIVALLE']
-    sequences, _ = handler._create_sequences("test2", signs, SEQUENCE_LENGTH)
+    signs = ['ADIOS', 'BONITO']
+    sequences, _ = handler._create_sequences("testing/words_dataset", signs, SEQUENCE_LENGTH)
     assert sequences.shape[1] == SEQUENCE_LENGTH
     assert sequences.shape[2] == 126
 
 def test_holistic_keypoint_extraction():
     processor = MediaPipeProcessor()
-    frame = imread("letters_data/A/A1.png")
+    frame = imread("testing/letters_signs/A/A1.png")
     results, _ = processor.process_image(frame)
     keypoints = processor.keypoint_extraction(results)
     assert keypoints.shape == (126,)
 
 def test_hands_keypoint_extraction():
     processor = MediaPipeProcessor(mode="hands")
-    frame = imread("letters_data/A/A1.png")
+    frame = imread("testing/letters_signs/A/A1.png")
     results, _ = processor.process_image(frame)
     keypoints = processor.keypoint_extraction(results)
     assert keypoints.shape == (126,)
 
 def test_keypoint_shape_no_hands():
     processor = MediaPipeProcessor(mode="hands")
-    frame = imread("letters_data/C/C3.jpg")
+    frame = imread("testing/letters_signs/C/C3.jpg")
     results, _ = processor.process_image(frame)
     keypoints = processor.keypoint_extraction(results)
     assert keypoints.shape == (126,)
