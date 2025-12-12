@@ -1,6 +1,10 @@
 # SignSpeak
 
-A sign language translator.
+## Overview
+
+A sign language translator model maker and runner.
+With SignSpeak, you can train models for translating your desired language
+and then test your model!
 
 ## General Resources
 
