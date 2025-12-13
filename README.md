@@ -68,7 +68,7 @@ Where "LABEL" is the uppercase word or letter corresponding to the signs showed 
 The files must be named after the label AND a unique number inside the folder.
 The dataset creation depends on this structure.
 
-After using your data to create a dataset (via VideHandler), the resulting dataset would look like this:
+After using your data to create a dataset (via VideoHandler), the resulting dataset would look like this:
 
 ``` ASCII
 .
