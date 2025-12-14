@@ -103,3 +103,22 @@ If the dataset is created with ImageHandler dataset would look like this:
     │   └── ...
     └── ...
 ```
+
+## Basic usage
+
+After you have a model, you can use it to translate any media, like this:
+
+``` python3
+"""Translating a video file"""
+# core.main.py
+from translator import SignLanguageTranslator
+# Set the path to the data directory
+PATH = path.abspath("data")
+# Create an array of sign labels by listing the contents of the data directory
+signs = array(listdir(PATH))
+translator = SignLanguageTranslator()
+# load the models down here
+translator.load_model(signs, "words")
+translation = translator.translate_video(path.abspath("data/ADIOS/ADIOS1.mp4"), True)
+print(f"translation: {translation}")
+```
