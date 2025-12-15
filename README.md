@@ -6,6 +6,30 @@ A sign language translator model maker and runner.
 With SignSpeak, you can train models for translating your desired language
 and then test your model!
 
+## Quickstart
+
+1.- Clone this repository:
+
+                        git clone https://github.com/franchsli/SignSpeak
+
+2.- Create a virtual environment:
+
+                        python -m venv venv
+
+3.- Activate virtual environment.
+
+                        .\venv\Scripts\activate
+
+4.- Install dependencies:
+
+                        pip install -r requirements.txt --no-deps
+
+5.- Ensure everything works:
+
+                        pytest tests.py
+
+If nothing happens, you're good to go!
+
 ## General Resources
 
 [Main repo used](https://github.com/dgovor/Sign-Language-Translator)
