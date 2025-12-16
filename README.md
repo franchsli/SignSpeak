@@ -6,6 +6,13 @@ A sign language translator model maker and runner.
 With SignSpeak, you can train models for translating your desired language
 and then test your model!
 
+## Requirements
+
+Before setting this up, you **MUST** have python **3.11**
+installed, newer versions don't work and previous versions weren't tested.
+[uv](https://docs.astral.sh/uv/) setup (pyproject.toml, lock file, etc)
+will be added in newer versions, the project will use pip as for now.
+
 ## Quickstart
 
 1.- Clone this repository:
@@ -23,12 +30,16 @@ and then test your model!
 4.- Install dependencies:
 
                         pip install -r requirements.txt --no-deps
+**NOTE**:  `--no-deps` flags is required because it'll install non tested libraries
+and you may encounter problems in the future.
 
 5.- Ensure everything works:
 
                         pytest tests.py
 
-If nothing happens, you're good to go!
+If all tests passed, you're good to go!
+It'll raise `DeprecationWarning: module 'sre_constants' is deprecated`
+but don't worry, this happens because tensorflow is installing that deprecated module.
 
 ## General Resources
 
