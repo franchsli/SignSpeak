@@ -3,8 +3,8 @@ from numpy import array, amax, argmax, newaxis
 from numpy.typing import NDArray
 from keras.models import load_model, Model
 from PIL import ImageDraw, ImageFont, Image
-from processor import MediaPipeProcessor
-from text_processor import TextProcessor
+from .processor import MediaPipeProcessor
+from .text_processor import TextProcessor
 
 
 class SignLanguageTranslator:
