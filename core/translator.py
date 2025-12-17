@@ -361,18 +361,18 @@ class SignLanguageTranslator:
             self.text_processor.language_tool.close()
     
     def load_model(
-        self, signs: NDArray, model_name: str, model_path: str = "models/model.keras"
+        self, signs: list[str], model_name: str, model_path: str = "models/model.keras"
     ):
         """Loads the model in the given path in the class' memory for later use.
 
         Args:
-            signs (NDArray): An NDArray containing the models known signs (could be words or letters).
+            signs (list[str]): A list containing the models known signs (could be words or letters).
             model_name (str): The name that will be given to the model in memory.
             model_path (str, optional): Where the model is. Defaults to "models/model.keras".
         """
         self.loaded_models[model_name] = (load_model(model_path), signs)
 
-    def get_model(self, model_name: str) -> tuple[Model, NDArray]:
+    def get_model(self, model_name: str) -> tuple[Model, list[str]]:
         """Returns the model stored in the class with the given name
         and its signs if found.
 
@@ -383,7 +383,7 @@ class SignLanguageTranslator:
             ValueError: Raised if no model with the given name is found.
 
         Returns:
-            tuple[Model, NDArray]: The found Model and its signs.
+            tuple[Model, list]: The found Model and its signs.
         """
         if model_name in self.loaded_models:
             return self.loaded_models[model_name][0], self.loaded_models[model_name][1]
