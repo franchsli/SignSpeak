@@ -41,6 +41,23 @@ If all tests passed, you're good to go!
 It'll raise `DeprecationWarning: module 'sre_constants' is deprecated`
 but don't worry, this happens because tensorflow is installing that deprecated module.
 
+## Basic usage
+
+After you have a model, you can use it to translate any media, like this:
+
+``` python3
+"""Translating a video file"""
+# core.main.py
+from os import listdir
+from translator import SignLanguageTranslator
+# Create an array of sign labels by listing the contents of the data directory
+signs = listdir("data")
+translator = SignLanguageTranslator()
+# load the models down here
+translator.load_model(signs, "words")
+translation = translator.translate_video("data/ADIOS/ADIOS1.mp4")
+```
+
 ## General Resources
 
 [Main repo used](https://github.com/dgovor/Sign-Language-Translator)
@@ -137,23 +154,4 @@ If the dataset is created with ImageHandler dataset would look like this:
     │   ├── 2.npy
     │   └── ...
     └── ...
-```
-
-## Basic usage
-
-After you have a model, you can use it to translate any media, like this:
-
-``` python3
-"""Translating a video file"""
-# core.main.py
-from translator import SignLanguageTranslator
-# Set the path to the data directory
-PATH = path.abspath("data")
-# Create an array of sign labels by listing the contents of the data directory
-signs = array(listdir(PATH))
-translator = SignLanguageTranslator()
-# load the models down here
-translator.load_model(signs, "words")
-translation = translator.translate_video(path.abspath("data/ADIOS/ADIOS1.mp4"), True)
-print(f"translation: {translation}")
 ```
