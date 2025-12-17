@@ -47,9 +47,9 @@ After you have a model, you can use it to translate any media, like this:
 
 ``` python3
 """Translating a video file"""
-# core.main.py
+# main.py in root
 from os import listdir
-from translator import SignLanguageTranslator
+from core.translator import SignLanguageTranslator
 # Create an array of sign labels by listing the contents of the data directory
 signs = listdir("data")
 translator = SignLanguageTranslator()
