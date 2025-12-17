@@ -2,7 +2,6 @@
 
 from time import time
 from os import listdir
-from numpy import array
 
 
 def test_import_performance():
@@ -15,7 +14,7 @@ def test_import_performance():
 def test_video_translation_performance():
     from translator import SignLanguageTranslator
     # Create an array of sign labels by listing the contents of the data directory
-    signs = array(listdir("data"))
+    signs = listdir("data")
     translator = SignLanguageTranslator()
     # load the models down here
     translator.load_model(signs, "words")
@@ -28,7 +27,7 @@ def test_video_translation_performance():
 def test_image_translation_performance():
     from translator import SignLanguageTranslator
     # Create an array of sign labels by listing the contents of the data directory
-    signs = array(listdir("letters_data"))
+    signs = listdir("letters_data")
     translator = SignLanguageTranslator()
     # load the models down here
     translator.load_model(signs, "letters", "models/letterss.keras")
@@ -42,7 +41,7 @@ def test_image_translation_performance():
 def test_live_translation_performance():
     from translator import SignLanguageTranslator
     # Create an array of sign labels by listing the contents of the data directory
-    signs = array(listdir("data"))
+    signs = listdir("data")
     translator = SignLanguageTranslator()
     # load the models down here
     translator.load_model(signs, "words")
