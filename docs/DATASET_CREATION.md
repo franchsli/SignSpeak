@@ -39,6 +39,7 @@ After ensuring your data meets the criteria, you then create a dataset python ca
 
 ``` python3
 # main.py in root
+from data_handlers import VideoHandler
 VideoSignHandler = VideoHandler(data_parent_folder="data")
 # create datasets code
 VideoSignHandler.create_dataset("dataset")
@@ -73,6 +74,7 @@ This is called like this for debugging purposes, this way you can know which is 
 
 ``` python3
 # main.py in root
+from data_handlers import ImageHandler
 ImageSignHandler = ImageHandler("data")
 ImageSignHandler.create_dataset("dataset")
 # training code (after the dataset is created created)
