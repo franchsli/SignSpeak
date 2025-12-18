@@ -58,6 +58,10 @@ translator.load_model(signs, "words")
 translation = translator.translate_video("data/ADIOS/ADIOS1.mp4")
 ```
 
+Don't have anything? See the complete guide:
+
+1. [Dataset creation.](https://github.com/franchsli/SignSpeak/blob/develop/docs/DATASET_CREATION.md)
+
 ## General Resources
 
 [Main repo used](https://github.com/dgovor/Sign-Language-Translator)
@@ -97,61 +101,3 @@ translation = translator.translate_video("data/ADIOS/ADIOS1.mp4")
   3. "model"
   Where 1 is "words" or "letters", 2 is "CSL" or "ASL", etc...
   Example: "wordsCSLmodel.keras" or "words_CSL_model.keras"
-
-Your data folder (where you store videos or images to train the models) should look like this:
-
-``` ASCII
-.
-└── data/
-    ├── LABEL/
-    │   ├── LABEL1
-    │   ├── LABEL2
-    │   ├── LABEL3
-    │   └── ...
-    ├── ANOTHER_LABEL/
-    │   ├── ANOTHER_LABEL1
-    │   ├── ANOTHER_LABEL2
-    │   ├── ANOTHER_LABEL3
-    │   └── ...
-    └── ...
-```
-
-Where "LABEL" is the uppercase word or letter corresponding to the signs showed in the files.
-The files must be named after the label AND a unique number inside the folder.
-The dataset creation depends on this structure.
-
-After using your data to create a dataset (via VideoHandler), the resulting dataset would look like this:
-
-``` ASCII
-.
-└── dataset/
-    ├── LABEL/
-    │   ├── 1_frame_1.npy
-    │   ├── 1_frame_15.npy
-    │   ├── ...
-    │   ├── 2_frame_73.npy
-    │   └── ...
-    └── ...
-```
-
-It uses the same labels inside your data folder to name the folders there and
-obviously adds the numpy data from the files in data/.
-The numpy files are named this way (if the dataset is created with VideoHandler):
-  {source_file_index}frame{source_frame_index}.npy
-  (with underscores between the "variables")
-This is called like this for debugging purposes, as you can know which is the first usable frame in a video.
-If the dataset is created with ImageHandler dataset would look like this:
-
-``` ASCII
-.
-└── dataset/
-    ├── LABEL/
-    │   ├── 1.npy
-    │   ├── 2.npy
-    │   └── ...
-    ├── ANOTHER_LABEL/
-    │   ├── 1.npy
-    │   ├── 2.npy
-    │   └── ...
-    └── ...
-```
