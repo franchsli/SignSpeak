@@ -49,3 +49,5 @@ This is *recommended*, *not* mandatory, you can name it whatever you feel like, 
 convention helps you stay organized.
 The class does not care about this, if the path is correct it will store it as you'd like
 (see the code snippets above for instance).
+
+After you have a trained model, you can [translate](https://github.com/franchsli/SignSpeak/blob/develop/docs/TRANSLATION.MD).
