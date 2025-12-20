@@ -62,6 +62,7 @@ Don't have anything? See the complete guide:
 
 1. [Dataset creation.](https://github.com/franchsli/SignSpeak/blob/develop/docs/DATASET_CREATION.md)
 2. [Model training.](https://github.com/franchsli/SignSpeak/blob/develop/docs/MODEL_TRAINING.MD)
+3. [Translation.](https://github.com/franchsli/SignSpeak/blob/develop/docs/TRANSLATION.MD)
 
 ## General Resources
 
