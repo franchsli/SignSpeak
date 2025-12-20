@@ -96,9 +96,9 @@ Don't have anything? See the complete guide:
   current video translation time = around 6.3 times slower.
   around 4 times slower if it isn't displayed and uses "hands" mode.
   (this is not viable)
-- Think about this model naming:
-  1. model's target prediction
-  2. language
+- Recommended model naming:
+  1. Sign language
+  2. Model's target prediction
   3. "model"
-  Where 1 is "words" or "letters", 2 is "CSL" or "ASL", etc...
-  Example: "wordsCSLmodel.keras" or "words_CSL_model.keras"
+  Where 1 is "CSL" or "ASL", etc..., 2 is "words" or "letters".
+  Example: "CSL_words_model.keras"
