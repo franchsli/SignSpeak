@@ -43,8 +43,6 @@ from data_handlers import VideoHandler
 VideoSignHandler = VideoHandler(data_parent_folder="data")
 # create datasets code
 VideoSignHandler.create_dataset("dataset")
-# training code (after the dataset is created created)
-VideoSignHandler.train("dataset", "models/words_model.keras")
 ```
 
 After using your data to create a dataset (via VideoHandler), the resulting dataset would look like this:
@@ -77,8 +75,6 @@ This is called like this for debugging purposes, this way you can know which is 
 from data_handlers import ImageHandler
 ImageSignHandler = ImageHandler("data")
 ImageSignHandler.create_dataset("dataset")
-# training code (after the dataset is created created)
-ImageSignHandler.train("dataset", "models/letters.keras")
 ```
 
 If the dataset is created via ImageHandler, the dataset would look like this:
