@@ -40,7 +40,7 @@ After ensuring your data meets the criteria, you then create a dataset python ca
 ``` python3
 # main.py in root
 from data_handlers import VideoHandler
-VideoSignHandler = VideoHandler(data_parent_folder="data")
+VideoSignHandler = VideoHandler("data")
 # create datasets code
 VideoSignHandler.create_dataset("dataset")
 ```
