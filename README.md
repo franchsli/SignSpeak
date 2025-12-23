@@ -54,8 +54,8 @@ from core.translator import SignLanguageTranslator
 signs = listdir("data")
 translator = SignLanguageTranslator()
 # load the models down here
-translator.load_model(signs, "words")
-translation = translator.translate_video("data/ADIOS/ADIOS1.mp4")
+translator.load_model(signs, "model_name", "models/model_path.keras")
+translation = translator.translate_video("some_video.mp4")
 ```
 
 Don't have anything? See the complete guide:
