@@ -27,7 +27,7 @@ VideoSignHandler.train("dataset", "models/words_model.keras")
 ```
 
 If you didn't create a proper dataset with any of these classes
-but you still have a proper dataset for either [videos](https://github.com/franchsli/SignSpeak/blob/develop/docs/DATASET_CREATION.md#L50-L62) or [images](https://github.com/franchsli/SignSpeak/blob/develop/docs/DATASET_CREATION.md#L84-L98)
+but you still have a proper dataset for either [videos](docs/DATASET_CREATION.md#L50-L62) or [images](docs/DATASET_CREATION.md#L84-L98)
 you can still use it with the respective class.
 
 **NOTE:**It is important that you use the respective class for this,
@@ -50,4 +50,4 @@ convention helps you stay organized.
 The class does not care about this, if the path is correct it will store it as you'd like
 (see the code snippets above for instance).
 
-After you have a trained model, you can [translate](https://github.com/franchsli/SignSpeak/blob/develop/docs/TRANSLATION.MD).
+After you have a trained model, you can [translate](docs/TRANSLATION.MD).
