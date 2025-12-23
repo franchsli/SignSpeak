@@ -99,4 +99,4 @@ obviously adds the numpy data from the files in data/.
 The numpy files are named this way (if the dataset is created with ImageHandler):
   {source_frame_index}.npy
 
-After you have a dataset, the next step is [training a model](docs/MODEL_TRAINING.MD) with it.
+After you have a dataset, the next step is [training a model](MODEL_TRAINING.MD) with it.
