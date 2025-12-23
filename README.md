@@ -60,9 +60,9 @@ translation = translator.translate_video("data/ADIOS/ADIOS1.mp4")
 
 Don't have anything? See the complete guide:
 
-1. [Dataset creation.](docs\DATASET_CREATION.md)
-2. [Model training.](https://github.com/franchsli/SignSpeak/blob/develop/docs/MODEL_TRAINING.MD)
-3. [Translation.](https://github.com/franchsli/SignSpeak/blob/develop/docs/TRANSLATION.MD)
+1. [Dataset creation.](docs/DATASET_CREATION.md)
+2. [Model training.](docs/MODEL_TRAINING.MD)
+3. [Translation.](docs/TRANSLATION.MD)
 
 ## General Resources
 
