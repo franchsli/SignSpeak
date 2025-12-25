@@ -1,6 +1,6 @@
 # Model training
 
-After you have your dataset ready you must train a model using the
+After you have your dataset ready, you must train a model using the
 respective class. The same class you used to create the dataset is the
 same you'll use to train your model calling the method .train()
 

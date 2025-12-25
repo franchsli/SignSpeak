@@ -3,7 +3,7 @@
 ## Overview
 
 A sign language translator model maker and runner.
-With SignSpeak, you can train models for translating your desired language
+With SignSpeak, you can train models to translate your desired language
 and then test your model!
 
 ## Requirements

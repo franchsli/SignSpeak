@@ -7,7 +7,8 @@ First, you have to download a "raw" dataset from the internet (or create one you
 This "raw" dataset contains images or videos (but not both) with people signing different signs
 from one sign language.
 
-This dataset will be called "data" from now on.
+This dataset will be called "data" from now on as it's the data from where the usable datasets
+will be created.
 
 Your data folder (where you store videos or images to train the models) should look like this:
 
