@@ -66,29 +66,35 @@ Don't have anything? See the complete guide:
 
 ## General Resources
 
-[Main repo used](https://github.com/dgovor/Sign-Language-Translator)
+These are resources I looked at while developing this project:
 
-[Sign language processing](https://pypi.org/project/sign-language-tools/)
+- [Main repo used](https://github.com/dgovor/Sign-Language-Translator), this is where I learn the basics for this project.
 
-[Text to Sign language library docs](https://sign-language-translator.readthedocs.io/en/latest/#building-custom-translators)
+- [Text to Sign language library docs](https://sign-language-translator.readthedocs.io/en/latest/#building-custom-translators)
 
-[CSL in Youtube](https://www.youtube.com/watch?v=JMraBJsA9oI&list=PLI7rDimYXOdhyty-lEXsxQgiLfYKnnqmY&index=4)
+- [CSL in Youtube](https://www.youtube.com/watch?v=JMraBJsA9oI&list=PLI7rDimYXOdhyty-lEXsxQgiLfYKnnqmY&index=4)
 
 ## Datasets
 
-[Main dataset used](https://www.kaggle.com/datasets/juanrrai/10-words-slc-and-3-people)
+These are the datasets I found while doing research:
 
-[Lexical Database of Colombian Sign Language](https://www.sign-lang.uni-hamburg.de/lr/compendium/lex/lesico.html)
+- [Main dataset used](https://www.kaggle.com/datasets/juanrrai/10-words-slc-and-3-people)
+This is the dataset I used for testing while developing this project.
 
-[The dynamic Colombian sign language dataset for basic conversation LSC70](https://www.sciencedirect.com/science/article/pii/S2352340924011752)
+- [Lexical Database of Colombian Sign Language](https://www.sign-lang.uni-hamburg.de/lr/compendium/lex/lesico.html)
 
-[LSC50: Colombian Sign Language Video and Inertial Measurement dataset](https://www.nature.com/articles/s41597-024-04172-5)
+- [The dynamic Colombian sign language dataset for basic conversation LSC70](https://www.sciencedirect.com/science/article/pii/S2352340924011752)
 
-[Kaggle datasets](https://www.kaggle.com/datasets?search=colombian+sign+language)
+- [LSC50: Colombian Sign Language Video and Inertial Measurement dataset](https://www.nature.com/articles/s41597-024-04172-5)
 
-[Very good dataset](https://bivl2ab.uis.edu.co/dataset-info)
+- [Kaggle datasets](https://www.kaggle.com/datasets?search=colombian+sign+language)
 
-[ASL Dataset](https://how2sign.github.io/)
+- [Very good dataset](https://bivl2ab.uis.edu.co/dataset-info)
+
+- [ASL Dataset](https://how2sign.github.io/)
+
+You're free to try any of these at your own risks, I mean, I only tested the first one, the others should be fine but I'll not
+take responsability.
 
 ***IMPORTANT***
 
