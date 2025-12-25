@@ -98,7 +98,7 @@ take responsability.
 
 ## Performance
 
-Tested in windows 10 with Intel(R) Celeron(R) CPU G1610 @ 2.60GHz.
+Tested on Windows 10 with Intel(R) Celeron(R) CPU G1610 @ 2.60GHz.
 
 - Current import time = around 5 seconds.
 - Current video translation time = around 6.3 times slower.
