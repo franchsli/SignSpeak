@@ -96,10 +96,11 @@ This is the dataset I used for testing while developing this project.
 You're free to try any of these at your own risks, I mean, I only tested the first one, the others should be fine but I'll not
 take responsability.
 
-***IMPORTANT***
+## Performance
 
-- Performance:
-  current import time = around 5 seconds.
-  current video translation time = around 6.3 times slower.
-  around 4 times slower if it isn't displayed and uses "hands" mode.
-  (this is not viable)
+Tested in windows 10 with Intel(R) Celeron(R) CPU G1610 @ 2.60GHz.
+
+- Current import time = around 5 seconds.
+- Current video translation time = around 6.3 times slower.
+around 4 times slower if it isn't displayed and uses "hands" mode.
+(this is not viable)
