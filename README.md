@@ -68,7 +68,7 @@ Don't have anything? See the complete guide:
 
 These are resources I looked at while developing this project:
 
-- [Main repo used](https://github.com/dgovor/Sign-Language-Translator), this is where I learn the basics for this project.
+- [Main repo used](https://github.com/dgovor/Sign-Language-Translator), this is where I learnt the basics for this project.
 
 - [Text to Sign language library docs](https://sign-language-translator.readthedocs.io/en/latest/#building-custom-translators)
 
