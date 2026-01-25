@@ -6,37 +6,46 @@ from core.processor import MediaPipeProcessor
 
 test_handler = GestureHandler()
 
+
 def test_no_file_index():
-    with raises(ValueError, match=f"File names must have a defined index."):
+    with raises(ValueError, match="File names must have a defined index."):
         test_handler.get_file_index("ADIOS.mp4")
+
 
 def test_no_file_name():
     with raises(ValueError, match="File name must start with an alphabetic character."):
         test_handler.get_file_index(".mp4")
 
+
 def test_file_name_starts_with_index():
     with raises(ValueError, match="File name must start with an alphabetic character."):
         test_handler.get_file_index("1ADIOS.mp4")
+
 
 def test_index_found():
     index = test_handler.get_file_index("ADIOS1.mp4")
     assert index == "1"
 
+
 def test_no_alpha_characters():
     with raises(ValueError, match="File name must start with an alphabetic character."):
         test_handler.get_label_name("123456789.mp4")
+
 
 def test_label_name_found():
     label_name = test_handler.get_label_name("ADIOS1.mp4")
     assert label_name == "ADIOS"
 
+
 def test_middle_dash_character():
     label_name = test_handler.get_label_name("BUENOS-DIAS.mp4")
     assert label_name == "BUENOS-DIAS"
 
+
 def test_starts_with_period():
     with raises(ValueError, match="File name must start with an alphabetic character."):
         test_handler.get_label_name(".DIAS.mp4")
+
 
 def test_load_frame_correct_shape():
     handler = ImageHandler(data_parent_folder="testing/letters_signs")
@@ -45,13 +54,17 @@ def test_load_frame_correct_shape():
     assert landmarks.shape[1] == 126
     assert labels.shape[1] == len(signs)
 
+
 def test_create_sequences_length():
     handler = VideoHandler(data_parent_folder="testing/words_signs")
     SEQUENCE_LENGTH = 10
-    signs = ['ADIOS', 'BONITO']
-    sequences, _ = handler._create_sequences("testing/words_dataset", signs, SEQUENCE_LENGTH)
+    signs = ["ADIOS", "BONITO"]
+    sequences, _ = handler._create_sequences(
+        "testing/words_dataset", signs, SEQUENCE_LENGTH
+    )
     assert sequences.shape[1] == SEQUENCE_LENGTH
     assert sequences.shape[2] == 126
+
 
 def test_holistic_keypoint_extraction():
     processor = MediaPipeProcessor()
@@ -60,12 +73,14 @@ def test_holistic_keypoint_extraction():
     keypoints = processor.keypoint_extraction(results)
     assert keypoints.shape == (126,)
 
+
 def test_hands_keypoint_extraction():
     processor = MediaPipeProcessor(mode="hands")
     frame = imread("testing/letters_signs/A/A1.png")
     results, _ = processor.process_image(frame)
     keypoints = processor.keypoint_extraction(results)
     assert keypoints.shape == (126,)
+
 
 def test_keypoint_shape_no_hands():
     processor = MediaPipeProcessor(mode="hands")
