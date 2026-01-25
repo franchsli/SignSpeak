@@ -87,7 +87,9 @@ class SignLanguageTranslator:
                 )
                 key = cv.waitKey(1) & 0xFF
                 # Check if "q" key was pressed or the "Translation" window was closed and break the loop
-                if key == ord('q') or (window_created and self._is_translation_window_closed()):
+                if key == ord("q") or (
+                    window_created and self._is_translation_window_closed()
+                ):
                     break
                 continue
             # Draw the sign landmarks on the image
@@ -126,7 +128,7 @@ class SignLanguageTranslator:
                 window_created = True
                 key = cv.waitKey(1) & 0xFF
                 # Check if "q" key was pressed or the "Translation" window was closed and break the loop
-                if key == ord('q') or self._is_translation_window_closed():
+                if key == ord("q") or self._is_translation_window_closed():
                     break
 
         self._close_video_translation(cap, display_in_real_time)
@@ -183,7 +185,7 @@ class SignLanguageTranslator:
         cv_image = self._overwrite_frame_with_text(frame, translation)
         # Show the image on the display
         cv.imshow("Translation", cv_image)
-    
+
     def _is_translation_window_closed(self) -> bool:
         """Returns wether if the translation window is closed or not.
 
@@ -359,7 +361,7 @@ class SignLanguageTranslator:
         # Shut off the server
         if self.text_processor.language_tool:
             self.text_processor.language_tool.close()
-    
+
     def load_model(
         self, signs: list[str], model_name: str, model_path: str = "models/model.keras"
     ):
