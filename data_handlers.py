@@ -55,7 +55,9 @@ class GestureHandler(MediaPipeProcessor):
             elif character.isnumeric():
                 index += character
         if index == "":
-            raise ValueError(f"File names must have a defined index.\n'{file_name}' doesn't have one.")
+            raise ValueError(
+                f"File names must have a defined index.\n'{file_name}' doesn't have one."
+            )
         return index
 
     def get_label_name(self, file_name: str) -> str:
@@ -88,7 +90,6 @@ class GestureHandler(MediaPipeProcessor):
                 if entry.is_dir():
                     os.makedirs(os.path.join(path, entry.name), exist_ok=True)
 
-
     def dataset_directories_already_created(self, path: str) -> bool:
         """Return True if the dataset's needed directories are already created
         inside the given path, False otherwise.
@@ -100,7 +101,6 @@ class GestureHandler(MediaPipeProcessor):
             bool: True if already created, False otherwise.
         """
         return len(os.listdir(path)) == len(os.listdir(self.data_parent_folder))
-
 
     def create_dataset(self, path: str) -> None:
         """
@@ -116,9 +116,7 @@ class GestureHandler(MediaPipeProcessor):
 
         for data_folder in data_folders:
             if data_folder.is_dir():
-                data_folder_path_dirs = os.scandir(
-                    data_folder.path
-                )
+                data_folder_path_dirs = os.scandir(data_folder.path)
                 for data_file in data_folder_path_dirs:
                     if data_file.is_file():
                         self._process_file(data_file, path)
@@ -140,8 +138,10 @@ class GestureHandler(MediaPipeProcessor):
             ValueError: Raised if the filename is invalid.
         """
         if not file_name[0].isalpha():
-            raise ValueError(f"File name must start with an alphabetic character.\n'{file_name[0]}' is not alphabetical.")
-        
+            raise ValueError(
+                f"File name must start with an alphabetic character.\n'{file_name[0]}' is not alphabetical."
+            )
+
     def stop(self) -> None:
         cv.destroyAllWindows()
 
@@ -158,7 +158,7 @@ class ImageHandler(GestureHandler):
             confidence (float): The desired confidence of the MediaPipeProcessor model. Defaults to 0.75.
             data_parent_folder (str): The folder that contains all the data
             that will be used in the dataset creation.
-        
+
         """
         super().__init__(confidence, "hands", data_parent_folder)
 
@@ -201,8 +201,6 @@ class ImageHandler(GestureHandler):
         np.save(frame_path, keypoints)
         resized_frame = cv.resize(display_image, (960, 540))
         cv.imshow("Image", resized_frame)
-
-                
 
     def train(
         self, dataset_path: str, model_path: str = "models/letters_model.keras"
@@ -265,7 +263,9 @@ class ImageHandler(GestureHandler):
         accuracy = metrics.accuracy_score(test_labels, predictions)
         print(f"Accuracy: {accuracy}")
 
-    def _load_frame(self, dataset_path: str, labels: list[str]) -> tuple[NDArray, NDArray[np.int_]]:
+    def _load_frame(
+        self, dataset_path: str, labels: list[str]
+    ) -> tuple[NDArray, NDArray[np.int_]]:
         """Loads the frame's data into an numpy array for model training.
 
         Args:
@@ -277,7 +277,7 @@ class ImageHandler(GestureHandler):
         """
         landmarks, labels_integers = [], []
         label_map = {label: num for num, label in enumerate(labels)}
-        
+
         for label in os.scandir(dataset_path):
             if label.is_dir():
                 for file in os.scandir(label.path):
@@ -337,9 +337,7 @@ class VideoHandler(GestureHandler):
             # process image and get the resulting landmarks
             results, processed_image = self.process_image(resized_frame)
             if not self.are_results_valid(results):
-                print(
-                    f"No valid landmarks given the criteria of {self.mode} model"
-                )
+                print(f"No valid landmarks given the criteria of {self.mode} model")
                 # stop processing the video if "q" is pressed
                 if cv.waitKey(1) & 0xFF == ord("q"):
                     self.stop()
@@ -387,7 +385,7 @@ class VideoHandler(GestureHandler):
         landmarks, labels_integers = [], []
         # Create a label map to map each sign label to a numeric value
         label_map = {label: num for num, label in enumerate(labels)}
-        
+
         for label in os.scandir(dataset_path):
             all_frames = []
             if label.is_dir():
