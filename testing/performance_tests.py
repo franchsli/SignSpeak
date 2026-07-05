@@ -1,4 +1,4 @@
-"""File to test the perfomance of the SignLanguageTranslator"""
+"""Functions to test the different translations' performances"""
 
 from time import time
 from os import listdir
