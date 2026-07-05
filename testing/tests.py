@@ -48,7 +48,7 @@ def test_starts_with_period():
 
 
 def test_load_frame_correct_shape():
-    handler = ImageHandler(data_parent_folder="testing/letters_signs")
+    handler = ImageHandler()
     signs = ["A", "C", "F"]
     landmarks, labels = handler._load_frame("testing/letters_dataset", signs)
     assert landmarks.shape[1] == 126
@@ -56,7 +56,7 @@ def test_load_frame_correct_shape():
 
 
 def test_create_sequences_length():
-    handler = VideoHandler(data_parent_folder="testing/words_signs")
+    handler = VideoHandler()
     SEQUENCE_LENGTH = 10
     signs = ["ADIOS", "BONITO"]
     sequences, _ = handler._create_sequences(
