@@ -1,7 +1,7 @@
 from pytest import raises
 from cv2 import imread
 from numpy import all
-from data_handlers import GestureHandler, ImageHandler, VideoHandler
+from core.data_handlers import GestureHandler, ImageHandler, VideoHandler
 from core.processor import MediaPipeProcessor
 
 test_handler = GestureHandler()

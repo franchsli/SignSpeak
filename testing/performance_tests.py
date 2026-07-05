@@ -6,13 +6,15 @@ from os import listdir
 
 def test_import_performance():
     start = time()
-    from translator import SignLanguageTranslator
+    from core.translator import SignLanguageTranslator
 
     end = time()
     print(f"Importing SignLanguageTranslator took {end - start} seconds")
 
+
 def test_video_translation_performance():
-    from translator import SignLanguageTranslator
+    from core.translator import SignLanguageTranslator
+
     # Create an array of sign labels by listing the contents of the data directory
     signs = listdir("data")
     translator = SignLanguageTranslator()
@@ -24,8 +26,10 @@ def test_video_translation_performance():
     print(f"translation: {translation}")
     print(f"Proccessing 6 seconds long video took {end - start} seconds")
 
+
 def test_image_translation_performance():
-    from translator import SignLanguageTranslator
+    from core.translator import SignLanguageTranslator
+
     # Create an array of sign labels by listing the contents of the data directory
     signs = listdir("letters_data")
     translator = SignLanguageTranslator()
@@ -38,8 +42,10 @@ def test_image_translation_performance():
     end = time()
     print(f"Time spent translating A1.png 30 times: {end - start} seconds")
 
+
 def test_live_translation_performance():
-    from translator import SignLanguageTranslator
+    from core.translator import SignLanguageTranslator
+
     # Create an array of sign labels by listing the contents of the data directory
     signs = listdir("data")
     translator = SignLanguageTranslator()
@@ -50,7 +56,3 @@ def test_live_translation_performance():
     end = time()
     print(f"translation: {translation}")
     print(f"Live translation took {end - start} seconds")
-
-#test_video_translation_performance()
-#test_image_translation_performance()
-test_live_translation_performance()

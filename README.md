@@ -35,7 +35,7 @@ and you may encounter problems in the future.
 
 5.- Ensure everything works:
 
-                        pytest tests.py
+                        pytest .\testing\tests.py
 
 If all tests passed, you're good to go!
 It'll raise `DeprecationWarning: module 'sre_constants' is deprecated`
