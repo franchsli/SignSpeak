@@ -8,7 +8,7 @@ from keras.models import Sequential
 from keras.layers import LSTM, Dense
 from sklearn import metrics
 from sklearn.model_selection import train_test_split
-from core.processor import MediaPipeProcessor
+from .processor import MediaPipeProcessor
 
 
 class GestureHandler(MediaPipeProcessor):
