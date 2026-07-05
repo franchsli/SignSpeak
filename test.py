@@ -1,5 +1,5 @@
 import os
-from data_handlers import VideoHandler, ImageHandler
+from core.data_handlers import VideoHandler, ImageHandler
 
 #video_folder = os.path.abspath("data/ADIOS/")
 #video_folders_path = os.path.abspath("data")

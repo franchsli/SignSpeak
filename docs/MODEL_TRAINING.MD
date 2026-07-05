@@ -8,7 +8,7 @@ same you'll use to train your model calling the method .train()
 
 ``` python3
 # main.py in root
-from data_handlers import ImageHandler
+from core.data_handlers import ImageHandler
 ImageSignHandler = ImageHandler("data")
 # datasets creation code
 ...
@@ -19,7 +19,7 @@ ImageSignHandler.train("dataset", "models/letters_model.keras")
 
 ``` python3
 # main.py in root
-from data_handlers import VideoHandler
+from core.data_handlers import VideoHandler
 VideoSignHandler = VideoHandler(data_parent_folder="data")
 # datasets creation code
 ...
