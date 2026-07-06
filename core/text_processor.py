@@ -17,7 +17,7 @@ class TextProcessor:
             self.language_tool = None
             print(f"LanguageTool failed to initialize:\n {e}")
 
-    def correct_sentence(self, sentence: str):
+    def correct_sentence(self, sentence: str) -> str:
         try:
             if self.language_tool:
                 corrected_text = self.language_tool.correct(sentence)
@@ -26,8 +26,10 @@ class TextProcessor:
                 print(
                     "LanguageTool failed to initialize previously so no correction is applied."
                 )
+                return sentence
         except LanguageToolError as e:
-            print(f"LanguageTool failed to initialize:\n {e}")
+            print(f"LanguageTool error:\n {e}")
+            return sentence
 
     def _get_language_tool(self, language: str) -> LanguageTool:
         if language not in _language_tool_instances:
