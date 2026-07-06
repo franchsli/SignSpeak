@@ -1,7 +1,9 @@
 from language_tool_python import LanguageTool
-from language_tool_python.utils import RateLimitError
+from language_tool_python.utils import LanguageToolError
 
 _language_tool_instances = {}
+
+
 class TextProcessor:
     def __init__(self, language="es"):
         """
@@ -11,11 +13,9 @@ class TextProcessor:
         """
         try:
             self.language_tool = self._get_language_tool(language)
-        except RateLimitError:
+        except LanguageToolError as e:
             self.language_tool = None
-            print(
-                "You have exceeded the rate limit for the free LanguageTool API. Please try again later. The class must be re initialized later"
-            )
+            print(f"LanguageTool failed to initialize:\n {e}")
 
     def correct_sentence(self, sentence: str):
         try:
@@ -24,14 +24,14 @@ class TextProcessor:
                 return corrected_text
             else:
                 print(
-                    "You have exceeded the rate limit for the free LanguageTool API. Please try again later."
+                    "LanguageTool failed to initialize previously so no correction is applied."
                 )
-        except RateLimitError:
-            print(
-                "You have exceeded the rate limit for the free LanguageTool API. Please try again later."
-            )
-    
+        except LanguageToolError as e:
+            print(f"LanguageTool failed to initialize:\n {e}")
+
     def _get_language_tool(self, language: str) -> LanguageTool:
         if language not in _language_tool_instances:
-            _language_tool_instances[language] = LanguageTool(language, language_tool_download_version="6.6")
+            _language_tool_instances[language] = LanguageTool(
+                language, language_tool_download_version="6.6"
+            )
         return _language_tool_instances[language]
