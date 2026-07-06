@@ -33,5 +33,5 @@ class TextProcessor:
     
     def _get_language_tool(self, language: str) -> LanguageTool:
         if language not in _language_tool_instances:
-            _language_tool_instances[language] = LanguageTool(language)
+            _language_tool_instances[language] = LanguageTool(language, language_tool_download_version="6.6")
         return _language_tool_instances[language]
