@@ -1,4 +1,4 @@
-from language_tool_python import LanguageToolPublicAPI
+from language_tool_python import LanguageTool
 from language_tool_python.utils import RateLimitError
 
 
@@ -10,7 +10,7 @@ class TextProcessor:
             the text. Defaults to "es".
         """
         try:
-            self.language_tool = LanguageToolPublicAPI(language)
+            self.language_tool = LanguageTool(language)
         except RateLimitError:
             self.language_tool = None
             print(
