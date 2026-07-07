@@ -24,6 +24,12 @@ class SignLanguageTranslator:
         self.mediapipe_confidence = mediapipe_confidence
         self.text_processor = TextProcessor(language) if language else None
         self.loaded_models = {}
+    
+    def __enter__(self):
+        return self
+    
+    def __exit__(self, exc_type, exc_value, exc_traceback):
+        self.close()
 
     def translate_video(
         self,
@@ -390,3 +396,10 @@ class SignLanguageTranslator:
             raise ValueError(
                 f"Model '{model_name}' isn't loaded. Load it first and try again."
             )
+    
+    def close(self):
+        """Closes the translator by doing cleanup operations.
+        """
+        self.loaded_models = {}
+        if self.text_processor:
+            self.text_processor.close_language_tool()

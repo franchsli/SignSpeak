@@ -30,6 +30,15 @@ class TextProcessor:
         except LanguageToolError as e:
             print(f"LanguageTool error:\n {e}")
             return sentence
+    
+    def close_language_tool(self):
+        """Closes the language tool server used in the processor.
+        """
+        if self.language_tool:
+            language = self.language_tool.language.tag
+            _language_tool_instances.pop(language)
+            self.language_tool.close()
+            self.language_tool = None
 
     def _get_language_tool(self, language: str) -> LanguageTool:
         if language not in _language_tool_instances:
