@@ -4,7 +4,7 @@ from language_tool_python.utils import LanguageToolError
 _language_tool_instances = {}
 
 
-class TextProcessor:
+class TextCorrector:
     def __init__(self, language="es"):
         """
         Args:
@@ -17,7 +17,7 @@ class TextProcessor:
             self.language_tool = None
             print(f"LanguageTool failed to initialize:\n {e}")
 
-    def correct_sentence(self, sentence: str) -> str:
+    def correct_text(self, sentence: str) -> str:
         try:
             if self.language_tool:
                 corrected_text = self.language_tool.correct(sentence)

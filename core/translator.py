@@ -4,7 +4,7 @@ from numpy.typing import NDArray
 from keras.models import load_model, Model
 from PIL import ImageDraw, ImageFont, Image
 from .processor import MediaPipeProcessor
-from .text_processor import TextProcessor
+from .text_processor import TextCorrector
 
 
 class SignLanguageTranslator:
@@ -22,7 +22,7 @@ class SignLanguageTranslator:
             the text. If no language is given, the translator won't be corrected. Defaults to None.
         """
         self.mediapipe_confidence = mediapipe_confidence
-        self.text_processor = TextProcessor(language) if language else None
+        self.text_corrector = TextCorrector(language) if language else None
         self.loaded_models = {}
     
     def __enter__(self):
@@ -139,8 +139,8 @@ class SignLanguageTranslator:
 
         self._close_video_translation_windows(cap, display_in_real_time)
         sentence = sentence.capitalize()
-        if self.text_processor:
-            corrected_sentence = self.text_processor.correct_sentence(sentence)
+        if self.text_corrector:
+            corrected_sentence = self.text_corrector.correct_text(sentence)
             sentence = corrected_sentence if corrected_sentence else sentence
         return sentence
 
@@ -401,5 +401,5 @@ class SignLanguageTranslator:
         """Closes the translator by doing cleanup operations.
         """
         self.loaded_models = {}
-        if self.text_processor:
-            self.text_processor.close_language_tool()
+        if self.text_corrector:
+            self.text_corrector.close_language_tool()
