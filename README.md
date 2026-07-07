@@ -50,12 +50,31 @@ After you have a model, you can use it to translate any media, like this:
 # main.py in root
 from os import listdir
 from core.translator import SignLanguageTranslator
+with SignLanguageTranslator() as translator:
+    # Create an array of sign labels by listing the contents of the data directory
+    signs = listdir("data")
+    # load the models down here
+    translator.load_model(signs, "model_name", "models/model_path.keras")
+    translation = translator.translate_video("some_video.mp4")
+    print(translation)
+```
+
+Using the "with" statement is adviced so the translator closes automatically
+after you're done with it, but you can close it manually too:
+
+``` python3
+"""Translating a video file"""
+# main.py in root
+from os import listdir
+from core.translator import SignLanguageTranslator
 # Create an array of sign labels by listing the contents of the data directory
 signs = listdir("data")
 translator = SignLanguageTranslator()
 # load the models down here
 translator.load_model(signs, "model_name", "models/model_path.keras")
 translation = translator.translate_video("some_video.mp4")
+print(translation)
+translator.close()
 ```
 
 Don't have anything? See the complete guide:
