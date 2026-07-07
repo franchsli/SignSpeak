@@ -11,7 +11,7 @@ class SignLanguageTranslator:
     def __init__(
         self,
         mediapipe_confidence: float = 0.75,
-        language="es",
+        language: str = None,
     ):
         """Sign language translation class.
 
@@ -19,10 +19,10 @@ class SignLanguageTranslator:
             mediapipe_confidence (float, optional): The minimun detection and tracking confidence
             that the MediaPipe model will have. Defaults to 0.75.
             language (str, optional): The language's code that will be checked to correct
-            the text. Defaults to "es".
+            the text. If no language is given, the translator won't be corrected. Defaults to None.
         """
         self.mediapipe_confidence = mediapipe_confidence
-        self.text_processor = TextProcessor(language)
+        self.text_processor = TextProcessor(language) if language else None
         self.loaded_models = {}
 
     def translate_video(
@@ -133,7 +133,7 @@ class SignLanguageTranslator:
 
         self._close_video_translation(cap, display_in_real_time)
         sentence = sentence.capitalize()
-        if self.text_processor.language_tool:
+        if self.text_processor:
             corrected_sentence = self.text_processor.correct_sentence(sentence)
             sentence = corrected_sentence if corrected_sentence else sentence
         return sentence
@@ -359,7 +359,7 @@ class SignLanguageTranslator:
             video_capture.release()
         cv.destroyAllWindows()
         # Shut off the server
-        if self.text_processor.language_tool:
+        if self.text_processor and self.text_processor.language_tool:
             self.text_processor.language_tool.close()
 
     def load_model(
