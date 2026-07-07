@@ -19,10 +19,14 @@ class SignLanguageTranslator:
             mediapipe_confidence (float, optional): The minimun detection and tracking confidence
             that the MediaPipe model will have. Defaults to 0.75.
             language (str, optional): The language's code that will be checked to correct
-            the text. If no language is given, the translator won't be corrected. Defaults to None.
+            the text. If no language is given, the translation won't be corrected. Defaults to None.
         """
         self.mediapipe_confidence = mediapipe_confidence
         self.text_corrector = TextCorrector(language) if language else None
+        # warms up the language tool check to decrease the first translation's
+        # correction time
+        if self.text_corrector:
+            self.text_corrector.language_tool.check("")
         self.loaded_models = {}
     
     def __enter__(self):
