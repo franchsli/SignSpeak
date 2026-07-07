@@ -131,7 +131,7 @@ class SignLanguageTranslator:
                 if key == ord("q") or self._is_translation_window_closed():
                     break
 
-        self._close_video_translation(cap, display_in_real_time)
+        self._close_video_translation_windows(cap, display_in_real_time)
         sentence = sentence.capitalize()
         if self.text_processor:
             corrected_sentence = self.text_processor.correct_sentence(sentence)
@@ -345,7 +345,7 @@ class SignLanguageTranslator:
             self.display_history = [self.display_history[-1]]
             self.display_sentence = self.display_history[-1]
 
-    def _close_video_translation(
+    def _close_video_translation_windows(
         self, video_capture: cv.VideoCapture, display_in_real_time: bool
     ):
         """Closes given video capture and destroys all the opencv windows.
@@ -358,9 +358,6 @@ class SignLanguageTranslator:
         if display_in_real_time:
             video_capture.release()
         cv.destroyAllWindows()
-        # Shut off the server
-        if self.text_processor and self.text_processor.language_tool:
-            self.text_processor.language_tool.close()
 
     def load_model(
         self, signs: list[str], model_name: str, model_path: str = "models/model.keras"
