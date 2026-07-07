@@ -4,7 +4,7 @@ from numpy.typing import NDArray
 from keras.models import load_model, Model
 from PIL import ImageDraw, ImageFont, Image
 from .processor import MediaPipeProcessor
-from .text_processor import TextCorrector
+from .text_corrector import TextCorrector
 
 
 class SignLanguageTranslator:
