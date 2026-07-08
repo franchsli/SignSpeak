@@ -77,3 +77,5 @@ with SignLanguageTranslator() as translator:
     translation = translator.translate_video("some_video.mp4")
     print(f"translation: {translation}")
 ```
+
+If you want to correct the translations, refer to [text correction](TEXT_CORRECTION.md)
