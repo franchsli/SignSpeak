@@ -13,6 +13,10 @@ installed, newer versions don't work and previous versions weren't tested.
 [uv](https://docs.astral.sh/uv/) setup (pyproject.toml, lock file, etc)
 will be added in newer versions, the project will use pip as for now.
 
+If you want to use the [language tool](https://languagetool.org/)
+[text correction](docs/TEXT_CORRECTION.md) to correct your translations'
+grammatical errors and such, you'll need to have Java 17 (or any version above it) installed.
+
 ## Quickstart
 
 1.- Clone this repository:
@@ -50,12 +54,31 @@ After you have a model, you can use it to translate any media, like this:
 # main.py in root
 from os import listdir
 from core.translator import SignLanguageTranslator
+with SignLanguageTranslator() as translator:
+    # Create an array of sign labels by listing the contents of the data directory
+    signs = listdir("data")
+    # load the models down here
+    translator.load_model(signs, "model_name", "models/model_path.keras")
+    translation = translator.translate_video("some_video.mp4")
+    print(translation)
+```
+
+Using the "with" statement is adviced so the translator closes automatically
+after you're done with it, but you can close it manually too:
+
+``` python3
+"""Translating a video file"""
+# main.py in root
+from os import listdir
+from core.translator import SignLanguageTranslator
 # Create an array of sign labels by listing the contents of the data directory
 signs = listdir("data")
 translator = SignLanguageTranslator()
 # load the models down here
 translator.load_model(signs, "model_name", "models/model_path.keras")
 translation = translator.translate_video("some_video.mp4")
+print(translation)
+translator.close()
 ```
 
 Don't have anything? See the complete guide:
@@ -63,6 +86,7 @@ Don't have anything? See the complete guide:
 1. [Dataset creation.](docs/DATASET_CREATION.md)
 2. [Model training.](docs/MODEL_TRAINING.MD)
 3. [Translation.](docs/TRANSLATION.MD)
+4. [Text correction.](docs/TEXT_CORRECTION.md)
 
 ## General Resources
 

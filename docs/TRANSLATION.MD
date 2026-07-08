@@ -5,8 +5,10 @@ going to use, like this:
 
 ``` python3
 from translator import SignLanguageTranslator
-translator = SignLanguageTranslator()
-translator.load_model(signs, model_name, model_path)
+with SignLanguageTranslator() as translator:
+    translator = SignLanguageTranslator()
+    translator.load_model(signs, model_name, model_path)
+    ...
 ```
 
 "signs" is a list of strings containing all the signs the model knows
@@ -49,27 +51,31 @@ There are two kinds of translations:
 ## Image translation
 
 ``` python3
+# main.py file in root
 from os import listdir
-from translator import SignLanguageTranslator
-# Create an array of sign labels by listing the contents of the data directory
-signs = listdir("letters_data")
-translator = SignLanguageTranslator()
-# load the models down here
-translator.load_model(signs, "letters", "models/letters.keras")
-translation = translator.translate_image("some_image.png")
-print(f"translation: {translation}")
+from core.translator import SignLanguageTranslator
+with SignLanguageTranslator() as translator:
+    # Create an array of sign labels by listing the contents of the data directory
+    signs = listdir("letters_data")
+    # load the models down here
+    translator.load_model(signs, "letters", "models/letters.keras")
+    translation = translator.translate_image("some_image.png")
+    print(f"translation: {translation}")
 ```
 
 ## Video translation
 
 ``` python3
+# main.py file in root
 from os import listdir
-from translator import SignLanguageTranslator
-# Create an array of sign labels by listing the contents of the data directory
-signs = listdir("data")
-translator = SignLanguageTranslator()
-# load the models down here
-translator.load_model(signs, "words", "models/words.keras")
-translation = translator.translate_video("some_video.mp4")
-print(f"translation: {translation}")
+from core.translator import SignLanguageTranslator
+with SignLanguageTranslator() as translator:
+    # Create an array of sign labels by listing the contents of the data directory
+    signs = listdir("data")
+    # load the models down here
+    translator.load_model(signs, "words", "models/words.keras")
+    translation = translator.translate_video("some_video.mp4")
+    print(f"translation: {translation}")
 ```
+
+If you want to correct the translations, refer to [text correction](TEXT_CORRECTION.md)

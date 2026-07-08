@@ -4,14 +4,14 @@ from numpy.typing import NDArray
 from keras.models import load_model, Model
 from PIL import ImageDraw, ImageFont, Image
 from .processor import MediaPipeProcessor
-from .text_processor import TextProcessor
+from .text_corrector import TextCorrector
 
 
 class SignLanguageTranslator:
     def __init__(
         self,
         mediapipe_confidence: float = 0.75,
-        language="es",
+        language: str = None,
     ):
         """Sign language translation class.
 
@@ -19,11 +19,21 @@ class SignLanguageTranslator:
             mediapipe_confidence (float, optional): The minimun detection and tracking confidence
             that the MediaPipe model will have. Defaults to 0.75.
             language (str, optional): The language's code that will be checked to correct
-            the text. Defaults to "es".
+            the text. If no language is given, the translation won't be corrected. Defaults to None.
         """
         self.mediapipe_confidence = mediapipe_confidence
-        self.text_processor = TextProcessor(language)
+        self.text_corrector = TextCorrector(language) if language else None
+        # warms up the language tool check to decrease the first translation's
+        # correction time
+        if self.text_corrector and self.text_corrector.language_tool:
+            self.text_corrector.language_tool.check("a")
         self.loaded_models = {}
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_value, exc_traceback):
+        self.close()
 
     def translate_video(
         self,
@@ -131,10 +141,10 @@ class SignLanguageTranslator:
                 if key == ord("q") or self._is_translation_window_closed():
                     break
 
-        self._close_video_translation(cap, display_in_real_time)
+        self._close_video_translation_windows(cap, display_in_real_time)
         sentence = sentence.capitalize()
-        if self.text_processor.language_tool:
-            corrected_sentence = self.text_processor.correct_sentence(sentence)
+        if self.text_corrector:
+            corrected_sentence = self.text_corrector.correct_text(sentence)
             sentence = corrected_sentence if corrected_sentence else sentence
         return sentence
 
@@ -345,7 +355,7 @@ class SignLanguageTranslator:
             self.display_history = [self.display_history[-1]]
             self.display_sentence = self.display_history[-1]
 
-    def _close_video_translation(
+    def _close_video_translation_windows(
         self, video_capture: cv.VideoCapture, display_in_real_time: bool
     ):
         """Closes given video capture and destroys all the opencv windows.
@@ -358,9 +368,6 @@ class SignLanguageTranslator:
         if display_in_real_time:
             video_capture.release()
         cv.destroyAllWindows()
-        # Shut off the server
-        if self.text_processor.language_tool:
-            self.text_processor.language_tool.close()
 
     def load_model(
         self, signs: list[str], model_name: str, model_path: str = "models/model.keras"
@@ -393,3 +400,9 @@ class SignLanguageTranslator:
             raise ValueError(
                 f"Model '{model_name}' isn't loaded. Load it first and try again."
             )
+
+    def close(self):
+        """Closes the translator by doing cleanup operations."""
+        self.loaded_models = {}
+        if self.text_corrector:
+            self.text_corrector.close_language_tool()
