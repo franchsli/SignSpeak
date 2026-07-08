@@ -26,7 +26,7 @@ class SignLanguageTranslator:
         # warms up the language tool check to decrease the first translation's
         # correction time
         if self.text_corrector:
-            self.text_corrector.language_tool.check("")
+            self.text_corrector.language_tool.check("a")
         self.loaded_models = {}
     
     def __enter__(self):

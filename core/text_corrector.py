@@ -37,6 +37,8 @@ class TextCorrector:
         if self.language_tool:
             language = self.language_tool.language.tag
             _language_tool_instances.pop(language)
+            # The Java server takes time to close
+            # around 10 seconds in my testing
             self.language_tool.close()
             self.language_tool = None
 
