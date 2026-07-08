@@ -185,6 +185,44 @@ class SignLanguageTranslator:
         else:
             return "The model is not confident enough about the translation."
 
+    def load_model(
+        self, signs: list[str], model_name: str, model_path: str = "models/model.keras"
+    ):
+        """Loads the model in the given path in the class' memory for later use.
+
+        Args:
+            signs (list[str]): A list containing the models known signs (could be words or letters).
+            model_name (str): The name that will be given to the model in memory.
+            model_path (str, optional): Where the model is. Defaults to "models/model.keras".
+        """
+        self.loaded_models[model_name] = (load_model(model_path), signs)
+
+    def get_model(self, model_name: str) -> tuple[Model, list[str]]:
+        """Returns the model stored in the class with the given name
+        and its signs if found.
+
+        Args:
+            model_name (str): How the model was called when loaded.
+
+        Raises:
+            ValueError: Raised if no model with the given name is found.
+
+        Returns:
+            tuple[Model, list]: The found Model and its signs.
+        """
+        if model_name in self.loaded_models:
+            return self.loaded_models[model_name][0], self.loaded_models[model_name][1]
+        else:
+            raise ValueError(
+                f"Model '{model_name}' isn't loaded. Load it first and try again."
+            )
+
+    def close(self):
+        """Closes the translator by doing cleanup operations."""
+        self.loaded_models = {}
+        if self.text_corrector:
+            self.text_corrector.close_language_tool()
+
     def _display_translation(self, frame: NDArray, translation: str):
         """Shows the current frame with the given translation.
 
@@ -368,41 +406,3 @@ class SignLanguageTranslator:
         if display_in_real_time:
             video_capture.release()
         cv.destroyAllWindows()
-
-    def load_model(
-        self, signs: list[str], model_name: str, model_path: str = "models/model.keras"
-    ):
-        """Loads the model in the given path in the class' memory for later use.
-
-        Args:
-            signs (list[str]): A list containing the models known signs (could be words or letters).
-            model_name (str): The name that will be given to the model in memory.
-            model_path (str, optional): Where the model is. Defaults to "models/model.keras".
-        """
-        self.loaded_models[model_name] = (load_model(model_path), signs)
-
-    def get_model(self, model_name: str) -> tuple[Model, list[str]]:
-        """Returns the model stored in the class with the given name
-        and its signs if found.
-
-        Args:
-            model_name (str): How the model was called when loaded.
-
-        Raises:
-            ValueError: Raised if no model with the given name is found.
-
-        Returns:
-            tuple[Model, list]: The found Model and its signs.
-        """
-        if model_name in self.loaded_models:
-            return self.loaded_models[model_name][0], self.loaded_models[model_name][1]
-        else:
-            raise ValueError(
-                f"Model '{model_name}' isn't loaded. Load it first and try again."
-            )
-
-    def close(self):
-        """Closes the translator by doing cleanup operations."""
-        self.loaded_models = {}
-        if self.text_corrector:
-            self.text_corrector.close_language_tool()
