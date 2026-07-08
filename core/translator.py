@@ -25,13 +25,13 @@ class SignLanguageTranslator:
         self.text_corrector = TextCorrector(language) if language else None
         # warms up the language tool check to decrease the first translation's
         # correction time
-        if self.text_corrector:
+        if self.text_corrector and self.text_corrector.language_tool:
             self.text_corrector.language_tool.check("a")
         self.loaded_models = {}
-    
+
     def __enter__(self):
         return self
-    
+
     def __exit__(self, exc_type, exc_value, exc_traceback):
         self.close()
 
@@ -400,10 +400,9 @@ class SignLanguageTranslator:
             raise ValueError(
                 f"Model '{model_name}' isn't loaded. Load it first and try again."
             )
-    
+
     def close(self):
-        """Closes the translator by doing cleanup operations.
-        """
+        """Closes the translator by doing cleanup operations."""
         self.loaded_models = {}
         if self.text_corrector:
             self.text_corrector.close_language_tool()
