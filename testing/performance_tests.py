@@ -19,7 +19,7 @@ def test_video_translation_performance():
         # Create an array of sign labels by listing the contents of the data directory
         signs = listdir("data")
         # load the models down here
-        translator.load_model(signs, "words")
+        translator.load_model(signs, "words", "models/CSL_words_model.keras")
         start = time()
         translation = translator.translate_video("data/ADIOS/ADIOS1.mp4")
         end = time()
@@ -34,7 +34,7 @@ def test_image_translation_performance():
         # Create an array of sign labels by listing the contents of the data directory
         signs = listdir("letters_data")
         # load the models down here
-        translator.load_model(signs, "letters", "models/letterss.keras")
+        translator.load_model(signs, "letters", "models/CSL_letters_model.keras")
         start = time()
         for _ in range(30):
             translation = translator.translate_image("letters_data/A/A1.png")
@@ -50,7 +50,7 @@ def test_live_translation_performance():
         # Create an array of sign labels by listing the contents of the data directory
         signs = listdir("data")
         # load the models down here
-        translator.load_model(signs, "words")
+        translator.load_model(signs, "words", "models/CSL_words_model.keras")
         start = time()
         translation = translator.translate_video()
         end = time()
