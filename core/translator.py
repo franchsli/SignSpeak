@@ -64,9 +64,10 @@ class SignLanguageTranslator:
         prediction_model, prediction_model_signs = self.get_model(model_name)
         keypoints, last_prediction = [], ""
         prediction_history = []
-        sentence = ""
+        translation = ""
         self.display_history = []
-        self.display_sentence = ""
+        # variable used for display purposes only
+        self.displayed_translation = ""
         self.lines_counter = 1
         # Initialize constant variables
         DESIRED_FRAME_WIDTH = 960
@@ -124,18 +125,18 @@ class SignLanguageTranslator:
                         prediction_history.append(predicted_class)
                         self.display_history.append(predicted_class)
                         last_prediction = predicted_class
-                        # update the sentence with a space if it's not the first one
-                        if sentence:
-                            sentence += f" {predicted_class}"
-                            self.display_sentence += f" {predicted_class}"
+                        # update the translation with a space if it's not the first prediction
+                        if translation:
+                            translation += f" {predicted_class}"
+                            self.displayed_translation += f" {predicted_class}"
                         else:
-                            sentence += predicted_class
-                            self.display_sentence += predicted_class
-                    print(sentence)
+                            translation += predicted_class
+                            self.displayed_translation += predicted_class
+                    print(translation)
 
             # display the translation if the user wants to
             if display_in_real_time:
-                self._display_translation(frame_with_landmarks, self.display_sentence)
+                self._display_translation(frame_with_landmarks, self.displayed_translation)
                 window_created = True
                 key = cv.waitKey(1) & 0xFF
                 # Check if "q" key was pressed or the "Translation" window was closed and break the loop
@@ -143,11 +144,11 @@ class SignLanguageTranslator:
                     break
 
         self._close_video_translation_windows(cap, display_in_real_time)
-        sentence = sentence.capitalize()
+        translation = translation.capitalize()
         if self.text_corrector:
-            corrected_sentence = self.text_corrector.correct_text(sentence)
-            sentence = corrected_sentence if corrected_sentence else sentence
-        return sentence
+            corrected_sentence = self.text_corrector.correct_text(translation)
+            translation = corrected_sentence if corrected_sentence else translation
+        return translation
 
     def translate_image(self, image_path: str, model_name: str = "letters") -> str:
         """Translates the sign language found in the image in the given path.
@@ -249,14 +250,14 @@ class SignLanguageTranslator:
 
         Args:
             frame (NDArray): The opencv frame to overwrite.
-            text (str): The desired text. Defaults to "". If no text is given self.display_sentence will be used instead.
+            text (str): The desired text. Defaults to "". If no text is given self.displayed_translation will be used instead.
             text_size (int, optional): The desired size in which the text will be written. Defaults to 40.
 
         Returns:
             NDArray: The overwritten frame.
         """
         if not text:
-            text = self.display_sentence
+            text = self.displayed_translation
         # Convert BGR to RGB for PIL
         rgb_frame = cv.cvtColor(frame, cv.COLOR_BGR2RGB)
         pillow_image = Image.fromarray(rgb_frame)
@@ -266,7 +267,7 @@ class SignLanguageTranslator:
         # prepare the text for display
         if self._is_text_overflowing(frame, text, draw_object, font):
             self._add_new_line_character()
-            text = self.display_sentence
+            text = self.displayed_translation
         text_X_coord, text_y_coord = self._get_translation_coordinates(
             frame, text, draw_object, font
         )
@@ -380,18 +381,18 @@ class SignLanguageTranslator:
         """
         if self.lines_counter < 4:
             self.display_history[-2] = f"{self.display_history[-2]}\n"
-            for i in range(len(self.display_sentence) - 1, 0, -1):
-                if self.display_sentence[i] == " ":
-                    self.display_sentence = (
-                        self.display_sentence[:i]
+            for i in range(len(self.displayed_translation) - 1, 0, -1):
+                if self.displayed_translation[i] == " ":
+                    self.displayed_translation = (
+                        self.displayed_translation[:i]
                         + "\n"
-                        + self.display_sentence[i + 1 :]
+                        + self.displayed_translation[i + 1 :]
                     )
                     break
             self.lines_counter += 1
         else:
             self.display_history = [self.display_history[-1]]
-            self.display_sentence = self.display_history[-1]
+            self.displayed_translation = self.display_history[-1]
 
     def _close_video_translation_windows(
         self, video_capture: cv.VideoCapture, display_in_real_time: bool
