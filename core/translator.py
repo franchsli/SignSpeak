@@ -28,6 +28,8 @@ class SignLanguageTranslator:
         if self.text_corrector and self.text_corrector.language_tool:
             self.text_corrector.language_tool.check("a")
         self.loaded_models = {}
+        self.video_confidence_threshold = 0.7
+        self.image_confidence_threshold = 0.7
 
     def __enter__(self):
         return self
@@ -67,7 +69,6 @@ class SignLanguageTranslator:
         self.display_sentence = ""
         self.lines_counter = 1
         # Initialize constant variables
-        CONFIDENCE_THRESHOLD = 0.7
         DESIRED_FRAME_WIDTH = 960
         DESIRED_FRAME_HEIGHT = 540
         EXPECTED_MODEL_KEYPOINTS_COUNT = 10
@@ -117,7 +118,7 @@ class SignLanguageTranslator:
                 # Clear the keypoints list for the next set of frames
                 keypoints = []
                 # Check if the maximum prediction value is above 0.7
-                if amax(prediction) > CONFIDENCE_THRESHOLD:
+                if amax(prediction) > self.video_confidence_threshold:
                     predicted_class = prediction_model_signs[argmax(prediction)]
                     if predicted_class != last_prediction:
                         prediction_history.append(predicted_class)
@@ -160,7 +161,6 @@ class SignLanguageTranslator:
 
         NOTE: This method only translates to letters given that no static signs mean words or concepts.
         """
-        CONFIDENCE_THRESHOLD = 0.7
         self.processor = MediaPipeProcessor(self.mediapipe_confidence, "hands")
         prediction_model, prediction_model_signs = self.get_model(model_name)
         print(f"Processing image in: {image_path}")
@@ -179,7 +179,7 @@ class SignLanguageTranslator:
         # Extract the landmarks from both hands and save them in arrays
         keypoints = self.processor.keypoint_extraction(results)
         prediction = prediction_model.predict(keypoints[newaxis, :])
-        if amax(prediction) > CONFIDENCE_THRESHOLD:
+        if amax(prediction) > self.image_confidence_threshold:
             predicted_class = prediction_model_signs[argmax(prediction)]
             return predicted_class
         else:
