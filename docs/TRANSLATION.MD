@@ -11,7 +11,10 @@ with SignLanguageTranslator() as translator:
     ...
 ```
 
-"signs" is a list of strings containing all the signs the model knows
+`model_name` is an identifier for the loaded model (e.g. `"words"` or `"letters"`).
+It is used internally to differentiate between models if you load more than one.
+
+`signs` is a list of strings containing all the signs the model knows
 in the same exact order it learned them. If the model was trained
 with this dataset:
 
