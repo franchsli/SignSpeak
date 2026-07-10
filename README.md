@@ -34,8 +34,12 @@ grammatical errors and such, you'll need to have Java 17 (or any version above i
 4.- Install dependencies:
 
                         pip install -r requirements.txt --no-deps
-**NOTE**:  `--no-deps` flags is required because it'll install non tested libraries
-and you may encounter problems in the future.
+**NOTE**:  `--no-deps` flags is required for non-AVX CPUs because without it, it'll install jaxlib
+which doesn't support non-AVX CPUs and you'll get the error
+`RuntimeError: This version of jaxlib was built using AVX instructions, which your CPU and/or operating system`.
+
+If your CPU and OS support AVX instructions, you could install the deps normally:
+                        pip install -r requirements.txt
 
 5.- Ensure everything works:
 
