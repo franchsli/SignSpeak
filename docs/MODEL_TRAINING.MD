@@ -2,7 +2,7 @@
 
 After you have your dataset ready, you must train a model using the
 respective class. The same class you used to create the dataset is the
-same you'll use to train your model calling the method .train()
+same you'll use to train your model calling the method .train().
 
 ## Images
 
@@ -20,17 +20,17 @@ ImageSignHandler.train("dataset", "models/letters_model.keras")
 ``` python3
 # main.py in root
 from core.data_handlers import VideoHandler
-VideoSignHandler = VideoHandler(data_parent_folder="data")
+VideoSignHandler = VideoHandler("data")
 # datasets creation code
 ...
 VideoSignHandler.train("dataset", "models/words_model.keras")
 ```
 
 If you didn't create a proper dataset with any of these classes
-but you still have a proper dataset for either [videos](DATASET_CREATION.md#L50-L62) or [images](DATASET_CREATION.md#L84-L98)
+but you still have a proper dataset for either [videos](DATASET_CREATION.md#L50-L62) or [images](DATASET_CREATION.md#L84-L96)
 you can still use it with the respective class.
 
-**NOTE:**It is important that you use the respective class for this,
+**NOTE:** It is important that you use the respective class for this,
 because images and videos are treated differently and they are designed for
 different purposes, images are for letters and videos for words, concepts, etc.
 

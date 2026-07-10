@@ -8,7 +8,7 @@ and then test your model!
 
 ## Requirements
 
-Before setting this up, you **MUST** have python **3.11**
+Before setting this up, you **MUST** have Python **3.11**
 installed, newer versions don't work and previous versions weren't tested.
 [uv](https://docs.astral.sh/uv/) setup (pyproject.toml, lock file, etc)
 will be added in newer versions, the project will use pip as for now.

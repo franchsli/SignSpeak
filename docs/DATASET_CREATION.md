@@ -2,7 +2,7 @@
 
 First, you have to download a "raw" dataset from the internet (or create one yourself).
 
-("raw" means that python cannot use it to train directly.)
+("raw" means that Python cannot use it to train directly).
 
 This "raw" dataset contains images or videos (but not both) with people signing different signs
 from one sign language.
@@ -28,13 +28,13 @@ Your data folder (where you store videos or images to train the models) should l
     └── ...
 ```
 
-Where "LABEL" is the uppercase word or letter corresponding to the signs showed in the files.
+Where "LABEL" is the uppercase word or letter corresponding to the signs shown in the files.
 The files must be named after the label AND a unique number inside the folder.
-For example, a valid filename could be HELLO1.mp4 or HELLO1.png (depending on the file extension)
+For example, a valid filename could be HELLO1.mp4 or HELLO1.png (depending on the file extension).
 
 The dataset creation relies on this structure.
 
-After ensuring your data meets the criteria, you then create a dataset python can use for training:
+After ensuring your data meets the criteria, you then create a dataset Python can use for training:
 
 ## Video dataset creation
 
