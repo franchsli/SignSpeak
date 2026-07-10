@@ -11,7 +11,10 @@ with SignLanguageTranslator() as translator:
     ...
 ```
 
-"signs" is a list of strings containing all the signs the model knows
+`model_name` is an identifier for the loaded model (e.g. `"words"` or `"letters"`).
+It is used internally to differentiate between models if you load more than one.
+
+`signs` is a list of strings containing all the signs the model knows
 in the same exact order it learned them. If the model was trained
 with this dataset:
 
@@ -38,7 +41,7 @@ signs = ["A", "B"]
 
 It is important that the signs variable is in the same order the model
 learned those signs (which is normally in alphanumeric order), because the model
-assigns integers to map the signs (i.e. HELLO = 15) and the model predicts answering with
+assigns integers to map the signs (e.g. HELLO = 15) and the model predicts answering with
 those integers, if you pass an unordered signs list the translation will be incorrect
 since the model predicts an integer but the code tries to look for that index in the given list
 no matter what.
