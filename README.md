@@ -33,13 +33,23 @@ grammatical errors and such, you'll need to have Java 17 (or any version above i
 
 4.- Install dependencies:
 
+If your CPU and OS support AVX instructions, you can install the deps normally:
+
+                        pip install -r requirements.txt
+
+If you have a device that doesn't support AVX instructions, you'll have to run:
+
                         pip install -r requirements.txt --no-deps
+
 **NOTE**:  `--no-deps` flags is required for non-AVX CPUs because without it, it'll install jaxlib
 which doesn't support non-AVX CPUs and you'll get the error
 `RuntimeError: This version of jaxlib was built using AVX instructions, which your CPU and/or operating system`.
 
-If your CPU and OS support AVX instructions, you could install the deps normally:
-                        pip install -r requirements.txt
+If you're a Windows user, you'll have to re install tensorflow so tensorflow-intel gets installed:
+
+                        pip install tensorflow==2.13.1
+
+That package it's not listed because is Windows specific.
 
 5.- Ensure everything works:
 
