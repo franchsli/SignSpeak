@@ -122,9 +122,19 @@ take responsability.
 
 ## Performance
 
-Tested on Windows 10 with Intel(R) Celeron(R) CPU G1610 @ 2.60GHz.
+I had the chance to run the video translation performance test on different hardware,
+this test checks the time it takes to translates a 6 seconds long video at 30 FPS.
 
-- Current import time = around 5 seconds.
-- Current video translation time = around 6.3 times slower.
-around 4 times slower if it isn't displayed and uses "hands" mode.
+These were the results:
+
+### Test on Windows 10 with Intel(R) Celeron(R) CPU G1610 @ 2.60GHz
+
+- Import time = around 5 seconds.
+- Video translation time = around 6.3 times slower than the video.
+around 4 times slower than the video if it isn't displayed and uses "hands" mode.
 (this is not viable)
+
+### Test on Windows 10 with Intel(R) Core(TM) i5-6500 CPU @ 3.20GHz
+
+- Import time = around 5 seconds.
+- Video translation time = around 3 times slower than the video.
