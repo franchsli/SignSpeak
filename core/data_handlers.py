@@ -14,9 +14,9 @@ from .processor import MediaPipeProcessor
 class GestureHandler(MediaPipeProcessor):
     def __init__(
         self,
+        data_parent_folder: str,
         confidence: float = 0.75,
         mode: str = "holistic",
-        data_parent_folder: str = None,
     ):
         """The Base Class for Sign Language data creation.
 
@@ -149,8 +149,8 @@ class GestureHandler(MediaPipeProcessor):
 class ImageHandler(GestureHandler):
     def __init__(
         self,
+        data_parent_folder: str,
         confidence: float = 0.75,
-        data_parent_folder: str = None,
     ):
         """Sign Language data pipeline for images.
 
@@ -160,7 +160,7 @@ class ImageHandler(GestureHandler):
             that will be used in the dataset creation.
 
         """
-        super().__init__(confidence, "hands", data_parent_folder)
+        super().__init__(data_parent_folder, confidence, "hands")
 
     def _process_file(self, image_file: DirEntry[str], path: str) -> None:
         """
@@ -292,9 +292,9 @@ class ImageHandler(GestureHandler):
 class VideoHandler(GestureHandler):
     def __init__(
         self,
+        data_parent_folder: str,
         confidence: float = 0.75,
         mode: str = "holistic",
-        data_parent_folder: str = None,
     ):
         """Sign Language data pipeline for videos.
 
@@ -307,7 +307,7 @@ class VideoHandler(GestureHandler):
         NOTE: mode is set to 'holistic' because sign language videos normally sign words or concepts,
         which use things like pose, face and require spatial and temporal context.
         """
-        super().__init__(confidence, mode, data_parent_folder)
+        super().__init__(data_parent_folder, confidence, mode)
 
     def _process_file(self, video_file: DirEntry[str], path: str) -> None:
         """
