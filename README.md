@@ -98,8 +98,8 @@ translator.close()
 Don't have anything? See the complete guide:
 
 1. [Dataset creation.](docs/DATASET_CREATION.md)
-2. [Model training.](docs/MODEL_TRAINING.MD)
-3. [Translation.](docs/TRANSLATION.MD)
+2. [Model training.](docs/MODEL_TRAINING.md)
+3. [Translation.](docs/TRANSLATION.md)
 4. [Text correction.](docs/TEXT_CORRECTION.md)
 
 ## General Resources

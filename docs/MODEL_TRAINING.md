@@ -50,4 +50,4 @@ convention helps you stay organized.
 The class does not care about this, if the path is correct it will store it as you'd like
 (see the code snippets above for instance).
 
-After you have a trained model, you can [translate](TRANSLATION.MD).
+After you have a trained model, you can [translate](TRANSLATION.md).
