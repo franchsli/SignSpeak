@@ -6,6 +6,10 @@ A sign language translator model maker and runner.
 With SignSpeak, you can train models to translate your desired language
 and then test your model!
 
+https://github.com/user-attachments/assets/241a695d-5188-48dc-97fa-063f21217758
+
+**Note:** Translation time in the demo is slightly higher than the benchmark (~4x vs ~3x real time) due to screen recording overhead.
+
 ## Requirements
 
 Before setting this up, you **MUST** have Python **3.11**
