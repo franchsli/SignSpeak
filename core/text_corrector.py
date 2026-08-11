@@ -17,19 +17,19 @@ class TextCorrector:
             self.language_tool = None
             print(f"LanguageTool failed to initialize:\n {e}")
 
-    def correct_text(self, sentence: str) -> str:
+    def correct_text(self, text: str) -> str:
         try:
             if self.language_tool:
-                corrected_text = self.language_tool.correct(sentence)
+                corrected_text = self.language_tool.correct(text)
                 return corrected_text
             else:
                 print(
                     "LanguageTool failed to initialize previously so no correction is applied."
                 )
-                return sentence
+                return text
         except LanguageToolError as e:
             print(f"LanguageTool error:\n {e}")
-            return sentence
+            return text
     
     def close_language_tool(self):
         """Closes the language tool server used in the processor.
