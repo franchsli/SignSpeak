@@ -18,6 +18,7 @@ class TextCorrector:
             print(f"LanguageTool failed to initialize:\n {e}")
 
     def correct_text(self, text: str) -> str:
+        text = self._prepare_text(text)
         try:
             if self.language_tool:
                 corrected_text = self.language_tool.correct(text)
@@ -30,7 +31,14 @@ class TextCorrector:
         except LanguageToolError as e:
             print(f"LanguageTool error:\n {e}")
             return text
-    
+
+    def _prepare_text(self, text:str) -> str:
+        """Prepares the text for correction by
+        replacing characters for spaces and capitalizing the text.
+        """
+        text_with_spaces = text.replace("_", " ")
+        return text_with_spaces.capitalize()
+
     def close_language_tool(self):
         """Closes the language tool server used in the processor.
         """

@@ -144,7 +144,6 @@ class SignLanguageTranslator:
                     break
 
         self._close_video_translation_windows(cap, display_in_real_time)
-        translation = translation.capitalize()
         if self.text_corrector:
             corrected_sentence = self.text_corrector.correct_text(translation)
             translation = corrected_sentence if corrected_sentence else translation
