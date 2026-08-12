@@ -1,11 +1,12 @@
-import numpy as np
-import cv2 as cv
-import mediapipe as mp
 from enum import StrEnum
 from typing import NamedTuple
-from numpy.typing import NDArray
-from mediapipe.python.solutions.holistic import Holistic
+
+import cv2 as cv
+import mediapipe as mp
+import numpy as np
 from mediapipe.python.solutions.hands import Hands
+from mediapipe.python.solutions.holistic import Holistic
+from numpy.typing import NDArray
 
 
 class ProcessorMode(StrEnum):

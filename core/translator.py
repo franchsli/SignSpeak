@@ -1,8 +1,9 @@
 import cv2 as cv
-from numpy import array, amax, argmax, newaxis
+from keras.models import Model, load_model
+from numpy import amax, argmax, array, newaxis
 from numpy.typing import NDArray
-from keras.models import load_model, Model
-from PIL import ImageDraw, ImageFont, Image
+from PIL import Image, ImageDraw, ImageFont
+
 from .processor import MediaPipeProcessor
 from .text_corrector import TextCorrector
 
@@ -11,7 +12,7 @@ class SignLanguageTranslator:
     def __init__(
         self,
         mediapipe_confidence: float = 0.75,
-        language: str = None,
+        language: str | None = None,
     ):
         """Sign language translation class.
 

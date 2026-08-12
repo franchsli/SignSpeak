@@ -1,12 +1,12 @@
 """Functions to test the different translations' performances"""
 
-from time import time
 from os import listdir
+from time import time
 
 
 def test_import_performance():
     start = time()
-    from core.translator import SignLanguageTranslator
+    from core.translator import SignLanguageTranslator  # noqa: F401
 
     end = time()
     print(f"Importing SignLanguageTranslator took {end - start} seconds")
@@ -56,4 +56,3 @@ def test_live_translation_performance():
         end = time()
         print(f"translation: {translation}")
         print(f"Live translation took {end - start} seconds")
-
