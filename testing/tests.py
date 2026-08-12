@@ -1,6 +1,7 @@
-from pytest import raises
 from cv2 import imread
 from numpy import all
+from pytest import raises
+
 from core.data_handlers import GestureHandler, ImageHandler, VideoHandler
 from core.processor import MediaPipeProcessor
 

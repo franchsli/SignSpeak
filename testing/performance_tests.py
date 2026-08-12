@@ -1,7 +1,7 @@
 """Functions to test the different translations' performances"""
 
-from time import time
 from os import listdir
+from time import time
 
 
 def test_import_performance():

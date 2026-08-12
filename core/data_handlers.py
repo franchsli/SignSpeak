@@ -1,13 +1,15 @@
 import os
+from os import DirEntry
+
 import cv2 as cv
 import numpy as np
-from numpy.typing import NDArray
-from os import DirEntry
-from keras.utils import to_categorical
-from keras.models import Sequential
 from keras.layers import LSTM, Dense
+from keras.models import Sequential
+from keras.utils import to_categorical
+from numpy.typing import NDArray
 from sklearn import metrics
 from sklearn.model_selection import train_test_split
+
 from .processor import MediaPipeProcessor
 
 
