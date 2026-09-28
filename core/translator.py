@@ -17,7 +17,7 @@ class SignLanguageTranslator:
         """Sign language translation class.
 
         Args:
-            mediapipe_confidence (float, optional): The minimun detection and tracking confidence
+            mediapipe_confidence (float, optional): The minimum detection and tracking confidence
             that the MediaPipe model will have. Defaults to 0.75.
             language (str, optional): The language's code that will be checked to correct
             the text. If no language is given, the translation won't be corrected. Defaults to None.
@@ -60,7 +60,7 @@ class SignLanguageTranslator:
         """
         # set the parameter to true if the webcam is being translated
         display_in_real_time = True if video_input == 0 else display_in_real_time
-        # Initialize the variables neeeded
+        # Initialize the variables needed
         self.processor = MediaPipeProcessor(self.mediapipe_confidence)
         prediction_model, prediction_model_signs = self.get_model(model_name)
         keypoints, last_prediction = [], ""
@@ -229,7 +229,7 @@ class SignLanguageTranslator:
 
         Args:
             frame (NDArray): The current opencv frame.
-            translation (str): The curent translation.
+            translation (str): The current translation.
         """
         cv_image = self._overwrite_frame_with_text(frame, translation)
         # Show the image on the display
@@ -284,7 +284,7 @@ class SignLanguageTranslator:
         draw_object: ImageDraw.ImageDraw,
         font: ImageFont.ImageFont,
     ) -> int:
-        """Uses the boundings of the given translation to calculate where it should be placed in the frame in the x axis (horizontally)
+        """Uses the bounds of the given translation to calculate where it should be placed in the frame in the x axis (horizontally)
         to be centered.
 
         Args:
@@ -308,7 +308,7 @@ class SignLanguageTranslator:
         draw_object: ImageDraw.ImageDraw,
         font: ImageFont.ImageFont,
     ) -> int:
-        """Uses the boundings of the given translation to calculate where it should be placed in the frame in the y axis (vertically).
+        """Uses the bounds of the given translation to calculate where it should be placed in the frame in the y axis (vertically).
 
         Args:
             frame (NDArray): The opencv frame.
@@ -332,7 +332,7 @@ class SignLanguageTranslator:
         draw_object: ImageDraw.ImageDraw,
         font: ImageFont.ImageFont,
     ) -> tuple[int, int]:
-        """Uses the boundings of the given translation to calculate where it should be placed in the frame.
+        """Uses the bounds of the given translation to calculate where it should be placed in the frame.
 
         Args:
             frame (NDArray): The opencv frame.
