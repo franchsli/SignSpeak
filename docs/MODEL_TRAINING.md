@@ -36,7 +36,7 @@ different purposes, images are for letters and videos for words, concepts, etc.
 
 ## Model naming convention
 
-This is the recommended convetion for naming the models you create with .train():
+This is the recommended convention for naming the models you create with .train():
 
 1. Sign language
 2. Model's target prediction

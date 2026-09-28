@@ -46,7 +46,7 @@ those integers, if you pass an unordered signs list the translation will be inco
 since the model predicts an integer but the code tries to look for that index in the given list
 no matter what.
 
-Due to that, you should have knoweledge of which signs the model learned,
+Due to that, you should have knowledge of which signs the model learned,
 this won't be a problem if you create your own models.
 
 There are two kinds of translations:

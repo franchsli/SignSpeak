@@ -19,10 +19,10 @@ class MediaPipeProcessor:
         """Handles MediaPipe models (holistic or hands) processing.
 
         Args:
-            confidence (float, optional): The minimun detection and tracking confidence
+            confidence (float, optional): The minimum detection and tracking confidence
             that the MediaPipe model will have. Defaults to 0.75.
             mode (str, optional): The desired mode to be initialized withing the class,
-            the mode affects the MediaPipe model used and logic whithin class methods. Defaults to "holistic".
+            the mode affects the MediaPipe model used and logic within class methods. Defaults to "holistic".
         """
         self.mode = mode
         if self.mode == ProcessorMode.HOLISTIC:
