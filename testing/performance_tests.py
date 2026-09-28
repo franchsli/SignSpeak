@@ -24,7 +24,7 @@ def test_video_translation_performance():
         translation = translator.translate_video("data/ADIOS/ADIOS1.mp4")
         end = time()
         print(f"translation: {translation}")
-        print(f"Proccessing 6 seconds long video took {end - start} seconds")
+        print(f"Processing 6 seconds long video took {end - start} seconds")
 
 
 def test_image_translation_performance():

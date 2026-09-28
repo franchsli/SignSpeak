@@ -29,7 +29,7 @@ but the translator will take 2 seconds more to initialize.
 
 ## Server shut down
 
-It's adviced to use a translator per language:
+It's advised to use a translator per language:
 
 ``` python3
 # main.py in root
@@ -44,7 +44,7 @@ with SignLanguageTranslator("en") as translator:
 
 This way, your translations remain organized and the respective instances will shut down when they're done.
 
-If for some reason you do not use "with" statements when translating, you **MUST** explictly close the translators used:
+If for some reason you do not use "with" statements when translating, you **MUST** explicitly close the translators used:
 
 ``` python3
 # main.py in root
